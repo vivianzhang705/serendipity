@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>而立·自选集 - 杨欣然</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: #0a0e27;
+            min-height: 100vh;
+            padding: 15px;
+            overflow-x: hidden;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+        }
+
+        /* 动态背景 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(255, 0, 150, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 200, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(120, 0, 255, 0.1) 0%, transparent 50%);
+            animation: bgShift 15s ease infinite;
+            z-index: 0;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(15, 20, 40, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow:
+                0 0 60px rgba(0, 200, 255, 0.2),
+                0 0 100px rgba(255, 0, 150, 0.15),
+                inset 0 0 80px rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 40px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                height: calc(100vh - 20px);
+                border-radius: 20px;
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(255, 0, 150, 0.2) 0%, rgba(120, 0, 255, 0.2) 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 15px;
+            }
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.03) 50%,
+                transparent 70%);
+            animation: shine 6s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .album-cover {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(255, 0, 150, 0.3),
+                0 0 80px rgba(0, 200, 255, 0.2);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .album-cover {
+                width: 100px;
+                height: 100px;
+                margin: 0 auto 10px;
+            }
+        }
+
+        .album-cover::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff0096, #00c8ff, #7800ff, #ff0096);
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s;
+            animation: borderRotate 3s linear infinite;
+            background-size: 300% 300%;
+        }
+
+        @keyframes borderRotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .album-cover:hover {
+            transform: scale(1.08) rotateZ(2deg);
+        }
+
+        .album-cover:hover::before {
+            opacity: 1;
+        }
+
+        .album-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 18px;
+        }
+
+        .album-title {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff 0%, #00c8ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .album-title {
+                font-size: 20px;
+                letter-spacing: 1px;
+                margin-bottom: 5px;
+            }
+        }
+
+        .artist-name {
+            font-size: 18px;
+            opacity: 0.8;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .artist-name {
+                font-size: 12px;
+                letter-spacing: 1.5px;
+            }
+        }
+
+        .playlist {
+            padding: 20px;
+            overflow-y: auto;
+            flex-grow: 1;
+            flex-shrink: 1;
+        }
+
+        @media (max-width: 768px) {
+            .playlist {
+                padding: 12px;
+            }
+        }
+
+        .playlist::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .playlist::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .playlist::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #ff0096 0%, #00c8ff 100%);
+            border-radius: 10px;
+        }
+
+        .song-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .song-item {
+                padding: 8px 10px;
+                margin-bottom: 6px;
+                border-radius: 10px;
+            }
+        }
+
+        .song-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(255, 0, 150, 0.1),
+                rgba(0, 200, 255, 0.1),
+                transparent);
+            transition: left 0.6s;
+        }
+
+        .song-item:hover::before {
+            left: 100%;
+        }
+
+        .song-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(8px) scale(1.02);
+            border-color: rgba(0, 200, 255, 0.4);
+            box-shadow:
+                0 8px 32px rgba(0, 200, 255, 0.2),
+                0 0 20px rgba(255, 0, 150, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .song-item:hover {
+                transform: translateX(5px) scale(1.01);
+            }
+        }
+
+        .song-item.playing {
+            background: linear-gradient(135deg,
+                rgba(255, 0, 150, 0.15) 0%,
+                rgba(0, 200, 255, 0.15) 100%);
+            border-color: rgba(0, 200, 255, 0.6);
+            box-shadow:
+                0 0 30px rgba(0, 200, 255, 0.4),
+                0 0 60px rgba(255, 0, 150, 0.2),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .song-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff0096 0%, #7800ff 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 15px;
+            margin-right: 15px;
+            flex-shrink: 0;
+            box-shadow: 0 5px 15px rgba(255, 0, 150, 0.4);
+            transition: all 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .song-number {
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
+                margin-right: 10px;
+            }
+        }
+
+        .song-item:hover .song-number {
+            transform: scale(1.1) rotateZ(5deg);
+            box-shadow: 0 8px 25px rgba(255, 0, 150, 0.6);
+        }
+
+        .song-item.playing .song-number {
+            animation: pulse 1.5s ease-in-out infinite, rotate 4s linear infinite;
+            background: linear-gradient(135deg, #00c8ff 0%, #ff0096 100%);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        @keyframes rotate {
+            0% { box-shadow: 0 5px 15px rgba(0, 200, 255, 0.4); }
+            50% { box-shadow: 0 8px 30px rgba(255, 0, 150, 0.6); }
+            100% { box-shadow: 0 5px 15px rgba(0, 200, 255, 0.4); }
+        }
+
+        .song-info {
+            flex-grow: 1;
+        }
+
+        .song-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .song-title {
+                font-size: 13px;
+            }
+        }
+
+        .song-item:hover .song-title {
+            color: #00c8ff;
+            transform: translateX(5px);
+        }
+
+        .song-item.playing .song-title {
+            color: #00c8ff;
+            font-weight: 600;
+        }
+
+        .play-icon {
+            width: 30px;
+            height: 30px;
+            margin-left: 10px;
+            opacity: 0;
+            transition: all 0.3s;
+            color: #00c8ff;
+            filter: drop-shadow(0 0 8px rgba(0, 200, 255, 0.6));
+        }
+
+        @media (max-width: 768px) {
+            .play-icon {
+                width: 24px;
+                height: 24px;
+                margin-left: 8px;
+                opacity: 0.5;
+            }
+        }
+
+        .song-item:hover .play-icon,
+        .song-item.playing .play-icon {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .song-item.playing .play-icon {
+            animation: playPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes playPulse {
+            0%, 100% { transform: scale(1.2); }
+            50% { transform: scale(1.4); }
+        }
+
+        .audio-player {
+            background: linear-gradient(135deg,
+                rgba(255, 0, 150, 0.25) 0%,
+                rgba(120, 0, 255, 0.25) 50%,
+                rgba(0, 200, 255, 0.25) 100%);
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            color: white;
+            box-shadow:
+                0 -10px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .audio-player {
+                padding: 10px 12px;
+            }
+        }
+
+        .now-playing {
+            font-size: 12px;
+            margin-bottom: 6px;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+
+        @media (max-width: 768px) {
+            .now-playing {
+                font-size: 9px;
+                margin-bottom: 3px;
+            }
+        }
+
+        .current-song {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #fff 0%, #00c8ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @media (max-width: 768px) {
+            .current-song {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+        }
+
+        audio {
+            width: 100%;
+            outline: none;
+            height: 40px;
+            border-radius: 25px;
+            filter: drop-shadow(0 4px 12px rgba(0, 200, 255, 0.3));
+        }
+
+        @media (max-width: 768px) {
+            audio {
+                height: 32px;
+            }
+        }
+
+        audio::-webkit-media-controls-panel {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+        }
+
+        audio::-webkit-media-controls-play-button,
+        audio::-webkit-media-controls-mute-button {
+            filter: brightness(0.3);
+        }
+
+        audio::-webkit-media-controls-timeline {
+            border-radius: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="album-cover">
+                <img src="https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/hoga%202025-12-21%20134856.183.jpg" alt="专辑封面" id="albumCover">
+            </div>
+            <div class="album-title">而立.自选集</div>
+            <div class="artist-name">杨欣然</div>
+        </div>
+
+        <div class="playlist" id="playlist"></div>
+
+        <div class="audio-player">
+            <div class="now-playing">正在播放</div>
+            <div class="current-song" id="currentSong">请选择歌曲</div>
+            <audio id="audioPlayer" controls></audio>
+        </div>
+    </div>
+
+    <script>
+        // 歌曲数据数组
+        const songs = [
+            { title: "洋葱", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/01%20%E6%B4%8B%E8%91%B1.mp3" },
+            { title: "末班车", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/02%20%E6%9C%AB%E7%8F%AD%E8%BD%A6.mp3" },
+            { title: "心中的日光", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/03%20%E5%BF%83%E4%B8%AD%E7%9A%84%E6%97%A5%E6%9C%88.mp3" },
+            { title: "听妈妈的话", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/04%20%E5%90%AC%E5%A6%88%E5%A6%88%E7%9A%84%E8%AF%9D.mp3" },
+            { title: "无乐不作", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/05%20%E6%97%A0%E4%B9%90%E4%B8%8D%E4%BD%9C.mp3" },
+            { title: "天黑黑", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/06%20%E5%A4%A9%E9%BB%91%E9%BB%91.mp3" },
+            { title: "小镇姑娘", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/07%20%E5%B0%8F%E9%95%87%E5%A7%91%E5%A8%98.mp3" },
+            { title: "You Raise Me Up", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/08%20You%20Raise%20Me%20Up.mp3" },
+            { title: "天高地厚", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/09%20%E5%A4%A9%E9%AB%98%E5%9C%B0%E5%8E%9A.mp3" },
+            { title: "知足", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/09%20%E5%A4%A9%E9%AB%98%E5%9C%B0%E5%8E%9A.mp3" },
+            { title: "老爸", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/09%20%E5%A4%A9%E9%AB%98%E5%9C%B0%E5%8E%9A.mp3" },
+            { title: "我的天空", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/12%20%E6%88%91%E7%9A%84%E5%A4%A9%E7%A9%BA.mp3" },
+            { title: "你不在", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/12%20%E6%88%91%E7%9A%84%E5%A4%A9%E7%A9%BA.mp3" },
+            { title: "One Night In 北京", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/14%20One%20Night%20In%E5%8C%97%E4%BA%AC.mp3" },
+            { title: "关于我爱你", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/14%20One%20Night%20In%E5%8C%97%E4%BA%AC.mp3" },
+            { title: "我要快乐", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/14%20One%20Night%20In%E5%8C%97%E4%BA%AC.mp3" },
+            { title: "勇气", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/17%20%E5%8B%87%E6%B0%94.mp3" },
+            { title: "反光", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/18%20%E5%8F%8D%E5%85%89.mp3" },
+            { title: "你给我听好", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/19%20%E4%BD%A0%E7%BB%99%E6%88%91%E5%90%AC%E5%A5%BD.mp3" },
+            { title: "忙碌之徒", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/19%20%E4%BD%A0%E7%BB%99%E6%88%91%E5%90%AC%E5%A5%BD.mp3" },
+            { title: "公路", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/21%20%E5%85%AC%E8%B7%AF.mp3" },
+            { title: "日落大道", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/22%20%E6%97%A5%E8%90%BD%E5%A4%A7%E9%81%93.mp3" },
+            { title: "丑八怪", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/23%20%E4%B8%91%E5%85%AB%E6%80%AA.mp3" },
+            { title: "消愁", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/24%20%E6%B6%88%E6%84%81.mp3" },
+            { title: "没那么简单", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/24%20%E6%B6%88%E6%84%81.mp3" },
+            { title: "修炼爱情", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/24%20%E6%B6%88%E6%84%81.mp3" },
+            { title: "曾经的你", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/27%20%E6%9B%BE%E7%BB%8F%E7%9A%84%E4%BD%A0.mp3" },
+            { title: "海阔天空", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/27%20%E6%9B%BE%E7%BB%8F%E7%9A%84%E4%BD%A0.mp3" },
+            { title: "被遗忘的", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/29%20%E8%A2%AB%E9%81%97%E5%BF%98%E7%9A%84.mp3" },
+            { title: "多少", src: "https://music-1392807885.cos.ap-shanghai.myqcloud.com/%E8%80%8C%E7%AB%8B%20%E8%87%AA%E9%80%89%E9%9B%86/29%20%E8%A2%AB%E9%81%97%E5%BF%98%E7%9A%84.mp3" }
+        ];
+
+        const playlist = document.getElementById('playlist');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const currentSongEl = document.getElementById('currentSong');
+        let currentIndex = -1;
+        let isLoading = false;
+
+        // 生成歌单列表
+        songs.forEach(function(song, index) {
+            const songItem = document.createElement('div');
+            songItem.className = 'song-item';
+            songItem.innerHTML = `
+                <div class="song-number">${index + 1}</div>
+                <div class="song-info">
+                    <div class="song-title">${song.title}</div>
+                </div>
+                <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+            `;
+
+            songItem.addEventListener('click', function() {
+                if (isLoading) {
+                    console.log('正在加载中，请稍候...');
+                    return;
+                }
+                playSong(index);
+            }, false);
+
+            playlist.appendChild(songItem);
+        });
+
+        // 播放歌曲函数
+        function playSong(index) {
+            if (index < 0 || index >= songs.length) {
+                console.error('无效的歌曲索引:', index);
+                return;
+            }
+
+            console.log('开始播放:', songs[index].title);
+            isLoading = true;
+
+            const allItems = document.querySelectorAll('.song-item');
+            allItems.forEach(function(item) {
+                item.classList.remove('playing');
+            });
+
+            currentIndex = index;
+            allItems[index].classList.add('playing');
+
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+            audioPlayer.src = songs[index].src;
+            currentSongEl.textContent = songs[index].title;
+
+            const playPromise = audioPlayer.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(function() {
+                    console.log('播放成功:', songs[index].title);
+                    isLoading = false;
+                }).catch(function(error) {
+                    console.error('播放失败:', error);
+                    isLoading = false;
+                    alert('播放失败: ' + error.message);
+                });
+            } else {
+                isLoading = false;
+            }
+
+            setTimeout(function() {
+                try {
+                    allItems[index].scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                } catch (e) {
+                    console.log('滚动失败:', e);
+                }
+            }, 200);
+        }
+
+        audioPlayer.addEventListener('loadstart', function() {
+            console.log('开始加载音频');
+        });
+
+        audioPlayer.addEventListener('canplay', function() {
+            console.log('音频可以播放');
+            isLoading = false;
+        });
+
+        audioPlayer.addEventListener('error', function(e) {
+            console.error('音频错误:', e);
+            isLoading = false;
+            alert('音频加载失败，请检查网络或文件路径');
+        });
+
+        audioPlayer.addEventListener('ended', function() {
+            console.log('歌曲播放结束');
+            isLoading = false;
+            if (currentIndex < songs.length - 1) {
+                setTimeout(function() {
+                    playSong(currentIndex + 1);
+                }, 500);
+            } else {
+                console.log('播放列表结束');
+            }
+        });
+    </script>
+</body>
+</html>

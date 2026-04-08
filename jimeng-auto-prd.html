@@ -6,7 +6,7 @@
 <title>视频切片工作台 · Flamingo</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
+:root{
   --primary:#1677ff;--primary-h:#0958d9;--primary-bg:#e6f4ff;--primary-b:#91caff;
   --bg:#f0f2f5;--surface:#fff;--surface2:#fafafa;
   --border:#e4e4e4;--border2:#f0f0f0;
@@ -25,94 +25,34 @@ html,body{height:100%;font-family:'Noto Sans SC',sans-serif;background:var(--bg)
 ::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:#ddd;border-radius:3px;}
-::-webkit-scrollbar-thumb:hover{background:#bbb;}
-
-/* ════ SHELL ════ */
 .app{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 
-/* ── TOPNAV ── */
-.topnav{height:48px;background:#001529;display:flex;align-items:center;padding:0 0 0 20px;flex-shrink:0;gap:0;}
-.nav-logo{font-size:14px;font-weight:600;color:#fff;margin-right:24px;display:flex;align-items:center;gap:8px;white-space:nowrap;}
+/* TOPNAV */
+.topnav{height:48px;background:#001529;display:flex;align-items:center;padding:0 0 0 20px;flex-shrink:0;}
+.nav-logo{font-size:14px;font-weight:600;color:#fff;margin-right:24px;display:flex;align-items:center;gap:8px;}
 .nav-logo-dot{width:6px;height:6px;background:var(--primary);border-radius:50%;}
 .nav-tabs{display:flex;height:100%;}
-.nav-tab{
-  display:flex;align-items:center;padding:0 18px;
-  color:rgba(255,255,255,.55);font-size:13px;cursor:pointer;
-  border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;
-}
+.nav-tab{display:flex;align-items:center;padding:0 18px;color:rgba(255,255,255,.55);font-size:13px;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;}
 .nav-tab:hover{color:#fff;background:rgba(255,255,255,.07);}
 .nav-tab.active{color:#fff;border-bottom-color:var(--primary);}
-.nav-tab .tab-badge{
-  background:var(--primary);color:#fff;font-size:10px;
-  padding:1px 6px;border-radius:10px;margin-left:6px;
-  font-family:'DM Mono',monospace;font-weight:500;
-}
 .nav-right{margin-left:auto;padding-right:20px;}
 .nav-avatar{width:28px;height:28px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:600;}
-
-/* ── PAGES ── */
 .page-container{flex:1;overflow:hidden;position:relative;}
-.tab-page{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden;}
-.tab-page.active{display:flex;}
+.tab-page{position:absolute;inset:0;display:flex;flex-direction:column;}
 
-/* ════════════════════════════════
-   SHARED COMPONENTS
-════════════════════════════════ */
+/* SHARED */
 .ant-input{height:32px;border:1px solid var(--border);border-radius:var(--r-sm);padding:0 11px;font-size:13px;font-family:'Noto Sans SC',sans-serif;color:var(--text);background:#fff;outline:none;transition:all .2s;}
 .ant-input:hover{border-color:var(--primary);}
 .ant-input:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,.15);}
 .ant-input::placeholder{color:var(--text4);}
-.ant-select{height:32px;padding:0 10px;border:1px solid var(--border);border-radius:var(--r-sm);font-size:12px;color:var(--text2);background:#fff;outline:none;cursor:pointer;font-family:'Noto Sans SC',sans-serif;transition:border-color .2s;}
-.ant-select:hover,.ant-select:focus{border-color:var(--primary);}
 .ant-btn{height:32px;padding:0 15px;border:1px solid var(--border);border-radius:var(--r-sm);font-size:13px;font-family:'Noto Sans SC',sans-serif;cursor:pointer;background:#fff;color:var(--text2);transition:all .2s;white-space:nowrap;}
 .ant-btn:hover{border-color:var(--primary);color:var(--primary);}
 .ant-btn.primary{background:var(--primary);border-color:var(--primary);color:#fff;}
 .ant-btn.primary:hover{background:var(--primary-h);}
 .ant-btn.sm{height:26px;padding:0 10px;font-size:12px;}
-.tag{display:inline-flex;align-items:center;padding:1px 7px;border-radius:2px;font-size:11px;font-weight:500;white-space:nowrap;border:1px solid;width:fit-content;}
+.ant-select{height:32px;padding:0 10px;border:1px solid var(--border);border-radius:var(--r-sm);font-size:12px;color:var(--text2);background:#fff;outline:none;cursor:pointer;font-family:'Noto Sans SC',sans-serif;}
+.tag{display:inline-flex;align-items:center;padding:1px 7px;border-radius:2px;font-size:11px;font-weight:500;white-space:nowrap;border:1px solid;}
 .tag-blue{background:var(--primary-bg);color:var(--primary);border-color:var(--primary-b);}
-.tag-grey{background:#f5f5f5;color:#595959;border-color:#d9d9d9;}
-.tag-purple{background:var(--purple-bg);color:var(--purple);border-color:var(--purple-b);}
-.tag-amber{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-b);}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(14px);background:#262626;color:#fff;padding:8px 16px;border-radius:var(--r-sm);font-size:12px;font-weight:500;box-shadow:var(--shadow);z-index:900;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-/* ════════════════════════════════
-   PAGE 1: LIST
-════════════════════════════════ */
-/* toolbar */
-.list-toolbar{background:var(--surface);border-bottom:1px solid var(--border2);padding:12px 20px;display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap;}
-.toolbar-group{display:flex;align-items:center;gap:6px;}
-.tlabel{font-size:12px;color:var(--text3);white-space:nowrap;}
-.toolbar-divider{width:1px;height:20px;background:var(--border2);margin:0 4px;}
-.btn-search{height:32px;padding:0 14px;background:var(--primary);border:none;border-radius:var(--r-sm);font-size:13px;color:#fff;font-family:'Noto Sans SC',sans-serif;cursor:pointer;transition:background .15s;}
-.btn-search:hover{background:var(--primary-h);}
-.btn-reset{height:32px;padding:0 14px;background:#fff;border:1px solid var(--border);border-radius:var(--r-sm);font-size:13px;color:var(--text2);font-family:'Noto Sans SC',sans-serif;cursor:pointer;transition:all .15s;}
-.btn-reset:hover{border-color:var(--primary);color:var(--primary);}
-.toolbar-right{margin-left:auto;}
-.count-tag{font-size:12px;color:var(--text3);font-family:'DM Mono',monospace;}
-/* table */
-.list-body{flex:1;overflow-y:auto;padding:16px 20px 0;}
-.tbl-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow-xs);overflow:hidden;}
-table{width:100%;border-collapse:collapse;table-layout:fixed;}
-th{background:#fafafa;padding:10px 12px;text-align:left;font-size:12px;font-weight:500;color:var(--text2);border-bottom:1px solid var(--border2);white-space:nowrap;position:sticky;top:0;z-index:1;}
-td{padding:10px 12px;border-bottom:1px solid var(--border2);vertical-align:middle;}
-tbody tr:last-child td{border-bottom:none;}
-tbody tr:hover td{background:#fafafa;}
-/* thumb */
-.thumb-wrap{width:54px;height:72px;border-radius:4px;overflow:hidden;position:relative;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;}
-.thumb-wrap.has-video{cursor:pointer;}
-.thumb-wrap.no-video{background:#ebebeb;border:1px solid var(--border2);}
-.thumb-garment{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
-.thumb-garment svg{width:78%;height:78%;}
-.thumb-overlay{position:absolute;inset:0;background:rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;border-radius:4px;}
-.thumb-wrap.has-video:hover .thumb-overlay{opacity:1;}
-.play-circle{width:24px;height:24px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;}
-.play-triangle{width:0;height:0;border-style:solid;border-width:5.5px 0 5.5px 10px;border-color:transparent transparent transparent var(--primary);margin-left:2px;}
-.no-video-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:100%;height:100%;}
-.no-video-ico{font-size:18px;opacity:.2;}
-.no-video-txt{font-size:9px;color:var(--text4);text-align:center;line-height:1.3;}
-/* status */
 .status-badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;white-space:nowrap;}
 .sdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
 .gen-pending .sdot{background:#d9d9d9;}.gen-pending{color:#8c8c8c;}
@@ -122,1060 +62,712 @@ tbody tr:hover td{background:#fafafa;}
 .ap-pass .sdot{background:var(--green);}.ap-pass{color:var(--green);}
 .ap-fail .sdot{background:var(--red);}.ap-fail{color:var(--red);}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
-/* actions */
-.act-wrap{display:flex;gap:6px;flex-wrap:wrap;}
-.btn-act{height:28px;padding:0 12px;border-radius:var(--r-sm);font-size:12px;cursor:pointer;font-family:'Noto Sans SC',sans-serif;font-weight:500;border:1px solid;transition:all .15s;white-space:nowrap;}
-.btn-pass{background:var(--green-bg);color:var(--green);border-color:var(--green-b);}
-.btn-pass:hover{background:#d9f7be;border-color:#52c41a;}
-.btn-fail{background:var(--red-bg);color:var(--red);border-color:var(--red-b);}
-.btn-fail:hover{background:#ffe7e7;border-color:var(--red);}
-/* gvi */
-.gvi-wrap{display:flex;flex-direction:column;gap:4px;}
-.gvi-row{display:flex;gap:4px;flex-wrap:wrap;}
-/* pagination */
-.pagination{height:52px;background:var(--surface);border-top:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;}
-.page-info{font-size:12px;color:var(--text3);}
-.page-btns{display:flex;align-items:center;gap:4px;}
-.page-btn{min-width:32px;height:32px;padding:0 6px;border:1px solid var(--border);border-radius:var(--r-sm);background:#fff;color:var(--text2);font-size:13px;cursor:pointer;font-family:'Noto Sans SC',sans-serif;display:flex;align-items:center;justify-content:center;transition:all .15s;}
-.page-btn:hover{border-color:var(--primary);color:var(--primary);}
-.page-btn.active{background:var(--primary);border-color:var(--primary);color:#fff;font-weight:500;}
-.page-btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none;}
-.page-size-wrap{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);}
-.page-size-select{height:28px;padding:0 8px;border:1px solid var(--border);border-radius:var(--r-sm);font-size:12px;color:var(--text2);outline:none;cursor:pointer;}
-/* empty */
-.tbl-empty{padding:60px 20px;text-align:center;color:var(--text3);}
-.tbl-empty-ico{font-size:32px;opacity:.18;margin-bottom:10px;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(14px);background:#262626;color:#fff;padding:8px 16px;border-radius:var(--r-sm);font-size:12px;font-weight:500;box-shadow:var(--shadow);z-index:900;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* ════════════════════════════════
-   PAGE 2: CREATE
-════════════════════════════════ */
-.create-split{display:flex;flex:1;overflow:hidden;}
-/* pagebar */
-.pagebar{height:38px;background:var(--surface);border-bottom:1px solid var(--border2);display:flex;align-items:center;padding:0 20px;gap:6px;font-size:12px;color:var(--text3);flex-shrink:0;}
-.pagebar-cur{color:var(--text2);font-weight:500;}
-.pagebar-hint{margin-left:auto;font-size:11px;color:var(--text4);}
-/* left */
-.img-browser{flex:1;min-width:0;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px;}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow-xs);}
-.card-hd{height:44px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border2);flex-shrink:0;}
-.card-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px;}
-.step-badge{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--primary);color:#fff;font-size:10px;font-weight:700;flex-shrink:0;}
-.card-body{padding:14px 16px;}
-.spu-tag{display:inline-flex;align-items:center;gap:6px;background:var(--primary-bg);border:1px solid var(--primary-b);border-radius:3px;padding:3px 10px;font-size:12px;color:var(--primary);}
-.spu-tag-code{font-family:'DM Mono',monospace;font-weight:500;}
-.ctabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
-.ctab{display:flex;align-items:center;gap:5px;height:26px;padding:0 11px;border:1px solid var(--border);border-radius:3px;cursor:pointer;font-size:12px;color:var(--text2);background:#fff;transition:all .18s;user-select:none;}
+/* WORK PAGE */
+.work-page{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+.work-topbar{background:var(--surface);border-bottom:1px solid var(--border2);flex-shrink:0;display:flex;flex-direction:column;}
+.spu-bar{padding:10px 20px;display:flex;align-items:center;gap:8px;}
+.spu-bar-right{margin-left:auto;}
+.btn-inst-list{height:32px;padding:0 14px;border:1px solid var(--border);border-radius:var(--r-sm);font-size:13px;font-family:'Noto Sans SC',sans-serif;cursor:pointer;background:#fff;color:var(--text2);transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:6px;}
+.btn-inst-list:hover{border-color:var(--primary);color:var(--primary);}
+.btn-inst-list-icon{font-size:14px;line-height:1;}
+.work-tabs-row{display:flex;border-top:1px solid var(--border2);}
+.work-tab{padding:0 20px;height:36px;display:flex;align-items:center;font-size:13px;cursor:pointer;color:var(--text2);border-bottom:2px solid transparent;transition:all .18s;user-select:none;}
+.work-tab:hover{color:var(--primary);}
+.work-tab.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:500;}
+.work-split{flex:1;display:flex;overflow:hidden;}
+
+/* LEFT */
+.img-panel{width:240px;flex-shrink:0;border-right:1px solid var(--border2);display:flex;flex-direction:column;overflow:hidden;background:var(--surface);}
+.img-panel-hd{padding:0 14px;height:40px;display:flex;align-items:center;border-bottom:1px solid var(--border2);flex-shrink:0;}
+.img-panel-title{font-size:12px;font-weight:600;color:var(--text2);}
+.img-color-bar{flex-shrink:0;padding:8px 10px 6px;border-bottom:1px solid var(--border2);}
+.ctabs{display:flex;gap:4px;flex-wrap:wrap;}
+.ctab{display:flex;align-items:center;gap:4px;height:24px;padding:0 9px;border:1px solid var(--border);border-radius:3px;cursor:pointer;font-size:11px;color:var(--text2);background:#fff;transition:all .15s;user-select:none;}
 .ctab:hover{border-color:var(--primary);color:var(--primary);}
 .ctab.active{border-color:var(--primary);color:var(--primary);background:var(--primary-bg);}
-.cdot{width:8px;height:8px;border-radius:50%;border:1px solid rgba(0,0,0,.1);flex-shrink:0;}
+.cdot{width:7px;height:7px;border-radius:50%;border:1px solid rgba(0,0,0,.1);flex-shrink:0;}
 .ctab-n{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;}
 .ctab.active .ctab-n{color:var(--primary);opacity:.7;}
-.drag-tip{display:flex;align-items:center;gap:7px;padding:7px 10px;background:#fffbe6;border:1px solid #ffe58f;border-radius:var(--r-sm);margin-bottom:12px;font-size:12px;color:#874d00;}
-/* image grid */
-.img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px;}
-.img-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--r-sm);overflow:hidden;cursor:grab;transition:all .16s;position:relative;aspect-ratio:3/4;display:flex;flex-direction:column;box-shadow:var(--shadow-xs);user-select:none;}
-.img-card:hover{border-color:var(--primary-b);box-shadow:var(--shadow-sm);transform:translateY(-2px);}
-.img-card:active{cursor:grabbing;}
-.img-card.dragging{opacity:.3;transform:scale(.93);}
-.img-visual{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.img-visual svg{width:62%;height:62%;}
-.img-num{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.48);color:#fff;font-size:9px;padding:1px 4px;border-radius:2px;font-family:'DM Mono',monospace;}
-/* empty */
-.create-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text3);padding:40px;}
-/* right panel */
-.ag-panel{width:340px;flex-shrink:0;background:var(--surface2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
-.ag-panel-hd{height:44px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-bottom:1px solid var(--border2);flex-shrink:0;}
-.ag-panel-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px;}
-.ag-panel-hint{font-size:11px;color:var(--text3);}
-.ag-list{flex:1;overflow-y:auto;padding:10px 12px;}
-/* ag card */
-.ag-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:6px;transition:border-color .18s,box-shadow .18s;overflow:hidden;}
-.ag-card:last-child{margin-bottom:0;}
-.ag-card.drag-over{border-color:var(--primary);background:var(--primary-bg);box-shadow:0 0 0 2px rgba(22,119,255,.14);}
-.ag-card.is-pair.drag-over{border-color:var(--amber);background:var(--amber-bg);box-shadow:0 0 0 2px rgba(250,140,22,.14);}
-.ag-card.has-img{border-color:var(--primary-b);}
-.ag-card.is-pair.has-img{border-color:var(--amber-b);}
-.ag-card-top{display:flex;align-items:center;gap:8px;padding:0 12px;height:44px;flex-shrink:0;}
-.ag-ico{width:24px;height:24px;border-radius:4px;background:var(--border2);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;transition:background .15s;}
-.ag-card.has-img .ag-ico{background:rgba(22,119,255,.1);}
-.ag-card.is-pair.has-img .ag-ico{background:rgba(250,140,22,.1);}
-.ag-info{flex:1;min-width:0;}
-.ag-name{font-size:12px;font-weight:600;color:var(--text);line-height:1.3;}
-.ag-card.has-img .ag-name{color:var(--primary);}
-.ag-card.is-pair.has-img .ag-name{color:var(--amber);}
-.ag-meta{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:1px;}
-.ag-card-count{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;flex-shrink:0;}
-/* thumbs */
-.ag-thumbs{padding:0 12px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start;}
-.ag-thumb{position:relative;flex-shrink:0;width:44px;}
-.ag-thumb-img{width:44px;height:58px;border-radius:3px;overflow:hidden;border:1px solid rgba(0,0,0,.08);background:#f5f5f5;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-xs);}
-.ag-thumb-img svg{width:90%;height:90%;}
-.ag-thumb-rm{position:absolute;top:-5px;right:-5px;width:14px;height:14px;border-radius:50%;background:var(--red);color:#fff;border:1.5px solid #fff;display:flex;align-items:center;justify-content:center;font-size:9px;cursor:pointer;font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.2);opacity:0;transition:opacity .15s,transform .15s;line-height:1;}
-.ag-thumb:hover .ag-thumb-rm{opacity:1;}
-.ag-thumb-rm:hover{transform:scale(1.2);}
-.pair-group{display:flex;align-items:center;gap:4px;padding:4px 6px 4px 0;border-right:2px solid var(--border2);margin-right:2px;}
-.pair-group:last-child{border-right:none;margin-right:0;padding-right:0;}
-.pair-arrow{font-size:11px;color:var(--text4);flex-shrink:0;}
-.pair-pending-slot{width:44px;height:58px;border-radius:3px;border:1.5px dashed var(--amber-b);background:var(--amber-bg);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--amber-b);flex-shrink:0;}
-.seq-pip{position:absolute;bottom:0;left:0;right:0;height:10px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:600;font-family:'DM Mono',monospace;border-radius:0 0 3px 3px;}
-.pip-1{background:rgba(22,119,255,.75);color:#fff;}
-.pip-2{background:rgba(250,140,22,.75);color:#fff;}
-/* footer */
-.ag-footer{padding:12px;border-top:1px solid var(--border2);background:var(--surface);flex-shrink:0;}
-.submit-btn{width:100%;height:36px;background:var(--primary);border:none;border-radius:var(--r-sm);font-size:13px;font-weight:500;color:#fff;font-family:'Noto Sans SC',sans-serif;cursor:pointer;transition:all .2s;}
-.submit-btn:hover:not(:disabled){background:var(--primary-h);}
-.submit-btn:disabled{background:#d9d9d9;color:#bfbfbf;cursor:not-allowed;}
-.submit-note{font-size:11px;color:var(--text3);text-align:center;margin-top:6px;}
+.img-scroll{flex:1;overflow-y:auto;padding:10px;}
+.pair-hint{padding:6px 8px;background:var(--amber-bg);border:1px solid var(--amber-b);border-radius:var(--r-sm);font-size:11px;color:var(--amber);margin-bottom:8px;display:none;}
+.pair-hint.show{display:block;}
+.img-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.img-card{border:2px solid var(--border);border-radius:var(--r-sm);overflow:hidden;cursor:pointer;transition:all .15s;position:relative;aspect-ratio:3/4;display:flex;flex-direction:column;background:#fff;user-select:none;}
+.img-card:hover{border-color:var(--primary-b);}
+.img-card.sel1{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,.18);}
+.img-card.sel2{border-color:var(--amber);box-shadow:0 0 0 2px rgba(212,107,8,.18);}
+.img-card-num{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.42);color:#fff;font-size:9px;padding:1px 4px;border-radius:2px;font-family:'DM Mono',monospace;}
+.img-card-badge{position:absolute;top:4px;left:4px;font-size:10px;font-weight:700;padding:2px 6px;border-radius:2px;color:#fff;}
+.badge-1{background:var(--primary);}
+.badge-2{background:var(--amber);}
+.img-visual{flex:1;display:flex;align-items:center;justify-content:center;}
+.img-visual svg{width:65%;height:65%;}
 
-/* ════════════════════════════════
-   MODALS (shared)
-════════════════════════════════ */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.42);display:flex;align-items:center;justify-content:center;z-index:700;opacity:0;pointer-events:none;transition:opacity .2s;}
+/* RIGHT */
+.rec-panel{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);}
+.rec-panel-hd{height:40px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-bottom:1px solid var(--border2);flex-shrink:0;}
+.rec-panel-title{font-size:12px;font-weight:600;color:var(--text2);}
+.rec-panel-body{flex:1;overflow-y:auto;padding:12px 16px;}
+.rec-groups{display:flex;flex-direction:column;gap:8px;}
+.rec-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text4);padding:60px 40px;}
+.rec-empty-ico{font-size:32px;opacity:.2;}
+.gen-bar{background:var(--surface);border-top:1px solid var(--border2);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.btn-generate{height:34px;padding:0 20px;background:var(--primary);border:none;border-radius:var(--r-sm);font-size:13px;font-weight:600;color:#fff;font-family:'Noto Sans SC',sans-serif;cursor:pointer;transition:all .2s;}
+.btn-generate:hover:not(:disabled){background:var(--primary-h);}
+.btn-generate:disabled{background:#d9d9d9;color:#bfbfbf;cursor:not-allowed;}
+.gen-preview{font-size:12px;color:var(--text3);}
+.gen-preview strong{color:var(--primary);}
+
+/* GROUP BLOCK */
+.inst-group{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.inst-group-hd{padding:8px 12px;background:var(--surface2);border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:8px;}
+.inst-group-name{font-size:12px;font-weight:600;}
+.inst-group-prog{font-size:11px;font-family:'DM Mono',monospace;padding:1px 7px;border-radius:10px;}
+.prog-none{background:#f5f5f5;color:var(--text4);border:1px solid var(--border2);}
+.prog-part{background:var(--primary-bg);color:var(--primary);border:1px solid var(--primary-b);}
+.prog-full{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b);}
+
+.inst-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--border2);transition:background .12s;}
+.inst-row:last-child{border-bottom:none;}
+.inst-row:hover{background:#fafafa;}
+.inst-row.row-fail{background:#fff8f8;}
+.inst-row.row-pass{background:#f9fff6;}
+
+.row-cb{width:15px;height:15px;border-radius:3px;border:1.5px solid var(--border2);background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .15s;}
+.row-cb.checked{background:var(--primary);border-color:var(--primary);}
+.row-cb svg{display:none;width:9px;height:9px;}
+.row-cb.checked svg{display:block;}
+.row-cb-spacer{width:15px;flex-shrink:0;}
+.row-thumb{width:32px;height:44px;border-radius:3px;overflow:hidden;border:1px solid var(--border);background:#f5f5f5;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.row-thumb.empty{opacity:.15;}
+.row-thumb svg{width:88%;height:88%;}
+.row-thumb.clickable{cursor:pointer;}
+.row-thumb.clickable:hover{box-shadow:var(--shadow-sm);}
+.row-name{width:88px;flex-shrink:0;font-size:12px;font-weight:500;color:var(--text);line-height:1.4;}
+.row-content{font-size:11px;color:var(--text2);line-height:1.5;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.row-col{flex-shrink:0;display:flex;align-items:center;}
+.col-gen{width:80px;}
+.col-ap{width:96px;}
+.col-ops{width:120px;gap:5px;}
+.col-try{width:88px;}
+.btn-try-inline{height:24px;padding:0 9px;border:1px dashed var(--primary-b);border-radius:var(--r-sm);font-size:11px;color:var(--primary);background:var(--primary-bg);cursor:pointer;font-family:'Noto Sans SC',sans-serif;font-weight:500;transition:all .12s;white-space:nowrap;}
+.btn-try-inline:hover{background:var(--primary);color:#fff;border-style:solid;}
+.btn-pass{height:24px;padding:0 8px;border-radius:var(--r-sm);font-size:11px;cursor:pointer;font-family:'Noto Sans SC',sans-serif;font-weight:500;border:1px solid;background:var(--green-bg);color:var(--green);border-color:var(--green-b);transition:all .12px;white-space:nowrap;}
+.btn-pass:hover{background:#d9f7be;}
+.btn-fail-act{height:24px;padding:0 8px;border-radius:var(--r-sm);font-size:11px;cursor:pointer;font-family:'Noto Sans SC',sans-serif;font-weight:500;border:1px solid;background:var(--red-bg);color:var(--red);border-color:var(--red-b);transition:all .12s;white-space:nowrap;}
+.btn-fail-act:hover{background:#ffe7e7;}
+
+/* MODAL shared */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:750;opacity:0;pointer-events:none;transition:opacity .2s;}
 .modal-bg.show{opacity:1;pointer-events:all;}
-.modal{background:#fff;border-radius:var(--r);padding:24px;max-width:460px;width:92%;box-shadow:0 8px 32px rgba(0,0,0,.15);transform:translateY(10px);transition:transform .2s;}
-.modal-bg.show .modal{transform:translateY(0);}
-.modal-icon{font-size:28px;margin-bottom:10px;}
-.modal-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px;}
-.modal-desc{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:16px;}
-.modal-info-box{background:#fafafa;border:1px solid var(--border2);border-radius:var(--r-sm);padding:10px 12px;margin-bottom:16px;font-size:12px;color:var(--text2);display:flex;flex-direction:column;gap:5px;}
-.modal-info-row{display:flex;gap:6px;align-items:center;}
-.modal-info-label{color:var(--text3);min-width:60px;}
-.modal-box{background:#fafafa;border:1px solid var(--border2);border-radius:var(--r-sm);padding:10px 12px;margin-bottom:16px;max-height:200px;overflow-y:auto;}
-.modal-box-title{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
-.modal-row{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:11px;color:var(--text2);font-family:'DM Mono',monospace;border-bottom:1px solid var(--border2);}
-.modal-row:last-child{border-bottom:none;}
-.modal-dot{width:5px;height:5px;border-radius:50%;background:var(--primary);flex-shrink:0;}
-.cp-textarea{width:100%;min-height:80px;border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 11px;font-size:13px;font-family:'Noto Sans SC',sans-serif;color:var(--text);outline:none;resize:vertical;margin-bottom:4px;transition:border-color .2s;}
-.cp-textarea:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,.15);}
-.cp-hint{font-size:11px;color:var(--text3);margin-bottom:14px;}
-.modal-acts{display:flex;gap:8px;justify-content:flex-end;}
-.btn-m-s{height:32px;padding:0 16px;background:#fff;border:1px solid var(--border);border-radius:var(--r-sm);font-size:13px;color:var(--text2);cursor:pointer;font-family:'Noto Sans SC',sans-serif;transition:all .15s;}
-.btn-m-s:hover{border-color:var(--primary);color:var(--primary);}
-.btn-m-p{height:32px;padding:0 16px;background:var(--primary);border:none;border-radius:var(--r-sm);font-size:13px;color:#fff;cursor:pointer;font-family:'Noto Sans SC',sans-serif;transition:background .15s;}
-.btn-m-p:hover{background:var(--primary-h);}
-.btn-m-danger{height:32px;padding:0 16px;background:var(--red);border:none;border-radius:var(--r-sm);font-size:13px;color:#fff;cursor:pointer;font-family:'Noto Sans SC',sans-serif;transition:opacity .15s;}
-.btn-m-danger:hover{opacity:.85;}
+.modal-box{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);display:flex;flex-direction:column;max-height:82vh;}
+.modal-hd{padding:14px 16px 12px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.modal-title{font-size:14px;font-weight:600;color:var(--text);}
+.modal-subtitle{font-size:11px;color:var(--text3);margin-top:2px;}
+.modal-body{flex:1;overflow-y:auto;}
+.modal-ft{padding:12px 16px;border-top:1px solid var(--border2);flex-shrink:0;display:flex;gap:8px;align-items:center;}
+.modal-ft .fail-input{flex:1;height:30px;border:1px solid var(--primary-b);border-radius:var(--r-sm);padding:0 9px;font-size:12px;font-family:'Noto Sans SC',sans-serif;color:var(--text);background:#fff;outline:none;}
+.modal-ft .fail-input:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(22,119,255,.12);}
+.btn-fail-submit{height:30px;padding:0 12px;border:none;border-radius:var(--r-sm);font-size:12px;font-family:'Noto Sans SC',sans-serif;cursor:pointer;background:var(--primary);color:#fff;font-weight:500;white-space:nowrap;transition:background .15s;}
+.btn-fail-submit:hover{background:var(--primary-h);}
+.close-btn{width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.06);border:none;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.close-btn:hover{background:rgba(0,0,0,.12);}
 
-/* ════════════════════════════════
-   PAGE 3: INSTRUCTIONS
-════════════════════════════════ */
-.inst-toolbar{
-  height:48px;background:var(--surface);border-bottom:1px solid var(--border2);
-  display:flex;align-items:center;padding:0 20px;gap:10px;flex-shrink:0;
-}
-.inst-title{font-size:14px;font-weight:600;color:var(--text);}
-.inst-badge{
-  font-size:11px;padding:2px 8px;border-radius:2px;
-  background:#f5f5f5;color:var(--text3);border:1px solid var(--border2);
-  font-weight:500;
-}
-.inst-count{font-size:12px;color:var(--text3);margin-left:4px;font-family:'DM Mono',monospace;}
-.inst-body{flex:1;overflow-y:auto;padding:16px 20px;}
-.inst-seq{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:22px;height:22px;border-radius:50%;
-  background:var(--primary-bg);color:var(--primary);
-  font-size:11px;font-weight:600;font-family:'DM Mono',monospace;
-  border:1px solid var(--primary-b);
-}
-.inst-abc{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:20px;height:20px;border-radius:3px;
-  background:var(--purple-bg);color:var(--purple);
-  font-size:11px;font-weight:600;font-family:'DM Mono',monospace;
-  border:1px solid var(--purple-b);
-}
-.inst-content{font-size:12px;color:var(--text);line-height:1.6;}
-.inst-cat{display:inline-flex;align-items:center;padding:1px 8px;border-radius:2px;font-size:11px;font-weight:500;border:1px solid;}
-.inst-cat.action{background:#fff7e6;color:#d46b08;border-color:#ffd591;}
-.inst-cat.detail{background:#f9f0ff;color:#531dab;border-color:#d3adf7;}
-.inst-cat.other{background:#f5f5f5;color:#595959;border-color:#d9d9d9;}
-.inst-group{font-size:12px;font-weight:500;color:var(--text);}
-.inst-ver{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);}
-.inst-name{font-size:12px;color:var(--text2);}
+/* TRY MODAL */
+.try-modal-box{width:540px;max-width:92vw;}
+.modal-hist-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:#fafafa;border-radius:var(--r-sm);border:1px solid var(--border2);}
+.modal-hist-content{flex:1;font-size:12px;color:var(--text);line-height:1.5;}
+.modal-empty{color:var(--text4);font-size:12px;text-align:center;padding:20px 0;}
+.try-modal-body{padding:10px 16px;display:flex;flex-direction:column;gap:6px;min-height:60px;}
 
+/* INST LIST MODAL */
+.inst-modal-box{width:680px;max-width:94vw;}
+.inst-modal-body{padding:0;}
+table.inst-modal-tbl{width:100%;border-collapse:collapse;}
+table.inst-modal-tbl th{background:#fafafa;padding:9px 14px;text-align:left;font-size:11px;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border2);white-space:nowrap;position:sticky;top:0;z-index:1;}
+table.inst-modal-tbl td{padding:9px 14px;border-bottom:1px solid var(--border2);font-size:12px;color:var(--text2);}
+table.inst-modal-tbl tbody tr:last-child td{border-bottom:none;}
+table.inst-modal-tbl tbody tr:hover td{background:#fafafa;}
+.grp-tag{display:inline-flex;align-items:center;padding:1px 7px;border-radius:2px;font-size:11px;font-weight:500;white-space:nowrap;border:1px solid;}
+
+/* PLAYER */
 .player-bg{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;z-index:800;opacity:0;pointer-events:none;transition:opacity .25s;}
 .player-bg.show{opacity:1;pointer-events:all;}
-.player-inner{width:min(540px,90vw);display:flex;flex-direction:column;}
-.player-topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;}
-.player-name{font-size:13px;color:rgba(255,255,255,.75);font-family:'DM Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;margin-right:12px;}
-.player-close{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.12);border:none;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;line-height:1;}
+.player-inner{width:min(480px,90vw);display:flex;flex-direction:column;}
+.player-topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;}
+.player-name{font-size:12px;color:rgba(255,255,255,.7);font-family:'DM Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;margin-right:10px;}
+.player-close{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.12);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .player-close:hover{background:rgba(255,255,255,.22);}
-.player-screen{width:100%;aspect-ratio:9/16;max-height:70vh;background:#111;border-radius:var(--r);overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;}
+.player-screen{width:100%;aspect-ratio:9/16;max-height:65vh;background:#111;border-radius:var(--r);overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;}
 .player-bg-anim{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%,rgba(22,119,255,.15) 0%,transparent 70%);animation:bgPulse 3s ease-in-out infinite;}
 @keyframes bgPulse{0%,100%{opacity:.6;}50%{opacity:1;}}
-.player-garment-wrap{width:60%;height:60%;display:flex;align-items:center;justify-content:center;animation:garmentFloat 4s ease-in-out infinite;}
+.player-garment{width:60%;height:60%;display:flex;align-items:center;justify-content:center;animation:garmentFloat 4s ease-in-out infinite;}
 @keyframes garmentFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-.player-garment-wrap svg{width:100%;height:100%;}
-.player-demo-label{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.4);font-size:10px;padding:2px 10px;border-radius:10px;font-family:'DM Mono',monospace;white-space:nowrap;}
-.player-controls{display:flex;align-items:center;gap:10px;padding:10px 16px 14px;}
-.player-play-btn{width:36px;height:36px;border-radius:50%;background:var(--primary);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;}
-.player-play-btn:hover{background:var(--primary-h);}
-.player-play-icon{width:0;height:0;border-style:solid;border-width:7px 0 7px 13px;border-color:transparent transparent transparent #fff;margin-left:3px;}
-.player-pause-icon{display:flex;gap:3px;}
-.player-pause-icon span{width:3px;height:14px;background:#fff;border-radius:2px;display:block;}
-.player-progress{flex:1;height:4px;background:rgba(255,255,255,.15);border-radius:2px;cursor:pointer;position:relative;overflow:hidden;}
+.player-garment svg{width:100%;height:100%;}
+.player-demo-label{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.4);font-size:10px;padding:2px 9px;border-radius:10px;font-family:'DM Mono',monospace;}
+.player-controls{display:flex;align-items:center;gap:8px;padding:8px 14px 12px;}
+.player-play-btn{width:32px;height:32px;border-radius:50%;background:var(--primary);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.player-play-icon{width:0;height:0;border-style:solid;border-width:6px 0 6px 11px;border-color:transparent transparent transparent #fff;margin-left:2px;}
+.player-pause-icon{display:flex;gap:2px;}
+.player-pause-icon span{width:3px;height:12px;background:#fff;border-radius:2px;display:block;}
+.player-progress{flex:1;height:3px;background:rgba(255,255,255,.15);border-radius:2px;cursor:pointer;overflow:hidden;}
 .player-progress-fill{height:100%;background:var(--primary);border-radius:2px;width:0%;transition:width .5s linear;}
 .player-time{font-size:11px;color:rgba(255,255,255,.5);font-family:'DM Mono',monospace;white-space:nowrap;}
-.player-info{padding:12px 16px 16px;border-top:1px solid rgba(255,255,255,.06);}
-.player-info-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 </style>
 </head>
 <body>
 <div class="app">
-
-<!-- ── TOPNAV ── -->
 <nav class="topnav">
   <div class="nav-logo"><div class="nav-logo-dot"></div>Flamingo 运营后台</div>
   <div class="nav-tabs">
-    <div class="nav-tab active" id="tabList" onclick="switchTab('list')">
-      视频切片列表
-    </div>
-    <div class="nav-tab" id="tabCreate" onclick="switchTab('create')">
-      创建切片
-    </div>
-    <div class="nav-tab" id="tabInstructions" onclick="switchTab('instructions')">
-      指令列表
-    </div>
+    <div class="nav-tab active">视频切片</div>
   </div>
   <div class="nav-right"><div class="nav-avatar">运</div></div>
 </nav>
 
 <div class="page-container">
-
-<!-- ════ PAGE: LIST ════ -->
-<div class="tab-page active" id="pageList">
-  <div class="list-toolbar">
-    <div class="toolbar-group">
-      <span class="tlabel">SPU</span>
-      <input class="ant-input" id="fSpu" style="width:140px" placeholder="搜索 SPU…"/>
-    </div>
-    <div class="toolbar-group">
-      <span class="tlabel">生成状态</span>
-      <select class="ant-select" id="fGen" style="width:108px">
-        <option value="">全部</option>
-        <option value="pending">待生成</option>
-        <option value="gen">生成中</option>
-        <option value="done">已完成</option>
-      </select>
-    </div>
-    <div class="toolbar-group">
-      <span class="tlabel">审核状态</span>
-      <select class="ant-select" id="fApprove" style="width:120px">
-        <option value="">全部</option>
-        <option value="ap_pending">待审核</option>
-        <option value="ap_pass">审核通过</option>
-        <option value="ap_fail">审核不通过</option>
-      </select>
-    </div>
-    <div class="toolbar-group">
-      <span class="tlabel">动作组</span>
-      <select class="ant-select" id="fGroup" style="width:112px">
-        <option value="">全部</option>
-        <option>正面组</option><option>背面组</option><option>正转背</option>
-        <option>细节组A</option><option>细节组B</option><option>整体展示</option>
-      </select>
-    </div>
-    <div class="toolbar-divider"></div>
-    <button class="btn-search" onclick="doSearch()">搜索</button>
-    <button class="btn-reset" onclick="doReset()">重置</button>
-    <div class="toolbar-right"><span class="count-tag" id="listCount">共 0 条</span></div>
-  </div>
-
-  <div class="list-body">
-    <div class="tbl-card">
-      <table>
-        <colgroup>
-          <col style="width:78px"/><col/>
-          <col style="width:160px"/><col style="width:84px"/>
-          <col style="width:106px"/><col style="width:148px"/><col style="width:130px"/>
-        </colgroup>
-        <thead><tr>
-          <th>视频</th><th>视频名称</th><th>动作组 / 版本 / 指令</th>
-          <th>生成状态</th><th>审核状态</th><th>操作</th><th>备注</th>
-        </tr></thead>
-        <tbody id="listBody"></tbody>
-      </table>
-      <div class="tbl-empty" id="emptyState" style="display:none">
-        <div class="tbl-empty-ico">🎬</div>
-        <div style="font-size:13px;font-weight:500;color:var(--text2);margin-bottom:3px">暂无匹配记录</div>
-        <div style="font-size:12px">调整筛选条件后重试</div>
+<div class="tab-page">
+  <div class="work-page">
+    <div class="work-topbar">
+      <div class="spu-bar">
+        <input class="ant-input" id="spuInput" style="width:160px" placeholder="输入 SPU 编号…" onkeydown="if(event.key==='Enter')querySPU()"/>
+        <button class="ant-btn primary" onclick="querySPU()">查询</button>
+        <div id="spuTag" style="display:none;margin-left:4px">
+          <span class="tag tag-blue">
+            <span style="font-family:'DM Mono',monospace;font-weight:500" id="rCode"></span>
+            &nbsp;<span id="rName"></span>
+          </span>
+        </div>
+        <button class="ant-btn sm" id="btnReset" style="display:none" onclick="resetSPU()">重查</button>
+        <span style="font-size:11px;color:var(--text4);margin-left:8px" id="spuHint">试试 SP1001 · SP1002 · SP1003</span>
+        <div class="spu-bar-right">
+          <button class="btn-inst-list" onclick="openInstModal()">
+            <span class="btn-inst-list-icon">☰</span>指令列表
+          </button>
+        </div>
+      </div>
+      <div class="work-tabs-row">
+        <div class="work-tab active" id="wtSingle" onclick="switchWorkTab('single')">单图组</div>
+        <div class="work-tab" id="wtPair" onclick="switchWorkTab('pair')">双图组</div>
       </div>
     </div>
-  </div>
 
-  <div class="pagination">
-    <div class="page-info" id="pageInfo"></div>
-    <div class="page-btns" id="pageBtns"></div>
-    <div class="page-size-wrap">
-      <span>每页</span>
-      <select class="page-size-select" id="pageSizeSelect" onchange="onPageSizeChange()">
-        <option value="10">10</option><option value="20" selected>20</option><option value="50">50</option>
-      </select>
-      <span>条</span>
-    </div>
-  </div>
-</div>
-
-<!-- ════ PAGE: CREATE ════ -->
-<div class="tab-page" id="pageCreate">
-  <div class="pagebar">
-    <span>视频切片</span><span style="color:var(--text4);margin:0 4px">/</span>
-    <span class="pagebar-cur">创建切片</span>
-    <span class="pagebar-hint">试试 SP1001 · SP1002 · SP1003</span>
-  </div>
-  <div class="create-split">
-    <div class="img-browser">
-      <div class="card">
-        <div class="card-hd">
-          <div class="card-title"><span class="step-badge">1</span> 查询商品 SPU</div>
-        </div>
-        <div class="card-body">
-          <div style="display:flex;gap:8px">
-            <input class="ant-input" id="spuInput" style="flex:1" placeholder="输入 SPU 编号…" onkeydown="if(event.key==='Enter')querySPU()"/>
-            <button class="ant-btn primary" onclick="querySPU()">查询</button>
+    <div class="work-split">
+      <!-- LEFT -->
+      <div class="img-panel">
+        <div class="img-panel-hd"><span class="img-panel-title" id="imgPanelTitle">选择商品图</span></div>
+        <div class="img-color-bar"><div class="ctabs" id="ctabs"></div></div>
+        <div class="img-scroll">
+          <div class="pair-hint" id="pairHint">点击选图1，再点选图2</div>
+          <div class="img-grid" id="imgGrid">
+            <div style="color:var(--text4);font-size:12px;padding:20px 0;text-align:center;grid-column:1/-1">先查询 SPU</div>
           </div>
         </div>
       </div>
-      <div class="card" id="imgCard" style="display:none">
-        <div class="card-hd">
-          <div class="card-title"><span class="step-badge">2</span> 选择图片，拖到右侧动作组</div>
+
+      <!-- RIGHT -->
+      <div class="rec-panel">
+        <div class="rec-panel-hd">
+          <span class="rec-panel-title" id="recTitle">切片记录</span>
           <div style="display:flex;align-items:center;gap:8px">
-            <div class="spu-tag">
-              <span class="spu-tag-code" id="rCode"></span>
-              <span id="rName"></span>
-              <span id="rMeta" style="opacity:.6"></span>
-            </div>
-            <button class="ant-btn sm" onclick="resetCreate()">重查</button>
+            <select class="ant-select" id="recFilter" onchange="renderRecords()" style="width:108px;height:26px;font-size:11px">
+              <option value="">全部状态</option>
+              <option value="pending">待生成</option>
+              <option value="done_pending">待审核</option>
+              <option value="pass">已通过</option>
+              <option value="fail">不通过</option>
+            </select>
+            <span id="recCount" style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace"></span>
           </div>
         </div>
-        <div class="card-body">
-          <div class="ctabs" id="ctabs"></div>
-          <div class="drag-tip">💡 拖拽图片到右侧动作组完成配置。正转背按 正面→背面 顺序依次拖入，可多组。</div>
-          <div class="img-grid" id="imgGrid"></div>
+        <div class="rec-panel-body" id="recBody"></div>
+        <div class="gen-bar" id="genBar" style="display:none">
+          <button class="btn-generate" id="genBtn" onclick="doGenerate()">批量生成</button>
+          <div class="gen-preview" id="genPreview"></div>
+          <label style="margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);cursor:pointer">
+            <input type="checkbox" id="chkAll" onchange="toggleAll(this.checked)" style="cursor:pointer"/> 全选
+          </label>
         </div>
-      </div>
-      <div class="create-empty" id="createEmpty">
-        <div style="font-size:36px;opacity:.2">🛍</div>
-        <div style="font-size:13px;font-weight:500;color:var(--text2)">输入 SPU 编号开始选图</div>
-        <div style="font-size:12px;text-align:center;line-height:1.7">系统按颜色分组展示商品图片<br>拖拽图片到右侧动作组完成配置</div>
-      </div>
-    </div>
-
-    <div class="ag-panel">
-      <div class="ag-panel-hd">
-        <div class="ag-panel-title"><span class="step-badge">3</span> 动作组配置</div>
-        <span class="ag-panel-hint">拖入图片即激活</span>
-      </div>
-      <div class="ag-list" id="agList"></div>
-      <div class="ag-footer">
-        <button class="submit-btn" id="submitBtn" disabled onclick="doSubmit()">确认提交任务</button>
-        <div class="submit-note" id="submitNote">请先查询 SPU 并拖入图片</div>
       </div>
     </div>
   </div>
 </div>
+</div>
 
-<!-- ════ PAGE: INSTRUCTIONS ════ -->
-<div class="tab-page" id="pageInstructions">
-  <div class="inst-toolbar">
-    <span class="inst-title">指令列表</span>
-    <span class="inst-badge">只读</span>
-    <span class="inst-count" id="instCount"></span>
-  </div>
-  <div class="inst-body">
-    <div class="tbl-card">
-      <table id="instTable">
-        <colgroup>
-          <col style="width:52px"/>
-          <col style="width:80px"/>
-          <col style="width:100px"/>
-          <col style="width:64px"/>
-          <col style="width:140px"/>
-          <col style="width:72px"/>
-          <col/>
-        </colgroup>
-        <thead><tr>
-          <th>序号</th>
-          <th>分类</th>
-          <th>组别</th>
-          <th>版本</th>
-          <th>组名</th>
-          <th>指令序号</th>
-          <th>指令内容</th>
-        </tr></thead>
-        <tbody id="instBody"></tbody>
+<!-- INST LIST MODAL -->
+<div class="modal-bg" id="instModalBg" onclick="if(event.target===this)closeInstModal()">
+  <div class="modal-box inst-modal-box">
+    <div class="modal-hd">
+      <div>
+        <div class="modal-title">指令列表</div>
+        <div class="modal-subtitle" id="instModalCount"></div>
+      </div>
+      <button class="close-btn" onclick="closeInstModal()">×</button>
+    </div>
+    <div class="modal-body inst-modal-body">
+      <table class="inst-modal-tbl">
+        <colgroup><col style="width:36px"/><col style="width:72px"/><col style="width:180px"/><col/></colgroup>
+        <thead><tr><th>#</th><th>组别</th><th>组名</th><th>指令内容</th></tr></thead>
+        <tbody id="instModalBody"></tbody>
       </table>
     </div>
   </div>
 </div>
 
-<!-- ── SUBMIT SUCCESS MODAL ── -->
-<div class="modal-bg" id="successModal">
-  <div class="modal">
-    <div class="modal-title">🎬 任务已提交</div>
-    <div class="modal-desc" id="successDesc"></div>
-    <div class="modal-box"><div class="modal-box-title">生成记录明细</div><div id="successRecords"></div></div>
-    <div class="modal-acts">
-      <button class="btn-m-s" onclick="afterSubmit(false)">继续创建</button>
-      <button class="btn-m-p" onclick="afterSubmit(true)">查看切片列表 →</button>
+<!-- TRY NEW MODAL -->
+<div class="modal-bg" id="tryModalBg" onclick="if(event.target===this)closeTryModal()">
+  <div class="modal-box try-modal-box">
+    <div class="modal-hd">
+      <div>
+        <div class="modal-title" id="tryModalTitle">尝试新指令</div>
+        <div class="modal-subtitle" id="tryModalSubtitle"></div>
+      </div>
+      <button class="close-btn" onclick="closeTryModal()">×</button>
+    </div>
+    <div class="modal-body try-modal-body" id="tryModalBody"></div>
+    <div class="modal-ft">
+      <input class="fail-input" id="tryModalInput" placeholder="输入新指令内容…" onkeydown="if(event.key==='Enter')submitFromModal()"/>
+      <button class="btn-fail-submit" onclick="submitFromModal()">提交新指令</button>
     </div>
   </div>
 </div>
 
-<!-- ── FAIL MODAL ── -->
-<div class="modal-bg" id="failModal">
-  <div class="modal">
-    <div class="modal-icon" id="failIcon"></div>
-    <div class="modal-title" id="failTitle"></div>
-    <div class="modal-desc" id="failDesc"></div>
-    <div class="modal-info-box" id="failInfoBox"></div>
-    <div id="cpArea" style="display:none">
-      <textarea class="cp-textarea" id="cpText" placeholder="输入自定义指令内容…"></textarea>
-      <div class="cp-hint">提交后将生成一条新记录，指令标识为「自定义指令」</div>
-    </div>
-    <div class="modal-acts" id="failModalActs"></div>
-  </div>
-</div>
-
-<!-- ── VIDEO PLAYER ── -->
-<div class="player-bg" id="playerBg" onclick="closePlayerBg(event)">
-  <div class="player-inner" onclick="e=>e.stopPropagation()">
+<!-- VIDEO PLAYER -->
+<div class="player-bg" id="playerBg" onclick="if(event.target===this)closePlayer()">
+  <div class="player-inner">
     <div class="player-topbar">
       <div class="player-name" id="playerName"></div>
       <button class="player-close" onclick="closePlayer()">×</button>
     </div>
     <div class="player-screen">
       <div class="player-bg-anim"></div>
-      <div class="player-garment-wrap" id="playerGarment"></div>
+      <div class="player-garment" id="playerGarment"></div>
       <div class="player-demo-label">演示预览</div>
     </div>
     <div class="player-controls">
-      <button class="player-play-btn" onclick="togglePlay()">
-        <div id="playIcon" class="player-play-icon"></div>
-      </button>
-      <div class="player-progress" onclick="seekTo(event)">
-        <div class="player-progress-fill" id="progressFill"></div>
-      </div>
+      <button class="player-play-btn" onclick="togglePlay()"><div id="playIcon" class="player-play-icon"></div></button>
+      <div class="player-progress" onclick="seekTo(event)"><div class="player-progress-fill" id="progressFill"></div></div>
       <div class="player-time" id="playerTime">0:00 / 0:30</div>
     </div>
-    <div class="player-info"><div class="player-info-row" id="playerInfoRow"></div></div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ══════════════════════════════════════════
-// SHARED DATA & HELPERS
-// ══════════════════════════════════════════
 const COLORS={
-  black:{name:'黑色',hex:'#2e2e2e',bg:'#f0f0f0'},
-  white:{name:'白色',hex:'#b8b5ae',bg:'#fafaf8'},
-  navy: {name:'藏蓝',hex:'#1a3a6c',bg:'#dce6ff'},
-  red:  {name:'红色',hex:'#c0392b',bg:'#ffe4e4'},
-  khaki:{name:'卡其',hex:'#9a7d40',bg:'#fff3d6'},
-  grey: {name:'浅灰',hex:'#909090',bg:'#f3f3f3'},
-  green:{name:'墨绿',hex:'#2d6a4f',bg:'#dff5ea'},
-  beige:{name:'米色',hex:'#c4a882',bg:'#fdf0e0'},
+  black:{name:'黑色',hex:'#2e2e2e',bg:'#f0f0f0'},white:{name:'白色',hex:'#b8b5ae',bg:'#fafaf8'},
+  navy:{name:'藏蓝',hex:'#1a3a6c',bg:'#dce6ff'},red:{name:'红色',hex:'#c0392b',bg:'#ffe4e4'},
+  khaki:{name:'卡其',hex:'#9a7d40',bg:'#fff3d6'},grey:{name:'浅灰',hex:'#909090',bg:'#f3f3f3'},
+  green:{name:'墨绿',hex:'#2d6a4f',bg:'#dff5ea'},beige:{name:'米色',hex:'#c4a882',bg:'#fdf0e0'},
 };
 const SPU_DB={
   'SP1001':{name:'修身圆领卫衣',colors:[{key:'black',count:6},{key:'white',count:4},{key:'navy',count:5}]},
   'SP1002':{name:'直筒休闲长裤',colors:[{key:'khaki',count:5},{key:'black',count:4},{key:'grey',count:3}]},
   'SP1003':{name:'廓形风衣外套',colors:[{key:'beige',count:7},{key:'green',count:5},{key:'black',count:4},{key:'red',count:4}]},
 };
-const SPU_NAMES={SP1001:'修身圆领卫衣',SP1002:'直筒休闲长裤',SP1003:'廓形风衣外套'};
-const GROUP_MAX_INST={'正面组':3,'背面组':2,'正转背':2,'细节组A':1,'细节组B':1,'整体展示':1};
-const PROMPT_SNIPS={
-  '正面组': ['正面展示缓慢推进','正面平移流畅过渡','正面定点呼吸感','正面全景裂变展开'],
-  '背面组': ['背面环绕展示','背面线条强调','背面慢速推拉'],
-  '正转背': ['正面丝滑旋转至背面','正转背弧线切换','正背交叉溶解'],
-  '细节组A':['细节微距特写拉远','细节渐进放大'],
-  '细节组B':['细节光影流动','细节质感强调'],
-  '整体展示':['整体环绕展示','整体推拉节奏'],
-};
-const AG_DEFS=[
-  {id:'正面组',  name:'正面组',   ico:'🎯',isPair:false,versions:4},
-  {id:'背面组',  name:'背面组',   ico:'↩️',isPair:false,versions:3},
-  {id:'正转背',  name:'正转背',   ico:'🔄',isPair:true, versions:3},
-  {id:'细节组A', name:'细节组 A', ico:'🔍',isPair:false,versions:2},
-  {id:'细节组B', name:'细节组 B', ico:'✨',isPair:false,versions:2},
-  {id:'整体展示',name:'整体展示', ico:'🌐',isPair:false,versions:2},
-  {id:'局部组A', name:'局部组 A', ico:'🎞',isPair:false,versions:2},
-  {id:'局部组B', name:'局部组 B', ico:'🎭',isPair:false,versions:2},
+const INSTRUCTIONS=[
+  ['正面组','front','1','正面展示','a','左右转移身体重心，摆姿势，镜头固定'],
+  ['正面组','front','1','正面展示','b','左右来回扭动几次，展示裤子正面'],
+  ['正面组','front','2','正面细节展示','a','镜头推进，模特双手抚过裤子两边的口袋'],
+  ['正面组','front','3','正面拉弹力','a','用手大力拉扯大腿两侧的裤子，展示弹力'],
+  ['正面组','front','4','正面走出画面','a','向镜头走，直到走出画面，镜头不动'],
+  ['背面组','back','1','背面展示','a','左右转移身体重心，摆姿势，镜头固定'],
+  ['背面组','back','1','背面展示','b','原地小幅度左右移动，背面镜头固定拍摄'],
+  ['背面组','back','2','背面细节展示','a','镜头推进，展示背面口袋'],
+  ['背面组','back','3','深蹲','a','深蹲2次（需要蹲下去）'],
+  ['正转背','front,back','1','正转背','a','左右转移重心摆姿势；然后转身到背面，屁股来回扭动'],
+  ['细节组','detail','1','裤脚特写','a','镜头对准裤脚，模特轻微抬脚或走动，展示裤脚设计'],
 ];
+const GRP_COLOR={'正面组':'#1677ff','背面组':'#389e0d','正转背':'#d46b08','细节组':'#531dab'};
+const GRP_BG={'正面组':'#e6f4ff','背面组':'#f6ffed','正转背':'#fff7e6','细节组':'#f9f0ff'};
+const GRP_BORDER={'正面组':'#91caff','背面组':'#b7eb8f','正转背':'#ffd591','细节组':'#d3adf7'};
 
-function garmentSVG(idx,hex){
+function gSVG(idx,hex){
   const s='rgba(0,0,0,.12)',h='rgba(255,255,255,.2)';
   const sh=[
-    `<path d="M22 22Q32 13 40 13Q48 13 58 22L66 42H54L54 90H26L26 42H14Z" fill="${hex}" stroke="${s}" stroke-width="1.5"/><path d="M32 13Q40 21 48 13" fill="none" stroke="${s}" stroke-width="1.5"/><ellipse cx="40" cy="27" rx="5" ry="3" fill="${h}"/>`,
-    `<path d="M22 22Q32 13 40 13Q48 13 58 22L66 42H54L54 90H26L26 42H14Z" fill="${hex}" stroke="${s}" stroke-width="1.5"/><path d="M32 13Q40 21 48 13" fill="none" stroke="${s}" stroke-width="1.5"/><circle cx="40" cy="54" r="2.5" fill="${s}"/><circle cx="40" cy="64" r="2.5" fill="${s}"/>`,
-    `<path d="M30 22Q37 13 42 13Q47 13 55 22L62 42H52L52 90H32L32 42H22Z" fill="${hex}" stroke="${s}" stroke-width="1.5"/>`,
-    `<path d="M22 22Q32 13 40 13Q48 13 58 22L66 42H54L54 90H26L26 42H14Z" fill="${hex}" stroke="${s}" stroke-width="1.5"/><path d="M30 13L30 20Q40 25 50 20L50 13" fill="none" stroke="${s}" stroke-width="1.5"/><line x1="40" y1="22" x2="40" y2="90" stroke="${s}" stroke-width=".8" stroke-dasharray="3,3" opacity=".6"/>`,
-    `<rect x="18" y="24" width="44" height="58" rx="4" fill="${hex}" stroke="${s}" stroke-width="1.5"/><rect x="24" y="32" width="13" height="16" rx="2" fill="${s}" opacity=".35"/><line x1="24" y1="56" x2="56" y2="56" stroke="${s}" stroke-width="1.1" opacity=".5"/>`,
-    `<rect x="18" y="24" width="44" height="58" rx="4" fill="${hex}" stroke="${s}" stroke-width="1.5"/><circle cx="40" cy="44" r="9" fill="${s}" opacity=".22"/>`,
+    '<path d="M22 22Q32 13 40 13Q48 13 58 22L66 42H54L54 90H26L26 42H14Z" fill="'+hex+'" stroke="'+s+'" stroke-width="1.5"/><path d="M32 13Q40 21 48 13" fill="none" stroke="'+s+'" stroke-width="1.5"/><ellipse cx="40" cy="27" rx="5" ry="3" fill="'+h+'"/>',
+    '<path d="M22 22Q32 13 40 13Q48 13 58 22L66 42H54L54 90H26L26 42H14Z" fill="'+hex+'" stroke="'+s+'" stroke-width="1.5"/><circle cx="40" cy="54" r="2.5" fill="'+s+'"/><circle cx="40" cy="64" r="2.5" fill="'+s+'"/>',
+    '<path d="M30 22Q37 13 42 13Q47 13 55 22L62 42H52L52 90H32L32 42H22Z" fill="'+hex+'" stroke="'+s+'" stroke-width="1.5"/>',
+    '<rect x="18" y="24" width="44" height="58" rx="4" fill="'+hex+'" stroke="'+s+'" stroke-width="1.5"/><rect x="24" y="32" width="13" height="16" rx="2" fill="'+s+'" opacity=".35"/>',
+    '<rect x="18" y="24" width="44" height="58" rx="4" fill="'+hex+'" stroke="'+s+'" stroke-width="1.5"/><circle cx="40" cy="44" r="9" fill="'+s+'" opacity=".22"/>',
+    '<path d="M22 22Q32 13 40 13Q48 13 58 22L66 42H54L54 90H26L26 42H14Z" fill="'+hex+'" stroke="'+s+'" stroke-width="1.5"/><line x1="40" y1="22" x2="40" y2="90" stroke="'+s+'" stroke-width=".8" stroke-dasharray="3,3" opacity=".6"/>',
   ];
-  return `<svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">${sh[idx%sh.length]}</svg>`;
+  return '<svg viewBox="0 0 80 100" fill="none">'+sh[idx%sh.length]+'</svg>';
 }
-
-function instLabel(idx){if(idx===99)return '自定义指令';if(idx===0)return '主指令';return `副指令 #${idx}`;}
-function instCls(idx){return idx===99?'tag-amber':'tag-purple';}
-function makeVidName(spu,colorName,ts,snip){
+function makeVidName(spu,colorName,ts,content){
   const d=new Date(ts),p=n=>String(n).padStart(2,'0');
-  return `${spu}-${colorName}-${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}-${snip.slice(0,12)}`;
+  return spu+'-'+colorName+'-'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+content.slice(0,12);
 }
-function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2800);
-}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2800);}
 
-// ══════════════════════════════════════════
-// GLOBAL LIST DATA (shared between tabs)
-// ══════════════════════════════════════════
-let allData=[];
-
-function initMock(){
-  const now=Date.now();
-  const rows=[
-    // 前3条：有下一条指令可触发
-    ['SP1001','white','正面组',  1,0,'done','ap_pending',10e3,  ''],
-    ['SP1001','navy', '正转背',  2,1,'done','ap_pending',20e3,  ''],
-    ['SP1002','grey', '背面组',  1,0,'done','ap_pending',30e3,  ''],
-    // 后6条：指令已耗尽，触发自定义
-    ['SP1001','black','细节组A', 2,1,'done','ap_pending',40e3,  ''],
-    ['SP1001','white','细节组B', 1,1,'done','ap_pending',50e3,  ''],
-    ['SP1002','khaki','整体展示',2,1,'done','ap_pending',60e3,  ''],
-    ['SP1001','navy', '背面组',  2,2,'done','ap_pending',70e3,  ''],
-    ['SP1002','black','正转背',  3,2,'done','ap_pending',80e3,  ''],
-    ['SP1003','beige','正面组',  4,3,'done','ap_pending',90e3,  ''],
-    // 历史数据
-    ['SP1001','navy', '正面组',  2,0,'done','ap_pass',   5*60e3, '已同步素材库'],
-    ['SP1001','navy', '正面组',  3,0,'done','ap_fail',   8*60e3, '尝试下条指令'],
-    ['SP1001','navy', '正面组',  3,1,'done','ap_pending',6*60e3, ''],
-    ['SP1001','navy', '正面组',  4,0,'gen', '-',         10*60e3,''],
-    ['SP1001','black','正转背',  1,0,'done','ap_pass',   30*60e3,'已同步素材库'],
-    ['SP1001','black','正转背',  2,0,'pending','-',      28*60e3,''],
-    ['SP1001','white','细节组A', 1,0,'done','ap_fail',   60*60e3,'尝试下条指令'],
-    ['SP1001','white','细节组A', 1,1,'done','ap_pending',55*60e3,''],
-    ['SP1001','navy', '背面组',  1,0,'done','ap_fail',   70*60e3,'尝试下条指令'],
-    ['SP1001','navy', '背面组',  1,1,'done','ap_fail',   65*60e3,'尝试下条指令'],
-    ['SP1001','navy', '背面组',  1,2,'done','ap_pending',62*60e3,''],
-    ['SP1002','black','整体展示',1,0,'done','ap_fail',   3*86400e3,'尝试下条指令'],
-    ['SP1002','black','整体展示',1,1,'done','ap_pending',3*86400e3-5*60e3,''],
-    ['SP1002','khaki','背面组',  1,0,'done','ap_pass',   2*86400e3,'已同步素材库'],
-    ['SP1002','khaki','背面组',  2,0,'done','ap_pending',2*86400e3+5*60e3,''],
-    ['SP1002','khaki','背面组',  3,0,'gen', '-',         2*86400e3+10*60e3,''],
-    ['SP1003','beige','正面组',  1,0,'pending','-',      100e3,''],
-    ['SP1003','green','正面组',  1,0,'done','ap_pending',4*86400e3,''],
-    ['SP1003','red',  '背面组',  1,0,'done','ap_pass',   5*86400e3,'已同步素材库'],
-  ];
-  rows.forEach(([spu,colorKey,group,v,instIdx,genStatus,approveStatus,ago,remark],i)=>{
-    const col=COLORS[colorKey];
-    const snips=PROMPT_SNIPS[group]||['展示'];
-    const snip=instIdx===99?'自定义指令内容':snips[instIdx%snips.length];
-    const ts=now-ago;
-    allData.push({
-      id:'v_'+i,spu,spuName:SPU_NAMES[spu]||spu,
-      colorKey,colorName:col.name,
-      group,v,instIdx,genStatus,approveStatus,ts,
-      promptSnip:snip,vidName:makeVidName(spu,col.name,ts,snip),
-      svgIdx:i%6,remark,
-    });
-  });
-  allData.sort((a,b)=>b.ts-a.ts);
-}
-
-// ══════════════════════════════════════════
-// TAB SWITCHING
-// ══════════════════════════════════════════
-function switchTab(tab){
-  document.querySelectorAll('.tab-page').forEach(el=>el.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(el=>el.classList.remove('active'));
-  const id='page'+tab.charAt(0).toUpperCase()+tab.slice(1);
-  document.getElementById(id).classList.add('active');
-  document.getElementById('tab'+tab.charAt(0).toUpperCase()+tab.slice(1)).classList.add('active');
-  if(tab==='list') applyFilters();
-}
-
-// ══════════════════════════════════════════
-// LIST PAGE
-// ══════════════════════════════════════════
-let filtered=[], cpTargetId=null, currentPage=1, pageSize=20;
-let activeFilters={spu:'',gen:'',approve:'',group:''};
-
-const GEN_CONF={pending:{label:'待生成',cls:'gen-pending'},gen:{label:'生成中',cls:'gen-ing'},done:{label:'已完成',cls:'gen-done'}};
-const AP_CONF={'-':null,ap_pending:{label:'待审核',cls:'ap-pending'},ap_pass:{label:'审核通过',cls:'ap-pass'},ap_fail:{label:'审核不通过',cls:'ap-fail'}};
-
-function doSearch(){
-  activeFilters={
-    spu:document.getElementById('fSpu').value.trim().toUpperCase(),
-    gen:document.getElementById('fGen').value,
-    approve:document.getElementById('fApprove').value,
-    group:document.getElementById('fGroup').value,
-  };
-  currentPage=1;applyFilters();
-}
-function doReset(){
-  document.getElementById('fSpu').value='';
-  document.getElementById('fGen').value='';
-  document.getElementById('fApprove').value='';
-  document.getElementById('fGroup').value='';
-  activeFilters={spu:'',gen:'',approve:'',group:''};
-  currentPage=1;applyFilters();
-}
-function applyFilters(){
-  const {spu,gen,approve,group}=activeFilters;
-  filtered=allData.filter(r=>{
-    if(spu&&!r.spu.includes(spu))return false;
-    if(gen&&r.genStatus!==gen)return false;
-    if(approve&&r.approveStatus!==approve)return false;
-    if(group&&r.group!==group)return false;
-    return true;
-  });
-  document.getElementById('listCount').textContent=`共 ${filtered.length} 条`;
-  renderPage();
-  updateBadge();
-}
-function onPageSizeChange(){pageSize=parseInt(document.getElementById('pageSizeSelect').value);currentPage=1;renderPage();}
-
-function renderPage(){
-  const total=Math.max(1,Math.ceil(filtered.length/pageSize));
-  if(currentPage>total)currentPage=total;
-  const start=(currentPage-1)*pageSize;
-  const page=filtered.slice(start,start+pageSize);
-  const tbody=document.getElementById('listBody');
-  const emptyEl=document.getElementById('emptyState');
-  if(filtered.length===0){tbody.innerHTML='';emptyEl.style.display='block';}
-  else{emptyEl.style.display='none';tbody.innerHTML=page.map(rowHTML).join('');}
-  renderPagination(total);
-  renderPageInfo(filtered.length,start,Math.min(start+pageSize,filtered.length));
-}
-
-function rowHTML(r){
-  const col=COLORS[r.colorKey]||{hex:'#999',bg:'#f5f5f5'};
-  const gc=GEN_CONF[r.genStatus]||GEN_CONF.pending;
-  const ac=AP_CONF[r.approveStatus];
-  const hasDone=r.genStatus==='done';
-  const thumbHTML=hasDone
-    ?`<div class="thumb-wrap has-video" onclick="openPlayer('${r.id}')">
-        <div class="thumb-garment" style="background:${col.bg}">${garmentSVG(r.svgIdx,col.hex)}</div>
-        <div class="thumb-overlay"><div class="play-circle"><div class="play-triangle"></div></div></div>
-      </div>`
-    :`<div class="thumb-wrap no-video">
-        <div class="no-video-inner"><div class="no-video-ico">🎬</div><div class="no-video-txt">${gc.label}</div></div>
-      </div>`;
-  const apHTML=ac?`<div class="status-badge ${ac.cls}"><div class="sdot"></div>${ac.label}</div>`:`<span style="color:var(--text4)">—</span>`;
-  const actionHTML=r.genStatus==='done'&&r.approveStatus==='ap_pending'
-    ?`<div class="act-wrap">
-        <button class="btn-act btn-pass" onclick="doPass('${r.id}')">审核通过</button>
-        <button class="btn-act btn-fail" onclick="confirmFail('${r.id}')">审核不通过</button>
-      </div>`
-    :`<span style="color:var(--text4)">—</span>`;
-  return `<tr>
-    <td style="text-align:center">${thumbHTML}</td>
-    <td><div style="font-size:12px;font-weight:500;color:var(--text);word-break:break-all;line-height:1.5">${r.vidName}</div></td>
-    <td><div class="gvi-wrap"><span class="tag tag-blue">${r.group}</span><div class="gvi-row"><span class="tag tag-grey">V${r.v}</span><span class="tag ${instCls(r.instIdx)}">${instLabel(r.instIdx)}</span></div></div></td>
-    <td><div class="status-badge ${gc.cls}"><div class="sdot"></div>${gc.label}</div></td>
-    <td>${apHTML}</td>
-    <td>${actionHTML}</td>
-    <td><span style="font-size:11px;color:var(--text3)">${r.remark||'—'}</span></td>
-  </tr>`;
-}
-
-function renderPagination(totalPages){
-  let html=`<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
-  getPageRange(currentPage,totalPages).forEach(p=>{
-    if(p==='...')html+=`<span style="padding:0 4px;color:var(--text3)">…</span>`;
-    else html+=`<button class="page-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
-  });
-  html+=`<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}>›</button>`;
-  document.getElementById('pageBtns').innerHTML=html;
-}
-function getPageRange(cur,total){
-  if(total<=7)return Array.from({length:total},(_,i)=>i+1);
-  const r=[1];
-  if(cur>3)r.push('...');
-  for(let p=Math.max(2,cur-1);p<=Math.min(total-1,cur+1);p++)r.push(p);
-  if(cur<total-2)r.push('...');
-  r.push(total);
-  return r;
-}
-function goPage(p){
-  const total=Math.max(1,Math.ceil(filtered.length/pageSize));
-  if(p<1||p>total)return;
-  currentPage=p;renderPage();
-  document.querySelector('.list-body').scrollTop=0;
-}
-function renderPageInfo(total,from,to){
-  document.getElementById('pageInfo').textContent=total===0?'暂无数据':`第 ${from+1}–${to} 条，共 ${total} 条`;
-}
-function updateBadge(){}
-
-// list actions
-function doPass(id){
-  const r=allData.find(r=>r.id===id);if(!r)return;
-  r.approveStatus='ap_pass';r.remark='已同步素材库';
-  applyFilters();toast('✓ 审核通过，视频已同步至素材库');
-}
-function confirmFail(id){
-  const r=allData.find(r=>r.id===id);if(!r)return;
-  cpTargetId=id;
-  const maxInst=GROUP_MAX_INST[r.group]??1;
-  const hasMore=r.instIdx<maxInst;
-  document.getElementById('failInfoBox').innerHTML=`
-    <div class="modal-info-row"><span class="modal-info-label">动作组</span><span class="tag tag-blue">${r.group}</span></div>
-    <div class="modal-info-row"><span class="modal-info-label">版本</span><span class="tag tag-grey">V${r.v}</span></div>
-    <div class="modal-info-row"><span class="modal-info-label">当前指令</span><span class="tag ${instCls(r.instIdx)}">${instLabel(r.instIdx)}</span></div>`;
-  if(hasMore){
-    const nextLabel=instLabel(r.instIdx+1);
-    document.getElementById('failIcon').textContent='↩️';
-    document.getElementById('failTitle').textContent='确认审核不通过？';
-    document.getElementById('failDesc').innerHTML=`该动作组版本还有剩余指令可尝试，标记不通过后将自动创建新记录，触发 <strong>${nextLabel}</strong>。`;
-    document.getElementById('cpArea').style.display='none';
-    document.getElementById('failModalActs').innerHTML=`
-      <button class="btn-m-s" onclick="closeFailModal()">取消</button>
-      <button class="btn-m-danger" onclick="doFailWithNext('${id}')">确认不通过并触发${nextLabel}</button>`;
-  } else {
-    document.getElementById('failIcon').textContent='✏️';
-    document.getElementById('failTitle').textContent='所有预设指令已耗尽';
-    document.getElementById('failDesc').textContent='该动作组版本已跑完全部预设指令，请输入自定义指令继续尝试。';
-    document.getElementById('cpArea').style.display='block';
-    document.getElementById('cpText').value='';
-    document.getElementById('failModalActs').innerHTML=`
-      <button class="btn-m-s" onclick="closeFailModal()">取消</button>
-      <button class="btn-m-s" onclick="doGiveUp('${id}')">放弃尝试</button>
-      <button class="btn-m-p" onclick="doFailWithCustom('${id}')">确认并提交自定义指令</button>`;
-  }
-  document.getElementById('failModal').classList.add('show');
-}
-function doGiveUp(id){
-  const r=allData.find(r=>r.id===id);if(!r)return;
-  r.approveStatus='ap_fail';
-  r.remark='';
-  closeFailModal();applyFilters();
-  toast('已放弃尝试，记录标记为审核不通过');
-}
-function doFailWithNext(id){
-  const r=allData.find(r=>r.id===id);if(!r)return;
-  r.approveStatus='ap_fail';r.remark='尝试下条指令';
-  const nextInstIdx=r.instIdx+1;
-  const snips=PROMPT_SNIPS[r.group]||['展示'];
-  const snip=snips[nextInstIdx%snips.length];
-  const ts=Date.now();
-  allData.unshift({...r,id:'v_next_'+ts,instIdx:nextInstIdx,genStatus:'pending',approveStatus:'-',remark:'',ts,promptSnip:snip,vidName:makeVidName(r.spu,r.colorName,ts,snip)});
-  allData.sort((a,b)=>b.ts-a.ts);
-  closeFailModal();applyFilters();toast(`已标记不通过，新记录已创建（${instLabel(nextInstIdx)}）`);
-}
-function doFailWithCustom(id){
-  const txt=document.getElementById('cpText').value.trim();
-  if(!txt){toast('请输入自定义指令内容');return;}
-  const r=allData.find(r=>r.id===id);if(!r)return;
-  r.approveStatus='ap_fail';r.remark='尝试自定义指令';
-  const ts=Date.now();
-  const snip=txt.slice(0,20)+(txt.length>20?'…':'');
-  allData.unshift({...r,id:'v_cp_'+ts,instIdx:99,genStatus:'pending',approveStatus:'-',remark:'',ts,promptSnip:txt,vidName:makeVidName(r.spu,r.colorName,ts,snip)});
-  allData.sort((a,b)=>b.ts-a.ts);
-  closeFailModal();applyFilters();toast('自定义指令已提交，新记录已创建');
-}
-function closeFailModal(){document.getElementById('failModal').classList.remove('show');}
-
-// player
-let playerTimer=null,playerSeconds=0,playerPlaying=false;
-const PLAYER_DURATION=30;
-function openPlayer(id){
-  const r=allData.find(r=>r.id===id);if(!r)return;
-  const col=COLORS[r.colorKey]||{hex:'#1a3a6c',bg:'#1a2a40'};
-  document.getElementById('playerName').textContent=r.vidName;
-  document.getElementById('playerGarment').innerHTML=garmentSVG(r.svgIdx,col.hex);
-  document.getElementById('playerGarment').style.filter=`drop-shadow(0 0 24px ${col.hex}66)`;
-  document.getElementById('playerInfoRow').innerHTML=`
-    <span class="tag tag-blue" style="background:rgba(22,119,255,.15);border-color:rgba(22,119,255,.3);color:rgba(255,255,255,.8)">${r.group}</span>
-    <span class="tag tag-grey" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:rgba(255,255,255,.6)">V${r.v}</span>
-    <span class="tag tag-purple" style="background:rgba(83,29,171,.25);border-color:rgba(211,173,247,.3);color:rgba(211,173,247,.9)">${instLabel(r.instIdx)}</span>
-    <span style="font-size:11px;color:rgba(255,255,255,.35);font-family:'DM Mono',monospace;margin-left:4px">${r.colorName}</span>`;
-  resetPlayer();document.getElementById('playerBg').classList.add('show');
-}
-function closePlayer(){document.getElementById('playerBg').classList.remove('show');resetPlayer();}
-function closePlayerBg(e){if(e.target===document.getElementById('playerBg'))closePlayer();}
-function resetPlayer(){clearInterval(playerTimer);playerPlaying=false;playerSeconds=0;updatePlayerUI();}
-function togglePlay(){
-  if(playerPlaying){clearInterval(playerTimer);playerPlaying=false;}
-  else{
-    if(playerSeconds>=PLAYER_DURATION)playerSeconds=0;
-    playerPlaying=true;
-    playerTimer=setInterval(()=>{
-      playerSeconds+=0.5;
-      if(playerSeconds>=PLAYER_DURATION){playerSeconds=PLAYER_DURATION;clearInterval(playerTimer);playerPlaying=false;}
-      updatePlayerUI();
-    },500);
-  }
-  updatePlayerUI();
-}
-function seekTo(e){
-  const bar=e.currentTarget,rect=bar.getBoundingClientRect();
-  playerSeconds=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width))*PLAYER_DURATION;
-  updatePlayerUI();
-}
-function updatePlayerUI(){
-  document.getElementById('progressFill').style.width=(playerSeconds/PLAYER_DURATION*100)+'%';
-  const fmt=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
-  document.getElementById('playerTime').textContent=`${fmt(playerSeconds)} / ${fmt(PLAYER_DURATION)}`;
-  const icon=document.getElementById('playIcon');
-  if(playerPlaying){icon.className='';icon.innerHTML='<div class="player-pause-icon"><span></span><span></span></div>';}
-  else{icon.className='player-play-icon';icon.innerHTML='';}
-}
-
-// ══════════════════════════════════════════
-// CREATE PAGE
-// ══════════════════════════════════════════
-let cSPU=null,cColorIdx=0,agImages={},dragSrc=null;
+let cSPU=null,cColorIdx=0,activeWorkTab='single';
+let selColorKey=null,selImgIdx=null,pairImg1=null,pairImg2=null;
+let checkedRows=new Set(),allData=[];
 
 function querySPU(){
   const v=document.getElementById('spuInput').value.trim().toUpperCase();
   if(!v){toast('请输入 SPU 编号');return;}
   if(!SPU_DB[v]){toast('未找到该 SPU，请试 SP1001 / SP1002 / SP1003');return;}
-  cSPU={code:v,...SPU_DB[v]};cColorIdx=0;agImages={};
-  document.getElementById('createEmpty').style.display='none';
-  document.getElementById('imgCard').style.display='block';
-  const total=cSPU.colors.reduce((s,c)=>s+c.count,0);
+  cSPU={code:v,...SPU_DB[v]};cColorIdx=0;
+  selColorKey=null;selImgIdx=null;pairImg1=null;pairImg2=null;checkedRows=new Set();
   document.getElementById('rCode').textContent=v+'\u00a0';
-  document.getElementById('rName').textContent=cSPU.name+'\u00a0';
-  document.getElementById('rMeta').textContent=cSPU.colors.length+'色·'+total+'张';
-  renderColorTabs();renderImages();renderAgPanel();syncSubmit();
+  document.getElementById('rName').textContent=cSPU.name;
+  document.getElementById('spuTag').style.display='inline-flex';
+  document.getElementById('btnReset').style.display='inline-flex';
+  document.getElementById('spuHint').style.display='none';
+  renderColorTabs();renderImages();renderRecords();
 }
-function resetCreate(){
-  cSPU=null;cColorIdx=0;agImages={};dragSrc=null;
-  document.getElementById('imgCard').style.display='none';
-  document.getElementById('createEmpty').style.display='flex';
+function resetSPU(){
+  cSPU=null;cColorIdx=0;selColorKey=null;selImgIdx=null;pairImg1=null;pairImg2=null;checkedRows=new Set();
+  document.getElementById('spuTag').style.display='none';
+  document.getElementById('btnReset').style.display='none';
+  document.getElementById('spuHint').style.display='';
   document.getElementById('spuInput').value='';
-  renderAgPanel();syncSubmit();
+  document.getElementById('imgGrid').innerHTML='<div style="color:var(--text4);font-size:12px;padding:20px 0;text-align:center;grid-column:1/-1">先查询 SPU</div>';
+  document.getElementById('ctabs').innerHTML='';
+  renderRecords();
+}
+function switchWorkTab(tab){
+  activeWorkTab=tab;
+  document.querySelectorAll('.work-tab').forEach(el=>el.classList.remove('active'));
+  document.getElementById(tab==='single'?'wtSingle':'wtPair').classList.add('active');
+  selColorKey=null;selImgIdx=null;pairImg1=null;pairImg2=null;checkedRows=new Set();
+  const ph=document.getElementById('pairHint');
+  if(tab==='pair'){ph.textContent='点击选图1，再点选图2';ph.classList.add('show');document.getElementById('imgPanelTitle').textContent='选择两张图';}
+  else{ph.classList.remove('show');document.getElementById('imgPanelTitle').textContent='选择商品图';}
+  if(cSPU)renderImages();
+  renderRecords();
 }
 function renderColorTabs(){
+  if(!cSPU)return;
   document.getElementById('ctabs').innerHTML=cSPU.colors.map((c,i)=>{
     const col=COLORS[c.key];
-    return `<div class="ctab ${i===cColorIdx?'active':''}" onclick="switchColor(${i})">
-      <div class="cdot" style="background:${col.hex}"></div>${col.name}<span class="ctab-n">${c.count}</span></div>`;
+    return '<div class="ctab '+(i===cColorIdx?'active':'')+'" onclick="switchColor('+i+')">'
+      +'<div class="cdot" style="background:'+col.hex+'"></div>'+col.name+'<span class="ctab-n">'+c.count+'</span></div>';
   }).join('');
 }
 function switchColor(i){cColorIdx=i;renderColorTabs();renderImages();}
 function renderImages(){
   if(!cSPU)return;
   const cData=cSPU.colors[cColorIdx],col=COLORS[cData.key];
-  document.getElementById('imgGrid').innerHTML=Array.from({length:cData.count},(_,i)=>`
-    <div class="img-card" draggable="true"
-      ondragstart="onDragStart(event,'${cData.key}',${i},${i},'${col.name}')"
-      ondragend="onDragEnd(this)">
-      <div class="img-num">#${String(i+1).padStart(2,'0')}</div>
-      <div class="img-visual" style="background:${col.bg}">${garmentSVG(i,col.hex)}</div>
-    </div>`).join('');
-}
-
-function onDragStart(e,colorKey,imgIdx,svgIdx,colorName){
-  const col=COLORS[colorKey];
-  dragSrc={colorKey,imgIdx,svgIdx,colorName,colHex:col.hex,colBg:col.bg};
-  e.currentTarget.classList.add('dragging');
-  e.dataTransfer.effectAllowed='copy';
-  e.dataTransfer.setData('text/plain','img');
-}
-function onDragEnd(el){el.classList.remove('dragging');dragSrc=null;}
-
-function renderAgPanel(){
-  document.getElementById('agList').innerHTML=AG_DEFS.map(ag=>{
-    const imgs=agImages[ag.id]||[];
-    const hasImg=imgs.length>0;
-    const pairCls=ag.isPair?'is-pair':'';
-    const countTxt=hasImg?(ag.isPair?Math.floor(imgs.length/2)+'组'+(imgs.length%2?' +待配对':''):imgs.length+'张'):'';
-    return `<div class="ag-card ${pairCls} ${hasImg?'has-img':''}"
-        data-id="${ag.id}"
-        ondragover="onAgDragOver(event,this)"
-        ondragleave="onAgDragLeave(this)"
-        ondrop="onAgDrop(event,this)">
-      <div class="ag-card-top">
-        <div class="ag-ico">${ag.ico}</div>
-        <div class="ag-info">
-          <div class="ag-name">${ag.name}</div>
-          <div class="ag-meta">${ag.versions} 版本${ag.isPair?' · 两张一组':''}</div>
-        </div>
-        ${hasImg?`<span class="ag-card-count">${countTxt}</span>`:''}
-      </div>
-      ${hasImg?`<div class="ag-thumbs">${ag.isPair?renderPairThumbs(ag,imgs):renderSimpleThumbs(ag,imgs)}</div>`:''}
-    </div>`;
-  }).join('');
-}
-function renderSimpleThumbs(ag,imgs){
-  return imgs.map((im,i)=>{
-    const col=COLORS[im.colorKey];
-    return `<div class="ag-thumb">
-      <div class="ag-thumb-img" style="background:${col.bg}">${garmentSVG(im.svgIdx,col.hex)}</div>
-      <div class="ag-thumb-rm" onclick="removeAgImg('${ag.id}',${i})">×</div>
-    </div>`;
-  }).join('');
-}
-function renderPairThumbs(ag,imgs){
-  let html='';
-  for(let i=0;i<imgs.length;i+=2){
-    const im1=imgs[i],im2=imgs[i+1]||null,col1=COLORS[im1.colorKey];
-    html+=`<div class="pair-group">
-      <div class="ag-thumb">
-        <div class="ag-thumb-img" style="background:${col1.bg};position:relative">${garmentSVG(im1.svgIdx,col1.hex)}<div class="seq-pip pip-1">正</div></div>
-        <div class="ag-thumb-rm" onclick="removeAgImg('${ag.id}',${i})">×</div>
-      </div>
-      <div class="pair-arrow">→</div>`;
-    if(im2){const col2=COLORS[im2.colorKey];html+=`<div class="ag-thumb"><div class="ag-thumb-img" style="background:${col2.bg};position:relative">${garmentSVG(im2.svgIdx,col2.hex)}<div class="seq-pip pip-2">背</div></div><div class="ag-thumb-rm" onclick="removeAgImg('${ag.id}',${i+1})">×</div></div>`;}
-    else html+=`<div class="pair-pending-slot">↓</div>`;
-    html+=`</div>`;
-  }
-  return html;
-}
-function onAgDragOver(e,el){e.preventDefault();e.dataTransfer.dropEffect='copy';el.classList.add('drag-over');}
-function onAgDragLeave(el){el.classList.remove('drag-over');}
-function onAgDrop(e,el){
-  e.preventDefault();el.classList.remove('drag-over');
-  if(!dragSrc)return;
-  const gid=el.dataset.id;
-  const ag=AG_DEFS.find(a=>a.id===gid);if(!ag)return;
-  if(!agImages[gid])agImages[gid]=[];
-  const imgs=agImages[gid];
-  if(ag.isPair){
-    if(imgs.length===0){agImages[gid]=[{...dragSrc}];}
-    else if(imgs.length===1){
-      if(imgs[0].imgIdx===dragSrc.imgIdx&&imgs[0].colorKey===dragSrc.colorKey){toast('⚠ 图1和图2不能是同一张');return;}
-      agImages[gid]=[imgs[0],{...dragSrc}];
-      toast('第'+Math.floor(agImages[gid].length/2)+'组正转背配置完成');
-    } else {agImages[gid]=[{...dragSrc}];toast('已替换图1，请继续拖入图2（背面）');}
-  } else {
-    agImages[gid].push({...dragSrc});
-  }
-  renderAgPanel();syncSubmit();
-}
-function removeAgImg(gid,idx){
-  if(!agImages[gid])return;
-  agImages[gid].splice(idx,1);
-  if(agImages[gid].length===0)delete agImages[gid];
-  renderAgPanel();syncSubmit();
-}
-function isGroupReady(ag){const imgs=agImages[ag.id]||[];return ag.isPair?imgs.length>=2:imgs.length>=1;}
-function anyReady(){return AG_DEFS.some(ag=>isGroupReady(ag));}
-function syncSubmit(){
-  const ok=cSPU&&anyReady();
-  document.getElementById('submitBtn').disabled=!ok;
-  const note=document.getElementById('submitNote');
-  if(!cSPU){note.textContent='请先查询 SPU 并拖入图片';return;}
-  if(!anyReady()){note.textContent='请将图片拖到至少一个动作组';return;}
-  const ready=AG_DEFS.filter(ag=>isGroupReady(ag));
-  note.textContent=`${ready.length} 个动作组 · 将生成 ${ready.reduce((s,ag)=>s+ag.versions,0)} 条记录`;
-}
-
-function doSubmit(){
-  if(!cSPU||!anyReady())return;
-  const now=Math.floor(Date.now()/1000)*1000;
-  const newRecs=[];
-  AG_DEFS.forEach(ag=>{
-    if(!isGroupReady(ag))return;
-    const imgs=agImages[ag.id];
-    const snips=PROMPT_SNIPS[ag.id]||['镜头展示'];
-    if(ag.isPair){
-      for(let p=0;p+1<imgs.length;p+=2){
-        const im1=imgs[p],im2=imgs[p+1];
-        for(let v=1;v<=ag.versions;v++){
-          const snip=snips[(v-1)%snips.length];
-          const ts=now+newRecs.length;
-          newRecs.push({
-            id:'v_new_'+ts+'_'+Math.random().toString(36).slice(2,5),
-            spu:cSPU.code,spuName:cSPU.name,
-            colorKey:im1.colorKey,colorName:im1.colorName,
-            group:ag.id,v,instIdx:0,
-            genStatus:'pending',approveStatus:'-',ts,
-            promptSnip:snip,vidName:makeVidName(cSPU.code,im1.colorName,ts,snip),
-            svgIdx:im1.svgIdx,remark:'',
-          });
-        }
-      }
-    } else {
-      imgs.forEach((im)=>{
-        for(let v=1;v<=ag.versions;v++){
-          const snip=snips[(v-1)%snips.length];
-          const ts=now+newRecs.length;
-          newRecs.push({
-            id:'v_new_'+ts+'_'+Math.random().toString(36).slice(2,5),
-            spu:cSPU.code,spuName:cSPU.name,
-            colorKey:im.colorKey,colorName:im.colorName,
-            group:ag.id,v,instIdx:0,
-            genStatus:'pending',approveStatus:'-',ts,
-            promptSnip:snip,vidName:makeVidName(cSPU.code,im.colorName,ts,snip),
-            svgIdx:im.svgIdx,remark:'',
-          });
-        }
-      });
+  document.getElementById('imgGrid').innerHTML=Array.from({length:cData.count},(_,i)=>{
+    let cls='',badge='';
+    if(activeWorkTab==='single'){if(selColorKey===cData.key&&selImgIdx===i)cls='sel1';}
+    else{
+      if(pairImg1&&pairImg1.colorKey===cData.key&&pairImg1.imgIdx===i){cls='sel1';badge='<div class="img-card-badge badge-1">图1</div>';}
+      else if(pairImg2&&pairImg2.colorKey===cData.key&&pairImg2.imgIdx===i){cls='sel2';badge='<div class="img-card-badge badge-2">图2</div>';}
     }
-  });
-  // push to shared data
-  allData.unshift(...newRecs);
-  allData.sort((a,b)=>b.ts-a.ts);
-  updateBadge();
-  const grpNames=AG_DEFS.filter(ag=>isGroupReady(ag)).map(ag=>ag.name).join('、');
-  document.getElementById('successDesc').innerHTML=`SPU <strong>${cSPU.code}</strong> · ${grpNames}`;
-  document.getElementById('successRecords').innerHTML=newRecs.map(r=>`<div class="modal-row"><div class="modal-dot"></div><span>${r.spu}-${r.colorName} · ${r.group}-V${r.v}-主指令</span></div>`).join('');
-  document.getElementById('successModal').classList.add('show');
-}
-function afterSubmit(goList){
-  document.getElementById('successModal').classList.remove('show');
-  agImages={};renderAgPanel();syncSubmit();
-  if(goList)switchTab('list');
-}
-
-// ══════════════════════════════════════════
-// INSTRUCTIONS PAGE
-// ══════════════════════════════════════════
-const INSTRUCTIONS = [
-  // [分类, 组别, 版本, 组名, 指令序号, 指令内容]
-  ['动作组','正面组','V1','正面展示',         'a','左右转移身体重心，摆姿势，镜头固定'],
-  ['动作组','正面组','V2','正面细节展示',      'b','左右来回扭动几次，展示裤子正面（只要正面，不用转身，不要展示上半身）'],
-  ['细节组','裤脚设计','V1','裤脚特写',        'a','镜头对准裤脚，模特轻微抬脚或走动，展示裤脚设计（毛边、束口等）'],
-  ['动作组','背面组','V1','背面展示',          'a','模特缓慢转身展示背面，镜头跟随'],
-  ['动作组','背面组','V1','背面展示',          'b','原地小幅度左右移动，背面镜头固定拍摄'],
-  ['动作组','背面组','V2','背面走动展示',      'a','模特向前走几步后回头，镜头跟拍背面'],
-  ['动作组','正转背','V1','正转背过渡',        'a','正面站立，缓慢旋转至背面，动作流畅自然'],
-  ['动作组','正转背','V2','正转背节奏感',      'a','配合节奏旋转，正背面各停顿约1秒'],
-  ['细节组','腰部设计','V1','腰部特写',        'a','镜头对准腰部，展示腰带扣、松紧或装饰设计'],
-  ['细节组','面料质感','V1','面料特写',        'a','镜头缓慢推进至面料表面，展示纹理与光泽感'],
-  ['细节组','面料质感','V1','面料特写',        'b','模特用手轻捏面料展示厚度与垂感'],
-  ['动作组','细节组A','V1','局部放大展示',     'a','镜头逐渐推近至商品细节区域，缓慢推拉'],
-  ['动作组','细节组A','V2','细节渐进展示',     'a','从远景渐渐推近，聚焦至局部特写'],
-  ['动作组','细节组B','V1','光影质感',         'a','灯光从侧面打入，突出面料光影层次'],
-  ['动作组','整体展示','V1','全身环绕',        'a','模特站立，镜头360度环绕拍摄全身'],
-  ['动作组','整体展示','V2','全身推拉',        'a','从全身远景缓慢推进至中景，再拉回'],
-];
-
-const CAT_CLS = {'动作组':'action','细节组':'detail'};
-
-function renderInstructions(){
-  const tbody = document.getElementById('instBody');
-  tbody.innerHTML = INSTRUCTIONS.map((row,i)=>{
-    const [cat,group,ver,name,abc,content] = row;
-    const catCls = CAT_CLS[cat] || 'other';
-    return `<tr>
-      <td style="text-align:center"><div class="inst-seq">${i+1}</div></td>
-      <td><span class="inst-cat ${catCls}">${cat}</span></td>
-      <td><span class="inst-group">${group}</span></td>
-      <td><span class="inst-ver">${ver}</span></td>
-      <td><span class="inst-name">${name}</span></td>
-      <td style="text-align:center"><div class="inst-abc">${abc}</div></td>
-      <td><div class="inst-content">${content}</div></td>
-    </tr>`;
+    return '<div class="img-card '+cls+'" onclick="selectImg(\''+cData.key+'\','+i+')">'
+      +badge+'<div class="img-card-num">#'+String(i+1).padStart(2,'0')+'</div>'
+      +'<div class="img-visual" style="background:'+col.bg+'">'+gSVG(i,col.hex)+'</div></div>';
   }).join('');
-  document.getElementById('instCount').textContent = `共 ${INSTRUCTIONS.length} 条`;
+}
+function selectImg(colorKey,imgIdx){
+  if(activeWorkTab==='single'){
+    if(selColorKey===colorKey&&selImgIdx===imgIdx){selColorKey=null;selImgIdx=null;checkedRows=new Set();}
+    else{selColorKey=colorKey;selImgIdx=imgIdx;initCheckedRows();}
+    renderImages();renderRecords();
+  } else {
+    const ph=document.getElementById('pairHint');
+    if(!pairImg1){pairImg1={colorKey,imgIdx};ph.textContent='已选图1，再点选图2';}
+    else if(!pairImg2){
+      if(pairImg1.colorKey===colorKey&&pairImg1.imgIdx===imgIdx){toast('图1和图2不能相同');return;}
+      pairImg2={colorKey,imgIdx};ph.textContent='图1和图2已选好，可批量生成';initCheckedRows();
+    } else {pairImg1={colorKey,imgIdx};pairImg2=null;checkedRows=new Set();ph.textContent='已选图1，再点选图2';}
+    renderImages();renderRecords();
+  }
+}
+function getInitialInsts(){
+  return activeWorkTab==='single'
+    ?INSTRUCTIONS.filter(r=>!r[1].includes(',')&&r[4]==='a')
+    :INSTRUCTIONS.filter(r=>r[1].includes(',')&&r[4]==='a');
+}
+function initCheckedRows(){
+  checkedRows=new Set();
+  getInitialInsts().forEach(inst=>{if(!hasRecord(inst[0],inst[2]))checkedRows.add(rowKey(inst[0],inst[2]));});
+}
+function rowKey(group,v){return group+'|'+v;}
+function hasRecord(group,v){
+  if(!cSPU||!getCurrentImg())return false;
+  return allData.some(r=>r.spu===cSPU.code&&r.group===group&&r.v===parseInt(v)&&matchesCurrentImg(r));
+}
+function getCurrentImg(){
+  if(activeWorkTab==='single')return selColorKey&&selImgIdx!==null?true:null;
+  return pairImg1&&pairImg2?true:null;
+}
+function matchesCurrentImg(r){
+  if(activeWorkTab==='single')return r.colorKey===selColorKey&&r.imgIdx===selImgIdx&&!r.img2ColorKey;
+  if(!pairImg1||!pairImg2)return false;
+  return r.colorKey===pairImg1.colorKey&&r.imgIdx===pairImg1.imgIdx&&r.img2ColorKey===pairImg2.colorKey&&r.img2Idx===pairImg2.imgIdx;
 }
 
-// ══════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════
-initMock();
-renderAgPanel();
-syncSubmit();
-applyFilters();
-renderInstructions();
+function renderRecords(){
+  const body=document.getElementById('recBody');
+  const genBar=document.getElementById('genBar');
+  const filterVal=document.getElementById('recFilter').value;
+  const img=getCurrentImg();
+  if(!cSPU||!img){
+    body.innerHTML='<div class="rec-empty"><div class="rec-empty-ico">🎬</div>'
+      +'<div style="font-size:13px;font-weight:500;color:var(--text2)">选择商品图开始</div>'
+      +'<div style="font-size:12px">选图后自动列出可执行指令</div></div>';
+    genBar.style.display='none';
+    document.getElementById('recCount').textContent='';
+    document.getElementById('recTitle').textContent='切片记录';
+    return;
+  }
+  let titleSuffix='';
+  if(activeWorkTab==='single'){const col=COLORS[selColorKey];titleSuffix=col.name+' · #'+String(selImgIdx+1).padStart(2,'0');}
+  else{const c1=COLORS[pairImg1.colorKey],c2=COLORS[pairImg2.colorKey];titleSuffix=c1.name+'#'+String(pairImg1.imgIdx+1).padStart(2,'0')+'→'+c2.name+'#'+String(pairImg2.imgIdx+1).padStart(2,'0');}
+  document.getElementById('recTitle').textContent='切片记录 · '+titleSuffix;
+
+  const insts=getInitialInsts();
+  const groups=[...new Set(insts.map(r=>r[0]))];
+  const existingRecs=allData.filter(r=>r.spu===cSPU.code&&matchesCurrentImg(r));
+  const pendingInsts=insts.filter(inst=>!hasRecord(inst[0],inst[2]));
+  const filteredExisting=existingRecs.filter(r=>{
+    if(!filterVal)return true;
+    if(filterVal==='done_pending')return r.genStatus==='done'&&r.approveStatus==='ap_pending';
+    if(filterVal==='pass')return r.approveStatus==='ap_pass';
+    if(filterVal==='fail')return r.approveStatus==='ap_fail';
+    if(filterVal==='pending')return r.genStatus==='pending';
+    return true;
+  });
+  document.getElementById('recCount').textContent='共 '+(pendingInsts.length+filteredExisting.length)+' 条';
+
+  genBar.style.display='flex';
+  document.getElementById('genBtn').disabled=checkedRows.size===0;
+  document.getElementById('genPreview').innerHTML=checkedRows.size>0?'已选 <strong>'+checkedRows.size+'</strong> 条待生成':'';
+  const chkAll=document.getElementById('chkAll');
+  chkAll.checked=pendingInsts.length>0&&checkedRows.size===pendingInsts.length;
+  chkAll.indeterminate=checkedRows.size>0&&checkedRows.size<pendingInsts.length;
+
+  const GEN_CONF={pending:{label:'待生成',cls:'gen-pending'},gen:{label:'生成中',cls:'gen-ing'},done:{label:'已完成',cls:'gen-done'}};
+  const AP_CONF={'ap_pending':{label:'待审核',cls:'ap-pending'},'ap_pass':{label:'审核通过',cls:'ap-pass'},'ap_fail':{label:'不通过',cls:'ap-fail'}};
+  const cbSVG='<svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  let html='<div class="rec-groups">';
+  groups.forEach(grp=>{
+    const gc=GRP_COLOR[grp]||'#595959';
+    const grpInsts=insts.filter(r=>r[0]===grp);
+    const grpPending=pendingInsts.filter(r=>r[0]===grp);
+    const totalV=new Set(grpInsts.map(r=>r[2])).size;
+    const submittedV=new Set(existingRecs.filter(r=>r.group===grp).map(r=>r.v)).size;
+    let progCls='prog-none',progTxt='0/'+totalV;
+    if(submittedV>=totalV){progCls='prog-full';progTxt=totalV+'/'+totalV;}
+    else if(submittedV>0){progCls='prog-part';progTxt=submittedV+'/'+totalV;}
+    const grpPendingKeys=grpPending.map(inst=>rowKey(inst[0],inst[2]));
+    const grpCheckedCount=grpPendingKeys.filter(k=>checkedRows.has(k)).length;
+    const grpCbCls=grpPendingKeys.length>0&&grpCheckedCount===grpPendingKeys.length?'checked':'';
+    const cbHidden=grpPendingKeys.length===0?' style="display:none"':'';
+
+    html+='<div class="inst-group">'
+      +'<div class="inst-group-hd">'
+        +'<div class="row-cb '+grpCbCls+'"'+cbHidden+' onclick="toggleGroup(\''+grp+'\')">'+cbSVG+'</div>'
+        +'<span class="inst-group-name" style="color:'+gc+'">'+grp+'</span>'
+        +'<span class="inst-group-prog '+progCls+'">'+progTxt+' 组号已提交</span>'
+      +'</div>';
+
+    grpPending.forEach(inst=>{
+      const key=rowKey(inst[0],inst[2]);
+      const checked=checkedRows.has(key);
+      html+='<div class="inst-row">'
+        +'<div class="row-cb '+(checked?'checked':'')+'" onclick="toggleRow(\''+key+'\')">'+cbSVG+'</div>'
+        +'<div class="row-name">'+inst[3]+'</div>'
+        +'<div class="row-thumb empty">'+gSVG(parseInt(inst[2])%6,'#ccc')+'</div>'
+        +'<div class="row-content">'+inst[5]+'</div>'
+        +'<div class="row-col col-gen"><span style="font-size:11px;color:var(--text4)">待生成</span></div>'
+        +'<div class="row-col col-ap"><span style="color:var(--text4)">—</span></div>'
+        +'<div class="row-col col-ops"></div>'
+        +'<div class="row-col col-try"></div>'
+        +'</div>';
+    });
+
+    const grpExisting=existingRecs.filter(r=>r.group===grp&&(!filterVal||filteredExisting.includes(r)))
+      .sort((a,b)=>a.v!==b.v?a.v-b.v:a.instIdx-b.instIdx);
+    const vValues=[...new Set(grpExisting.map(r=>r.v))].sort((a,b)=>a-b);
+    vValues.forEach(vNum=>{
+      const vRecs=grpExisting.filter(r=>r.v===vNum).sort((a,b)=>a.instIdx-b.instIdx);
+      const instDef=INSTRUCTIONS.find(x=>x[0]===grp&&x[2]===String(vNum)&&x[4]==='a');
+      const groupName=instDef?instDef[3]:('组号 '+vNum);
+      vRecs.forEach((r,ri)=>{
+        const gc2=GEN_CONF[r.genStatus]||GEN_CONF.pending;
+        const ac=AP_CONF[r.approveStatus];
+        const col2=COLORS[r.colorKey]||{hex:'#999',bg:'#f5f5f5'};
+        const isDone=r.genStatus==='done';
+        const rowCls=r.approveStatus==='ap_fail'?'row-fail':r.approveStatus==='ap_pass'?'row-pass':'';
+        const isPending=r.approveStatus==='ap_pending'&&isDone;
+        const thumbHTML=isDone
+          ?'<div class="row-thumb clickable" onclick="openPlayer(\''+r.id+'\')" style="background:'+col2.bg+'">'+gSVG(r.svgIdx,col2.hex)+'</div>'
+          :'<div class="row-thumb empty">'+gSVG(r.svgIdx,'#ccc')+'</div>';
+        const opsHTML=isPending
+          ?'<button class="btn-pass" onclick="doPass(\''+r.id+'\')">通过</button>'
+           +'<button class="btn-fail-act" onclick="doFail(\''+r.id+'\')">不通过</button>'
+          :'';
+        const tryHTML=ri===0?'<button class="btn-try-inline" onclick="openTryModal(\''+grp+'\','+vNum+')">+ 新指令</button>':'';
+        html+='<div class="inst-row '+rowCls+'">'
+          +'<div class="row-cb-spacer"></div>'
+          +'<div class="row-name">'+(ri===0?groupName:'')+'</div>'
+          +thumbHTML
+          +'<div class="row-content" title="'+r.content+'">'+r.content+'</div>'
+          +'<div class="row-col col-gen"><div class="status-badge '+gc2.cls+'"><div class="sdot"></div>'+gc2.label+'</div></div>'
+          +'<div class="row-col col-ap">'+(ac?'<div class="status-badge '+ac.cls+'"><div class="sdot"></div>'+ac.label+'</div>':'<span style="color:var(--text4)">—</span>')+'</div>'
+          +'<div class="row-col col-ops">'+opsHTML+'</div>'
+          +'<div class="row-col col-try">'+tryHTML+'</div>'
+          +'</div>';
+      });
+    });
+    html+='</div>';
+  });
+  html+='</div>';
+  body.innerHTML=html;
+}
+
+function toggleGroup(grp){
+  const insts=getInitialInsts().filter(inst=>inst[0]===grp&&!hasRecord(inst[0],inst[2]));
+  const keys=insts.map(inst=>rowKey(inst[0],inst[2]));
+  const allChecked=keys.every(k=>checkedRows.has(k));
+  if(allChecked)keys.forEach(k=>checkedRows.delete(k));else keys.forEach(k=>checkedRows.add(k));
+  renderRecords();
+}
+function toggleRow(key){if(checkedRows.has(key))checkedRows.delete(key);else checkedRows.add(key);renderRecords();}
+function toggleAll(checked){
+  const pending=getInitialInsts().filter(inst=>!hasRecord(inst[0],inst[2]));
+  if(checked)pending.forEach(inst=>checkedRows.add(rowKey(inst[0],inst[2])));else checkedRows.clear();
+  renderRecords();
+}
+function doGenerate(){
+  if(!cSPU||checkedRows.size===0)return;
+  const now=Date.now(),newRecs=[];
+  getInitialInsts().forEach(inst=>{
+    const key=rowKey(inst[0],inst[2]);
+    if(!checkedRows.has(key))return;
+    const v=parseInt(inst[2]);
+    const ck=activeWorkTab==='single'?selColorKey:pairImg1.colorKey;
+    const col=COLORS[ck];const ts=now+newRecs.length;
+    const rec={
+      id:'r_'+ts+'_'+Math.random().toString(36).slice(2,5),
+      spu:cSPU.code,spuName:cSPU.name,colorKey:ck,colorName:col.name,
+      imgIdx:activeWorkTab==='single'?selImgIdx:pairImg1.imgIdx,
+      group:inst[0],v,instIdx:0,content:inst[5],
+      genStatus:'done',approveStatus:'ap_pending',ts,
+      vidName:makeVidName(cSPU.code,col.name,ts,inst[5]),svgIdx:v%6,
+    };
+    if(activeWorkTab==='pair'){rec.img2ColorKey=pairImg2.colorKey;rec.img2Idx=pairImg2.imgIdx;}
+    newRecs.push(rec);
+  });
+  allData.unshift(...newRecs);allData.sort((a,b)=>b.ts-a.ts);
+  checkedRows.clear();renderRecords();
+  toast('✓ 已提交 '+newRecs.length+' 条生成记录');
+}
+function doPass(id){const r=allData.find(r=>r.id===id);if(!r)return;r.approveStatus='ap_pass';renderRecords();toast('✓ 审核通过，视频已同步至素材库');}
+function doFail(id){const r=allData.find(r=>r.id===id);if(!r)return;r.approveStatus='ap_fail';renderRecords();}
+
+// INST LIST MODAL
+function openInstModal(){
+  const GRP_CSS={
+    '正面组':{color:'#1677ff',bg:'#e6f4ff',border:'#91caff'},
+    '背面组':{color:'#389e0d',bg:'#f6ffed',border:'#b7eb8f'},
+    '正转背':{color:'#d46b08',bg:'#fff7e6',border:'#ffd591'},
+    '细节组':{color:'#531dab',bg:'#f9f0ff',border:'#d3adf7'},
+  };
+  document.getElementById('instModalBody').innerHTML=INSTRUCTIONS.map(([grp,tag,v,name,abc,content],i)=>{
+    const css=GRP_CSS[grp]||{color:'#595959',bg:'#f5f5f5',border:'#d9d9d9'};
+    return '<tr>'
+      +'<td style="text-align:center;font-size:11px;color:var(--text4);font-family:DM Mono,monospace;width:36px">'+(i+1)+'</td>'
+      +'<td><span class="grp-tag" style="color:'+css.color+';background:'+css.bg+';border-color:'+css.border+'">'+grp+'</span></td>'
+      +'<td style="font-size:12px;font-weight:500;color:var(--text)">'+name+'</td>'
+      +'<td style="font-size:12px;color:var(--text2);line-height:1.6">'+content+'</td>'
+      +'</tr>';
+  }).join('');
+  document.getElementById('instModalCount').textContent='共 '+INSTRUCTIONS.length+' 条指令';
+  document.getElementById('instModalBg').classList.add('show');
+}
+function closeInstModal(){document.getElementById('instModalBg').classList.remove('show');}
+
+// TRY MODAL
+let modalGrp=null,modalVNum=null;
+function openTryModal(grp,vNum){
+  modalGrp=grp;modalVNum=vNum;
+  const instRow=INSTRUCTIONS.find(x=>x[0]===grp&&x[2]===String(vNum)&&x[4]==='a');
+  document.getElementById('tryModalTitle').textContent=(instRow?instRow[3]:('组号 '+vNum))+' · 尝试新指令';
+  document.getElementById('tryModalSubtitle').textContent=grp;
+  document.getElementById('tryModalInput').value='';
+  refreshModalBody();
+  document.getElementById('tryModalBg').classList.add('show');
+  setTimeout(()=>document.getElementById('tryModalInput').focus(),60);
+}
+function refreshModalBody(){
+  const AP_CONF={'ap_pending':{label:'待审核',cls:'ap-pending'},'ap_pass':{label:'审核通过',cls:'ap-pass'},'ap_fail':{label:'不通过',cls:'ap-fail'}};
+  const histRecs=allData.filter(x=>x.spu===cSPU.code&&x.group===modalGrp&&x.v===modalVNum&&matchesCurrentImg(x)).sort((a,b)=>a.instIdx-b.instIdx);
+  document.getElementById('tryModalBody').innerHTML=histRecs.length===0
+    ?'<div class="modal-empty">暂无历史尝试记录</div>'
+    :histRecs.map(hr=>{
+      const ac=AP_CONF[hr.approveStatus];
+      const rowBg=hr.approveStatus==='ap_fail'?'background:#fff8f8;border-color:var(--red-b)':hr.approveStatus==='ap_pass'?'background:#f9fff6;border-color:var(--green-b)':'';
+      return '<div class="modal-hist-row" style="'+rowBg+'">'
+        +'<div class="modal-hist-content">'+hr.content+'</div>'
+        +(ac?'<div class="status-badge '+ac.cls+'" style="flex-shrink:0"><div class="sdot"></div>'+ac.label+'</div>':'<span style="color:var(--text4);font-size:11px;flex-shrink:0">—</span>')
+        +'</div>';
+    }).join('');
+}
+function closeTryModal(){document.getElementById('tryModalBg').classList.remove('show');}
+function submitFromModal(){
+  const txt=document.getElementById('tryModalInput').value.trim();
+  if(!txt){toast('请输入指令内容');return;}
+  const existing=allData.filter(x=>x.spu===cSPU.code&&x.group===modalGrp&&x.v===modalVNum&&matchesCurrentImg(x));
+  if(!existing.length)return;
+  const ctx=existing[0];const maxIdx=Math.max(...existing.map(x=>x.instIdx));const ts=Date.now();
+  const newRec={
+    id:'r_'+ts+'_'+Math.random().toString(36).slice(2,5),
+    spu:ctx.spu,spuName:ctx.spuName,colorKey:ctx.colorKey,colorName:ctx.colorName,imgIdx:ctx.imgIdx,
+    group:modalGrp,v:modalVNum,instIdx:maxIdx+1,content:txt,
+    genStatus:'done',approveStatus:'ap_pending',ts,
+    vidName:makeVidName(ctx.spu,ctx.colorName,ts,txt),svgIdx:ctx.svgIdx,
+  };
+  if(ctx.img2ColorKey){newRec.img2ColorKey=ctx.img2ColorKey;newRec.img2Idx=ctx.img2Idx;}
+  allData.unshift(newRec);allData.sort((a,b)=>b.ts-a.ts);
+  document.getElementById('tryModalInput').value='';
+  closeTryModal();renderRecords();
+  toast('✓ 新指令已提交');
+}
+
+// PLAYER
+let playerTimer=null,playerSeconds=0,playerPlaying=false;
+const PLAYER_DURATION=30;
+function openPlayer(id){
+  const r=allData.find(r=>r.id===id);if(!r)return;
+  const col=COLORS[r.colorKey]||{hex:'#1a3a6c'};
+  document.getElementById('playerName').textContent=r.vidName;
+  document.getElementById('playerGarment').innerHTML=gSVG(r.svgIdx,col.hex);
+  document.getElementById('playerGarment').style.filter='drop-shadow(0 0 20px '+col.hex+'66)';
+  resetPlayer();document.getElementById('playerBg').classList.add('show');
+}
+function closePlayer(){document.getElementById('playerBg').classList.remove('show');resetPlayer();}
+function resetPlayer(){clearInterval(playerTimer);playerPlaying=false;playerSeconds=0;updatePlayerUI();}
+function togglePlay(){
+  if(playerPlaying){clearInterval(playerTimer);playerPlaying=false;}
+  else{
+    if(playerSeconds>=PLAYER_DURATION)playerSeconds=0;
+    playerPlaying=true;
+    playerTimer=setInterval(()=>{playerSeconds+=0.5;if(playerSeconds>=PLAYER_DURATION){playerSeconds=PLAYER_DURATION;clearInterval(playerTimer);playerPlaying=false;}updatePlayerUI();},500);
+  }
+  updatePlayerUI();
+}
+function seekTo(e){const bar=e.currentTarget,rect=bar.getBoundingClientRect();playerSeconds=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width))*PLAYER_DURATION;updatePlayerUI();}
+function updatePlayerUI(){
+  document.getElementById('progressFill').style.width=(playerSeconds/PLAYER_DURATION*100)+'%';
+  const fmt=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+  document.getElementById('playerTime').textContent=fmt(playerSeconds)+' / '+fmt(PLAYER_DURATION);
+  const icon=document.getElementById('playIcon');
+  if(playerPlaying){icon.className='';icon.innerHTML='<div class="player-pause-icon"><span></span><span></span></div>';}
+  else{icon.className='player-play-icon';icon.innerHTML='';}
+}
+
+renderRecords();
 </script>
 </body>
 </html>

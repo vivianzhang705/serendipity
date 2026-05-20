@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>牛仔裤多版式排版工具</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: #f0f2f5;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #333;
+        }
+
+        h1 { margin: 0 0 10px 0; color: #2c3e50; }
+        p.subtitle { color: #7f8c8d; margin-bottom: 30px; }
+
+        .control-area {
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .upload-box {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .upload-box:hover {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        .upload-icon { font-size: 32px; margin-bottom: 10px; }
+        .upload-text { font-size: 16px; color: #555; font-weight: bold; }
+        .upload-sub { font-size: 12px; color: #999; margin-top: 5px; }
+
+        .preview-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .preview-card {
+            width: 140px;
+            background: #fff;
+            padding: 8px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            cursor: move;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .preview-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        .preview-card.dragging {
+            opacity: 0.6;
+            box-shadow: 0 8px 16px rgba(52, 152, 219, 0.4);
+            background: #e3f2fd;
+        }
+        .preview-card.drag-over {
+            background: #fff3cd;
+            border: 2px dashed #ffc107;
+        }
+        .preview-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: contain;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+        .preview-label {
+            font-weight: bold;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+        .preview-status {
+            font-size: 11px;
+            color: #27ae60;
+            margin-top: 2px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        #hiddenInput { display: none; }
+
+        .action-area {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-gen { background-color: #3498db; color: white; }
+        .btn-gen:hover { background-color: #2980b9; }
+        .btn-clear { background-color: #95a5a6; color: white; }
+        .btn-clear:hover { background-color: #7f8c8d; }
+
+        .result-container {
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid #ddd;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            justify-items: center;
+        }
+
+        .result-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .result-item h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #2c3e50;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .result-item canvas {
+            width: 100%;
+            height: auto;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            background: white;
+        }
+
+        .dl-btn {
+            background: #27ae60;
+            color: white;
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .dl-btn:hover {
+            background: #229954;
+        }
+
+        .info-box {
+            background: #ecf0f1;
+            padding: 12px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: #555;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎯 牛仔裤多版式排版工具</h1>
+    <p class="subtitle">支持单图、1+1和1+2三种版式，自动生成对比方案</p>
+
+    <div class="control-area">
+        <div class="info-box">
+            <strong>使用说明：</strong>上传 3 张图片，工具将自动生成多种版式。可拖拽预览卡片来改变图片顺序。
+        </div>
+
+        <div class="upload-box" id="uploadBox">
+            <div class="upload-icon">📤</div>
+            <div class="upload-text">点击上传 3 张图片</div>
+            <div class="upload-sub">图1 → 图2 → 图3</div>
+        </div>
+
+        <div class="preview-container">
+            <div class="preview-card" data-index="0" draggable="true">
+                <div class="preview-label">图1</div>
+                <img id="preview1" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f0f0f0'/%3E%3Ctext x='50' y='50' font-family='Arial' font-size='10' fill='%23ccc' text-anchor='middle' dy='.3em'%3E等待%3C/text%3E%3C/svg%3E">
+                <div class="preview-status" id="status1">未上传</div>
+            </div>
+            <div class="preview-card" data-index="1" draggable="true">
+                <div class="preview-label">图2</div>
+                <img id="preview2" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f0f0f0'/%3E%3Ctext x='50' y='50' font-family='Arial' font-size='10' fill='%23ccc' text-anchor='middle' dy='.3em'%3E等待%3C/text%3E%3C/svg%3E">
+                <div class="preview-status" id="status2">未上传</div>
+            </div>
+            <div class="preview-card" data-index="2" draggable="true">
+                <div class="preview-label">图3</div>
+                <img id="preview3" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f0f0f0'/%3E%3Ctext x='50' y='50' font-family='Arial' font-size='10' fill='%23ccc' text-anchor='middle' dy='.3em'%3E等待%3C/text%3E%3C/svg%3E">
+                <div class="preview-status" id="status3">未上传</div>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="hiddenInput" multiple accept="image/*">
+
+    <div class="action-area">
+        <button class="btn-clear" onclick="clearAll()">🔄 重置清空</button>
+        <button class="btn-gen" onclick="generateAll()">✅ 生成所有版式</button>
+    </div>
+
+    <div class="result-container" id="resultContainer"></div>
+
+    <script>
+        const canvasSize = 1000;
+        const leftWidth = 680;
+        const rightWidth = 320;
+        const whiteLineWidth = 6;
+        const rightHeight = (canvasSize - whiteLineWidth) / 2;
+        const blurAmount = 40; // 单图版式固定模糊
+
+        const uploadedImages = [null, null, null];
+        const uploadBox = document.getElementById('uploadBox');
+        const hiddenInput = document.getElementById('hiddenInput');
+        const resultContainer = document.getElementById('resultContainer');
+
+        let dragSourceIndex = null;
+
+        uploadBox.addEventListener('click', () => hiddenInput.click());
+
+        hiddenInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+            hiddenInput.value = null;
+        });
+
+        function handleFiles(files) {
+            if (files.length === 0) return;
+
+            let fileArray = Array.from(files).sort((a, b) => a.name.localeCompare(b.name));
+
+            if (fileArray.length > 3) {
+                alert(`检测到 ${fileArray.length} 张图片，最多只支持 3 张`);
+                return;
+            }
+
+            // 清空之前的图片
+            for (let i = 0; i < 3; i++) {
+                uploadedImages[i] = null;
+                document.getElementById(`preview${i+1}`).src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f0f0f0'/%3E%3Ctext x='50' y='50' font-family='Arial' font-size='10' fill='%23ccc' text-anchor='middle' dy='.3em'%3E等待%3C/text%3E%3C/svg%3E";
+                document.getElementById(`status${i+1}`).textContent = "未上传";
+            }
+
+            // 处理实际上传的文件
+            for (let i = 0; i < fileArray.length; i++) {
+                processFile(fileArray[i], i);
+            }
+        }
+
+        function processFile(file, slotIndex) {
+            if (!file.type.startsWith('image/')) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    uploadedImages[slotIndex] = img;
+                    updatePreviewCard(slotIndex, e.target.result, file.name);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updatePreviewCard(slotIndex, imgSrc, fileName) {
+            document.getElementById(`preview${slotIndex+1}`).src = imgSrc;
+            document.getElementById(`status${slotIndex+1}`).textContent = fileName;
+            attachDragListeners(slotIndex);
+        }
+
+        function attachDragListeners(index) {
+            const card = document.querySelector(`[data-index="${index}"]`);
+            if (!card) return;
+
+            card.ondragstart = (e) => {
+                dragSourceIndex = index;
+                card.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+            };
+
+            card.ondragend = (e) => {
+                card.classList.remove('dragging');
+                document.querySelectorAll('[data-index]').forEach(c => c.classList.remove('drag-over'));
+            };
+
+            card.ondragover = (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                if (e.currentTarget !== card) {
+                    card.classList.add('drag-over');
+                }
+            };
+
+            card.ondragleave = (e) => {
+                if (e.currentTarget === card) {
+                    card.classList.remove('drag-over');
+                }
+            };
+
+            card.ondrop = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const targetIndex = index;
+                if (dragSourceIndex !== null && dragSourceIndex !== targetIndex) {
+                    swapImages(dragSourceIndex, targetIndex);
+                }
+                card.classList.remove('drag-over');
+                dragSourceIndex = null;
+            };
+        }
+
+        function swapImages(index1, index2) {
+            [uploadedImages[index1], uploadedImages[index2]] = [uploadedImages[index2], uploadedImages[index1]];
+
+            const preview1 = document.getElementById(`preview${index1+1}`);
+            const status1 = document.getElementById(`status${index1+1}`);
+            const preview2 = document.getElementById(`preview${index2+1}`);
+            const status2 = document.getElementById(`status${index2+1}`);
+
+            [preview1.src, preview2.src] = [preview2.src, preview1.src];
+            [status1.textContent, status2.textContent] = [status2.textContent, status1.textContent];
+        }
+
+        function clearAll() {
+            for(let i=0; i<3; i++) {
+                uploadedImages[i] = null;
+                document.getElementById(`preview${i+1}`).src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f0f0f0'/%3E%3Ctext x='50' y='50' font-family='Arial' font-size='10' fill='%23ccc' text-anchor='middle' dy='.3em'%3E等待%3C/text%3E%3C/svg%3E";
+                document.getElementById(`status${i+1}`).textContent = "未上传";
+            }
+            resultContainer.innerHTML = '';
+        }
+
+        function generateAll() {
+            resultContainer.innerHTML = '';
+
+            // 计算有多少张有效图片
+            const imageCount = uploadedImages.filter(img => img !== null).length;
+
+            if (imageCount === 0) {
+                alert("请先选择至少 1 张图片");
+                return;
+            }
+
+            const grid = document.createElement('div');
+            grid.className = 'results-grid';
+
+            // 1张图：只生成单图版式
+            if (imageCount === 1) {
+                createResultCardSingle(0, '单图版式-磨玻璃 (图1)', '#f39c12', grid);
+            }
+
+            // 2张图：生成单图和1+1版式
+            if (imageCount === 2) {
+                createResultCardSingle(0, '单图版式-磨玻璃 (图1)', '#f39c12', grid);
+                createResultCard11Fit([0, 1], '1+1版式-50%中线 (1,2)', '#27ae60', grid);
+                createResultCard11FitCustomLeft([0, 1], '1+1版式-左40% (1,2)', '#3498db', grid, 0.40);
+                createResultCard11FitCustomLeft([0, 1], '1+1版式-左60% (1,2)', '#e74c3c', grid, 0.60);
+            }
+
+            // 3张图：生成所有版式
+            if (imageCount === 3) {
+                createResultCardSingle(0, '单图版式-磨玻璃 (图1)', '#f39c12', grid);
+                createResultCard11Fit([0, 1], '1+1版式-50%中线 (1,2)', '#27ae60', grid);
+                createResultCard11FitCustomLeft([0, 1], '1+1版式-左40% (1,2)', '#3498db', grid, 0.40);
+                createResultCard11FitCustomLeft([0, 1], '1+1版式-左60% (1,2)', '#e74c3c', grid, 0.60);
+                createResultCard12([0, 1, 2], '1+2版式 A (1,2,3)', '#3498db', grid);
+                createResultCard12([2, 0, 1], '1+2版式 B (3,1,2)', '#e74c3c', grid);
+            }
+
+            resultContainer.appendChild(grid);
+
+            setTimeout(() => {
+                resultContainer.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        // 单图版式
+        function createResultCardSingle(imgIndex, label, accentColor, parentGrid) {
+            const div = document.createElement('div');
+            div.className = 'result-item';
+
+            const titleH3 = document.createElement('h3');
+            titleH3.textContent = label;
+            titleH3.style.borderBottomColor = accentColor;
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            const img = uploadedImages[imgIndex];
+            const size = Math.max(img.width, img.height);
+
+            canvas.width = size;
+            canvas.height = size;
+
+            ctx.clearRect(0, 0, size, size);
+
+            // 背景：原图放大1.1倍，从中心截取，40px模糊
+            ctx.save();
+            const scaleFactor = 1.1;
+            const bgWidth = size * scaleFactor;
+            const bgHeight = size * scaleFactor;
+            const bgX = (size - bgWidth) / 2;
+            const bgY = (size - bgHeight) / 2;
+
+            ctx.filter = `blur(${blurAmount}px)`;
+            ctx.drawImage(img, bgX, bgY, bgWidth, bgHeight);
+            ctx.restore();
+
+            // 前景：原图居中
+            const x = (size - img.width) / 2;
+            const y = (size - img.height) / 2;
+            ctx.drawImage(img, x, y, img.width, img.height);
+
+            const btn = document.createElement('button');
+            btn.className = 'dl-btn';
+            btn.textContent = `下载 ${label}`;
+            btn.onclick = () => {
+                const link = document.createElement('a');
+                link.download = `jeans_${label.replace(/[(),\s]/g, '_')}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            };
+
+            div.appendChild(titleH3);
+            div.appendChild(canvas);
+            div.appendChild(btn);
+            parentGrid.appendChild(div);
+        }
+
+        function createResultCard12(arrangement, label, accentColor, parentGrid) {
+            const div = document.createElement('div');
+            div.className = 'result-item';
+
+            const titleH3 = document.createElement('h3');
+            titleH3.textContent = label;
+            titleH3.style.borderBottomColor = accentColor;
+
+            const canvas = document.createElement('canvas');
+            canvas.width = canvasSize;
+            canvas.height = canvasSize;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvasSize, canvasSize);
+
+            const leftImg = uploadedImages[arrangement[0]];
+            drawCoverImage(ctx, leftImg, 0, 0, leftWidth, canvasSize);
+
+            const rightTopImg = uploadedImages[arrangement[1]];
+            drawFitImage(ctx, rightTopImg, leftWidth + whiteLineWidth, 0, rightWidth, rightHeight, 0.5);
+
+            const rightBottomImg = uploadedImages[arrangement[2]];
+            drawFitImage(ctx, rightBottomImg, leftWidth + whiteLineWidth, rightHeight + whiteLineWidth, rightWidth, rightHeight, 0.5);
+
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = whiteLineWidth;
+            ctx.beginPath();
+            ctx.moveTo(leftWidth, 0);
+            ctx.lineTo(leftWidth, canvasSize);
+            ctx.moveTo(leftWidth + whiteLineWidth, rightHeight);
+            ctx.lineTo(canvasSize, rightHeight);
+            ctx.stroke();
+
+            const btn = document.createElement('button');
+            btn.className = 'dl-btn';
+            btn.textContent = `下载 ${label}`;
+            btn.onclick = () => {
+                const link = document.createElement('a');
+                link.download = `jeans_${label.replace(/[(),\s]/g, '_')}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.92);
+                link.click();
+            };
+
+            div.appendChild(titleH3);
+            div.appendChild(canvas);
+            div.appendChild(btn);
+            parentGrid.appendChild(div);
+        }
+
+        function createResultCard11Fit(arrangement, label, accentColor, parentGrid) {
+            const div = document.createElement('div');
+            div.className = 'result-item';
+
+            const titleH3 = document.createElement('h3');
+            titleH3.textContent = label;
+            titleH3.style.borderBottomColor = accentColor;
+
+            const canvas = document.createElement('canvas');
+            canvas.width = canvasSize;
+            canvas.height = canvasSize;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvasSize, canvasSize);
+
+            const halfWidth = (canvasSize - whiteLineWidth) / 2;
+            const leftImg = uploadedImages[arrangement[0]];
+            drawFitImage(ctx, leftImg, 0, 0, halfWidth, canvasSize, 0.5);
+
+            const rightImg = uploadedImages[arrangement[1]];
+            drawFitImage(ctx, rightImg, halfWidth + whiteLineWidth, 0, halfWidth, canvasSize, 0.5);
+
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = whiteLineWidth;
+            ctx.beginPath();
+            ctx.moveTo(halfWidth, 0);
+            ctx.lineTo(halfWidth, canvasSize);
+            ctx.stroke();
+
+            const btn = document.createElement('button');
+            btn.className = 'dl-btn';
+            btn.textContent = `下载 ${label}`;
+            btn.onclick = () => {
+                const link = document.createElement('a');
+                link.download = `jeans_${label.replace(/[(),\s]/g, '_')}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.92);
+                link.click();
+            };
+
+            div.appendChild(titleH3);
+            div.appendChild(canvas);
+            div.appendChild(btn);
+            parentGrid.appendChild(div);
+        }
+
+        function createResultCard11FitCustomLeft(arrangement, label, accentColor, parentGrid, leftCenterlineRatio) {
+            const div = document.createElement('div');
+            div.className = 'result-item';
+
+            const titleH3 = document.createElement('h3');
+            titleH3.textContent = label;
+            titleH3.style.borderBottomColor = accentColor;
+
+            const canvas = document.createElement('canvas');
+            canvas.width = canvasSize;
+            canvas.height = canvasSize;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvasSize, canvasSize);
+
+            const halfWidth = (canvasSize - whiteLineWidth) / 2;
+            const leftImg = uploadedImages[arrangement[0]];
+            drawFitImage(ctx, leftImg, 0, 0, halfWidth, canvasSize, leftCenterlineRatio);
+
+            const rightImg = uploadedImages[arrangement[1]];
+            drawFitImage(ctx, rightImg, halfWidth + whiteLineWidth, 0, halfWidth, canvasSize, 0.5);
+
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = whiteLineWidth;
+            ctx.beginPath();
+            ctx.moveTo(halfWidth, 0);
+            ctx.lineTo(halfWidth, canvasSize);
+            ctx.stroke();
+
+            const btn = document.createElement('button');
+            btn.className = 'dl-btn';
+            btn.textContent = `下载 ${label}`;
+            btn.onclick = () => {
+                const link = document.createElement('a');
+                link.download = `jeans_${label.replace(/[(),\s]/g, '_')}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.92);
+                link.click();
+            };
+
+            div.appendChild(titleH3);
+            div.appendChild(canvas);
+            div.appendChild(btn);
+            parentGrid.appendChild(div);
+        }
+
+        function drawCoverImage(ctx, img, x, y, w, h) {
+            const iw = img.width, ih = img.height;
+            const r = Math.min(w / iw, h / ih);
+            let nw = iw * r, nh = ih * r;
+            let ar = 1;
+
+            if (nw < w) ar = w / nw;
+            if (Math.abs(ar - 1) < 1e-14 && nh < h) ar = h / nh;
+            nw *= ar;
+            nh *= ar;
+
+            let cw = iw / (nw / w);
+            let ch = ih / (nh / h);
+
+            let cx = (iw - cw) * 0.5;
+            let cy = (ih - ch) * 0.5;
+
+            if (cx < 0) cx = 0;
+            if (cy < 0) cy = 0;
+            if (cw > iw) cw = iw;
+            if (ch > ih) ch = ih;
+
+            ctx.drawImage(img, cx, cy, cw, ch, x, y, w, h);
+        }
+
+        function drawFitImage(ctx, img, x, y, w, h, centerlineRatio = 0.5) {
+            const iw = img.width, ih = img.height;
+
+            const scaleRatio = h / ih;
+            let drawWidth = iw * scaleRatio;
+            let drawHeight = h;
+
+            let srcX = 0;
+            let srcWidth = iw;
+
+            if (drawWidth > w) {
+                srcWidth = (w / scaleRatio);
+                srcX = (iw - srcWidth) * centerlineRatio;
+                drawWidth = w;
+            }
+
+            let dstX = x + (w - drawWidth) * 0.5;
+            let dstY = y + (h - drawHeight) * 0.5;
+
+            ctx.drawImage(img, srcX, 0, srcWidth, ih, dstX, dstY, drawWidth, drawHeight);
+        }
+    </script>
+</body>
+</html>

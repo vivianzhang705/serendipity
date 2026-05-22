@@ -1,0 +1,217 @@
+
+<style>
+.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem}
+.mc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.875rem 1rem}
+.ml{font-size:12px;color:var(--color-text-secondary);margin:0 0 4px}
+.mv{font-size:22px;font-weight:500;color:var(--color-text-primary);margin:0}
+.ms{font-size:11px;color:var(--color-text-tertiary);margin:2px 0 0}
+.st{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin:0 0 10px;letter-spacing:.04em;text-transform:uppercase}
+.cb{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:1rem}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem}
+.note{font-size:11px;color:var(--color-text-tertiary);margin:6px 0 0}
+.lg{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;font-size:11px;color:var(--color-text-secondary)}
+.lg span{display:flex;align-items:center;gap:4px}
+.ld{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px}
+.tbl th{background:var(--color-background-secondary);color:var(--color-text-secondary);padding:5px 8px;text-align:left;font-weight:500;border-bottom:.5px solid var(--color-border-tertiary)}
+.tbl td{padding:5px 8px;border-bottom:.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.qb{color:#d85a30;font-weight:500}.qc{color:#1d9e75;font-weight:500}.qd{color:#888780}
+.tab-row{display:flex;gap:0;margin-bottom:12px;border-bottom:.5px solid var(--color-border-tertiary)}
+.tab{padding:6px 14px;font-size:11px;cursor:pointer;color:var(--color-text-secondary);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.active{color:var(--color-text-primary);border-bottom-color:var(--color-text-primary);font-weight:500}
+</style>
+
+<div style="padding:.5rem 0 0">
+
+<div class="mg">
+  <div class="mc">
+    <p class="ml">有效SPU总数</p>
+    <p class="mv">702</p>
+    <p class="ms">24个品类</p>
+  </div>
+  <div class="mc">
+    <p class="ml">D类占比</p>
+    <p class="mv" style="color:var(--color-text-warning)">57.4%</p>
+    <p class="ms">403个低曝光低效率商品</p>
+  </div>
+  <div class="mc">
+    <p class="ml">B→C品类内增量GMV</p>
+    <p class="mv" style="color:var(--color-text-success)">$65,445</p>
+    <p class="ms">7个品类内部重分配测算</p>
+  </div>
+  <div class="mc">
+    <p class="ml">最大单品类机会</p>
+    <p class="mv">Denim Shorts</p>
+    <p class="ms">净增 $39,769</p>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="cb">
+    <p class="st">各品类ABCD商品数量分布</p>
+    <div class="lg">
+      <span><span class="ld" style="background:#3266ad"></span>A</span>
+      <span><span class="ld" style="background:#d85a30"></span>B</span>
+      <span><span class="ld" style="background:#1d9e75"></span>C</span>
+      <span><span class="ld" style="background:#c8c7c2"></span>D</span>
+    </div>
+    <div style="position:relative;width:100%;height:280px">
+      <canvas id="cntBar"></canvas>
+    </div>
+    <p class="note">按品类总曝光量降序排列</p>
+  </div>
+  <div class="cb">
+    <p class="st">各品类ABCD商品占比分布（%）</p>
+    <div class="lg">
+      <span><span class="ld" style="background:#3266ad"></span>A</span>
+      <span><span class="ld" style="background:#d85a30"></span>B</span>
+      <span><span class="ld" style="background:#1d9e75"></span>C</span>
+      <span><span class="ld" style="background:#c8c7c2"></span>D</span>
+    </div>
+    <div style="position:relative;width:100%;height:280px">
+      <canvas id="pctBar"></canvas>
+    </div>
+    <p class="note">柱高=100%，标签显示各象限占比（&lt;6%不显示）</p>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="cb">
+    <p class="st">B类 TOP10</p>
+    <div class="tab-row">
+      <div class="tab active" id="tab-ratio" onclick="switchTab('ratio')">按超配比</div>
+      <div class="tab" id="tab-excess" onclick="switchTab('excess')">按超额曝光量</div>
+    </div>
+    <div id="tbl-ratio">
+      <table class="tbl">
+        <tr><th>SPU</th><th>品类</th><th>超配比</th><th>效率倍数</th><th>GMV/曝光</th></tr>
+        <tr><td>264922</td><td>Jeans</td><td class="qb">19.52×</td><td class="qb">0.85</td><td>$0.171</td></tr>
+        <tr><td>271760</td><td>Jeans</td><td class="qb">5.14×</td><td class="qb">0.94</td><td>$0.190</td></tr>
+        <tr><td>214735</td><td>Two Piece Sets</td><td class="qb">3.99×</td><td class="qb">0.68</td><td>$0.008</td></tr>
+        <tr><td>271175</td><td>Jeans</td><td class="qb">3.36×</td><td class="qb">0.67</td><td>$0.135</td></tr>
+        <tr><td>272265</td><td>Denim Shorts</td><td class="qb">3.20×</td><td class="qb">0.59</td><td>$0.115</td></tr>
+        <tr><td>272225</td><td>Denim Shorts</td><td class="qb">2.85×</td><td class="qb">0.52</td><td>$0.101</td></tr>
+        <tr><td>272236</td><td>Denim Shorts</td><td class="qb">2.32×</td><td class="qb">0.65</td><td>$0.127</td></tr>
+        <tr><td>271243</td><td>Pants</td><td class="qb">2.30×</td><td class="qb">0.93</td><td>$0.451</td></tr>
+        <tr><td>272344</td><td>T-shirts</td><td class="qb">2.07×</td><td class="qb">0.26</td><td>$0.042</td></tr>
+        <tr><td>271709</td><td>Jeans</td><td class="qb">1.99×</td><td class="qb">1.00</td><td>$0.201</td></tr>
+      </table>
+    </div>
+    <div id="tbl-excess" style="display:none">
+      <table class="tbl">
+        <tr><th>SPU</th><th>品类</th><th>超额曝光</th><th>超配比</th><th>效率倍数</th></tr>
+        <tr><td>264922</td><td>Jeans</td><td class="qb">534,005</td><td>19.52×</td><td class="qb">0.85</td></tr>
+        <tr><td>271760</td><td>Jeans</td><td class="qb">119,414</td><td>5.14×</td><td class="qb">0.94</td></tr>
+        <tr><td>271175</td><td>Jeans</td><td class="qb">68,042</td><td>3.36×</td><td class="qb">0.67</td></tr>
+        <tr><td>272265</td><td>Denim Shorts</td><td class="qb">42,572</td><td>3.20×</td><td class="qb">0.59</td></tr>
+        <tr><td>272225</td><td>Denim Shorts</td><td class="qb">35,731</td><td>2.85×</td><td class="qb">0.52</td></tr>
+        <tr><td>271709</td><td>Jeans</td><td class="qb">28,604</td><td>1.99×</td><td class="qb">1.00</td></tr>
+        <tr><td>271373</td><td>Jeans</td><td class="qb">28,592</td><td>1.99×</td><td class="qb">0.88</td></tr>
+        <tr><td>272392</td><td>Jeans</td><td class="qb">27,642</td><td>1.96×</td><td class="qb">0.82</td></tr>
+        <tr><td>272236</td><td>Denim Shorts</td><td class="qb">25,458</td><td>2.32×</td><td class="qb">0.65</td></tr>
+        <tr><td>272365</td><td>Jeans</td><td class="qb">24,762</td><td>1.86×</td><td class="qb">0.90</td></tr>
+      </table>
+    </div>
+    <p class="note" id="b-note">超配比：实际曝光占比 / SPU公平份额，反映相对失衡程度</p>
+  </div>
+
+  <div class="cb">
+    <p class="st">C类TOP10（按效率倍数）</p>
+    <table class="tbl">
+      <tr><th>SPU</th><th>品类</th><th>效率倍数</th><th>超配比</th><th>GMV/曝光</th></tr>
+      <tr><td>241239</td><td>Two Piece Sets</td><td class="qc">9.85×</td><td>0.43×</td><td>$0.111</td></tr>
+      <tr><td>269978</td><td>Sports & AW</td><td class="qc">4.72×</td><td>0.43×</td><td>$0.214</td></tr>
+      <tr><td>235063</td><td>Two Piece Sets</td><td class="qc">4.64×</td><td>0.59×</td><td>$0.052</td></tr>
+      <tr><td>272069</td><td>Dresses</td><td class="qc">3.08×</td><td>0.65×</td><td>$0.168</td></tr>
+      <tr><td>273233</td><td>Denim Shorts</td><td class="qc">2.98×</td><td>0.02×</td><td>$0.583</td></tr>
+      <tr><td>242365</td><td>Two Piece Sets</td><td class="qc">2.75×</td><td>0.37×</td><td>$0.031</td></tr>
+      <tr><td>273243</td><td>Jeans</td><td class="qc">2.56×</td><td>0.03×</td><td>$0.516</td></tr>
+      <tr><td>273180</td><td>Denim Shorts</td><td class="qc">2.45×</td><td>0.09×</td><td>$0.480</td></tr>
+      <tr><td>273237</td><td>Denim Shorts</td><td class="qc">2.35×</td><td>0.05×</td><td>$0.460</td></tr>
+      <tr><td>260377</td><td>Belts</td><td class="qc">2.25×</td><td>0.80×</td><td>$0.292</td></tr>
+    </table>
+    <p class="note">效率倍数 = SPU GMV/曝光 ÷ 品类基准效率，值越高说明被压制越可惜</p>
+  </div>
+</div>
+
+<div class="cb">
+  <p class="st">结构性异常</p>
+  <table class="tbl">
+    <tr><th>品类/商品</th><th>异常</th><th>数据</th><th>含义与建议</th></tr>
+    <tr><td>Two Piece Sets</td><td class="qb">B类占51.4%</td><td>18/35个商品是B类，品类基准效率$0.011</td><td>品类整体效率极低，内部B→C转移意义有限，应在品类层减少总曝光</td></tr>
+    <tr><td>Jeans 264922</td><td class="qb">超配比19.52×</td><td>曝光562,839，吃掉品类8.2%，效率倍数仅0.85</td><td>单商品极度集中，排查是否人为置顶或算法偏差，优先审视</td></tr>
+    <tr><td>Shorts</td><td class="qd">C类=0个</td><td>7个B类，0个C类，15个D类</td><td>B类无处转移，需从D类中寻找潜力商品补充测试曝光</td></tr>
+    <tr><td>Denim Shorts 273233</td><td class="qc">超配比0.02×</td><td>效率2.98×基准，GMV/曝光$0.583，却几乎零曝光</td><td>最被压制的高效商品，立即提升曝光优先级</td></tr>
+    <tr><td>Pants 271243</td><td class="qb">B类但效率0.93×</td><td>超配比2.30×，效率仅差基准7%</td><td>最接近A类的B类商品，少量效率提升即可完成象限迁移</td></tr>
+  </table>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const gc = isDark?'rgba(255,255,255,0.07)':'rgba(0,0,0,0.06)';
+const tc = isDark?'#a8a7a3':'#73726c';
+
+const cats=['Jeans','Denim Shorts','Pants','T-shirts','Shorts','Tops','Shirts','Dresses','Two Piece Sets','Sports & AW'];
+const aC=[32,11,15,18,3,8,6,7,4,2];
+const bC=[28,23,7,16,7,12,8,8,18,3];
+const cC=[8,7,3,10,0,2,3,4,3,1];
+const dC=[169,46,64,42,15,20,8,15,10,1];
+const aP=[13.5,12.6,16.9,20.9,12.0,19.0,24.0,20.6,11.4,28.6];
+const bP=[11.8,26.4,7.9,18.6,28.0,28.6,32.0,23.5,51.4,42.9];
+const cP=[3.4,8.0,3.4,11.6,0.0,4.8,12.0,11.8,8.6,14.3];
+const dP=[71.3,52.9,71.9,48.8,60.0,47.6,32.0,44.1,28.6,14.3];
+
+new Chart(document.getElementById('cntBar'),{
+  type:'bar',
+  data:{labels:cats,datasets:[
+    {label:'A',data:aC,backgroundColor:'#3266adcc',stack:'x'},
+    {label:'B',data:bC,backgroundColor:'#d85a30cc',stack:'x'},
+    {label:'C',data:cC,backgroundColor:'#1d9e75cc',stack:'x'},
+    {label:'D',data:dC,backgroundColor:'#c8c7c299',stack:'x'},
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{ticks:{color:tc,font:{size:9}},grid:{display:false}},y:{stacked:true,ticks:{color:tc,font:{size:9}},grid:{color:gc}}}}
+});
+
+new Chart(document.getElementById('pctBar'),{
+  type:'bar',
+  data:{labels:cats,datasets:[
+    {label:'A',data:aP,backgroundColor:'#3266adcc',stack:'x'},
+    {label:'B',data:bP,backgroundColor:'#d85a30cc',stack:'x'},
+    {label:'C',data:cP,backgroundColor:'#1d9e75cc',stack:'x'},
+    {label:'D',data:dP,backgroundColor:'#c8c7c299',stack:'x'},
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{ticks:{color:tc,font:{size:9}},grid:{display:false}},y:{stacked:true,min:0,max:100,ticks:{color:tc,font:{size:9},callback:v=>v+'%'},grid:{color:gc}}}},
+  plugins:[{
+    id:'pctLabels',
+    afterDatasetsDraw(chart){
+      const {ctx}=chart;
+      chart.data.datasets.forEach((ds,di)=>{
+        chart.getDatasetMeta(di).data.forEach((bar,i)=>{
+          const val=ds.data[i];
+          if(val<6) return;
+          const {x:bx,y:by}=bar.getCenterPoint();
+          ctx.save();ctx.fillStyle='#fff';ctx.font='500 9px sans-serif';
+          ctx.textAlign='center';ctx.textBaseline='middle';
+          ctx.fillText(val+'%',bx,by);ctx.restore();
+        });
+      });
+    }
+  }]
+});
+
+function switchTab(type){
+  document.getElementById('tbl-ratio').style.display=type==='ratio'?'block':'none';
+  document.getElementById('tbl-excess').style.display=type==='excess'?'block':'none';
+  document.getElementById('tab-ratio').className='tab'+(type==='ratio'?' active':'');
+  document.getElementById('tab-excess').className='tab'+(type==='excess'?' active':'');
+  document.getElementById('b-note').textContent=type==='ratio'
+    ?'超配比：实际曝光占比 / SPU公平份额，反映相对失衡程度'
+    :'超额曝光：实际曝光量 - 公平份额对应曝光量，反映绝对资源浪费规模';
+}
+</script>

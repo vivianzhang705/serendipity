@@ -1,0 +1,240 @@
+
+<h2 class="sr-only">品类曝光效率完整分析（新基准）：四象限、效率排名、GMV增量</h2>
+<style>
+.mg { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:1.25rem; }
+.mc { background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:.875rem 1rem; }
+.ml { font-size:12px; color:var(--color-text-secondary); margin:0 0 4px; }
+.mv { font-size:22px; font-weight:500; color:var(--color-text-primary); margin:0; }
+.ms { font-size:11px; color:var(--color-text-tertiary); margin:2px 0 0; }
+.st { font-size:12px; font-weight:500; color:var(--color-text-secondary); margin:0 0 10px; letter-spacing:.04em; text-transform:uppercase; }
+.cb { background:var(--color-background-primary); border:.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:1rem 1.25rem; margin-bottom:1rem; }
+.lg { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:10px; font-size:11px; color:var(--color-text-secondary); }
+.lg span { display:flex; align-items:center; gap:4px; }
+.ld { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:1rem; }
+.note { font-size:11px; color:var(--color-text-tertiary); margin:6px 0 0; }
+.transfer-row { display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center; margin-top:1rem; }
+.tbox { border-radius:var(--border-radius-md); padding:.75rem 1rem; text-align:center; }
+.tbox-label { font-size:11px; margin:0 0 4px; font-weight:500; }
+.tbox-val { font-size:18px; font-weight:500; margin:0; }
+.tbox-sub { font-size:10px; margin:3px 0 0; }
+.arrow { font-size:20px; color:var(--color-text-tertiary); text-align:center; }
+</style>
+
+<div style="padding:.5rem 0 0;">
+
+<div class="mg">
+  <div class="mc">
+    <p class="ml">净GMV增量（B→C）</p>
+    <p class="mv" style="color:var(--color-text-success);">$87,235</p>
+    <p class="ms">仅重新分配曝光，无需新流量</p>
+  </div>
+  <div class="mc">
+    <p class="ml">可转移曝光量</p>
+    <p class="mv">370K</p>
+    <p class="ms">B类超额的11.8%填满C类缺口</p>
+  </div>
+  <div class="mc">
+    <p class="ml">C类效率 vs B类效率</p>
+    <p class="mv">2.1×</p>
+    <p class="ms">Pants $0.49 vs Jeans $0.21</p>
+  </div>
+  <div class="mc">
+    <p class="ml">Jeans超配比</p>
+    <p class="mv" style="color:var(--color-text-warning);">1.65×</p>
+    <p class="ms">拿走55.5%曝光，公平份额26.8%</p>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="cb">
+    <p class="st">品类GMV/曝光效率排名</p>
+    <div class="lg">
+      <span><span class="ld" style="background:#3266ad;"></span>A</span>
+      <span><span class="ld" style="background:#d85a30;"></span>B</span>
+      <span><span class="ld" style="background:#1d9e75;"></span>C</span>
+      <span><span class="ld" style="background:#c8c7c2;"></span>D</span>
+    </div>
+    <div style="position:relative;width:100%;height:380px;">
+      <canvas id="effBar" role="img" aria-label="品类GMV/曝光效率水平条形图，Shorts最高，Jumpsuits最低，虚线为全站均值">Shorts和Pants效率最高，Two Piece Sets和Jumpsuits最低。</canvas>
+    </div>
+    <p class="note">虚线 = 全站均值 $0.2345</p>
+  </div>
+
+  <div class="cb">
+    <p class="st">曝光超配比 vs 效率（气泡=SPU数）</p>
+    <div class="lg">
+      <span><span class="ld" style="background:#3266ad;"></span>A 超配+高效</span>
+      <span><span class="ld" style="background:#d85a30;"></span>B 超配+低效</span>
+      <span><span class="ld" style="background:#1d9e75;"></span>C 欠配+高效</span>
+      <span><span class="ld" style="background:#c8c7c2;"></span>D 欠配+低效</span>
+    </div>
+    <div style="position:relative;width:100%;height:380px;">
+      <canvas id="scatter2" role="img" aria-label="品类四象限散点图，X轴超配比，Y轴GMV/曝光">Jeans和Denim Shorts在B象限，Pants在C象限，Shorts在A象限。</canvas>
+    </div>
+    <p class="note">垂直虚线=公平份额基准(1×)｜水平虚线=全站均值$0.2345</p>
+  </div>
+</div>
+
+<div class="cb">
+  <p class="st">B类→C类 曝光转移方案</p>
+  <div class="transfer-row">
+    <div>
+      <p style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin:0 0 8px;">释放方（B类超额曝光）</p>
+      <div class="tbox" style="background:rgba(216,90,48,0.08);border:.5px solid rgba(216,90,48,0.3);margin-bottom:8px;">
+        <p class="tbox-label" style="color:#d85a30;">Jeans</p>
+        <p class="tbox-val">-286K 曝光</p>
+        <p class="tbox-sub" style="color:var(--color-text-tertiary);">损失GMV $58,737</p>
+      </div>
+      <div class="tbox" style="background:rgba(216,90,48,0.08);border:.5px solid rgba(216,90,48,0.3);">
+        <p class="tbox-label" style="color:#d85a30;">Denim Shorts</p>
+        <p class="tbox-val">-84K 曝光</p>
+        <p class="tbox-sub" style="color:var(--color-text-tertiary);">损失GMV $17,119</p>
+      </div>
+    </div>
+    <div class="arrow">→</div>
+    <div>
+      <p style="font-size:11px;font-weight:500;color:var(--color-text-secondary);margin:0 0 8px;">受益方（C类曝光缺口）</p>
+      <div class="tbox" style="background:rgba(29,158,117,0.08);border:.5px solid rgba(29,158,117,0.3);margin-bottom:8px;">
+        <p class="tbox-label" style="color:#1d9e75;">Pants</p>
+        <p class="tbox-val">+262K 曝光</p>
+        <p class="tbox-sub" style="color:var(--color-text-tertiary);">增加GMV $127,838</p>
+      </div>
+      <div class="tbox" style="background:rgba(29,158,117,0.08);border:.5px solid rgba(29,158,117,0.3);margin-bottom:8px;">
+        <p class="tbox-label" style="color:#1d9e75;">Active Shorts</p>
+        <p class="tbox-val">+71K 曝光</p>
+        <p class="tbox-sub" style="color:var(--color-text-tertiary);">增加GMV $24,637</p>
+      </div>
+      <div class="tbox" style="background:rgba(29,158,117,0.08);border:.5px solid rgba(29,158,117,0.3);">
+        <p class="tbox-label" style="color:#1d9e75;">Lingeries</p>
+        <p class="tbox-val">+37K 曝光</p>
+        <p class="tbox-sub" style="color:var(--color-text-tertiary);">增加GMV $10,816</p>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:1rem;padding:.875rem 1rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-size:12px;color:var(--color-text-secondary);">转移总曝光 370,387｜B类损失 $75,856｜C类增加 $163,291</span>
+    <span style="font-size:16px;font-weight:500;color:var(--color-text-success);">净增量 +$87,235</span>
+  </div>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const gc = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)';
+const rc = isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)';
+const tc = isDark ? '#a8a7a3' : '#73726c';
+const qc = { A:'#3266ad', B:'#d85a30', C:'#1d9e75', D:'#c8c7c2' };
+const siteAvg = 0.2345;
+
+const effData = [
+  ['Jumpsuits',0.0073,'D'],['Two Piece Sets',0.0117,'D'],['Hoodies',0.0169,'D'],
+  ['Spec. Accessories',0.0268,'D'],['Rings',0.0306,'D'],['Sports & Activewear',0.0411,'D'],
+  ['Hair Accessories',0.0544,'D'],['Earrings',0.0555,'D'],['Dresses',0.0569,'D'],
+  ['Coats & Jackets',0.0584,'D'],['Body Jewelry',0.0713,'D'],['Shirts & Blouses',0.0866,'D'],
+  ['Necklaces',0.0963,'D'],['Sleep & Lounge',0.1164,'D'],['Belts',0.1320,'D'],
+  ['Tops',0.1581,'D'],['T-shirts',0.1581,'D'],['Denim Shorts',0.2029,'B'],
+  ['Jeans',0.2055,'B'],['Bracelets',0.2214,'D'],['Lingeries',0.2922,'C'],
+  ['Active Shorts',0.3450,'C'],['Pants',0.4880,'C'],['Shorts',0.5358,'A'],
+];
+
+new Chart(document.getElementById('effBar'), {
+  type: 'bar',
+  data: {
+    labels: effData.map(d => d[0]),
+    datasets: [{
+      data: effData.map(d => d[1]),
+      backgroundColor: effData.map(d => qc[d[2]] + 'cc'),
+      borderColor: effData.map(d => qc[d[2]]),
+      borderWidth: 0.5,
+      borderRadius: 2,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false },
+      annotation: { annotations: { vl: { type:'line', xMin:siteAvg, xMax:siteAvg, borderColor:rc, borderWidth:1, borderDash:[5,4] } } }
+    },
+    scales: {
+      x: { ticks:{ color:tc, font:{size:9}, callback: v=>'$'+v.toFixed(2) }, grid:{ color:gc } },
+      y: { ticks:{ color:tc, font:{size:9} }, grid:{ display:false } }
+    }
+  },
+  plugins: [{
+    id:'vline',
+    afterDraw(chart) {
+      const {ctx, scales:{x,y}} = chart;
+      const px = x.getPixelForValue(siteAvg);
+      ctx.save(); ctx.strokeStyle=rc; ctx.lineWidth=1; ctx.setLineDash([5,4]);
+      ctx.beginPath(); ctx.moveTo(px, chart.chartArea.top); ctx.lineTo(px, chart.chartArea.bottom); ctx.stroke();
+      ctx.fillStyle=tc; ctx.font='9px sans-serif'; ctx.fillText('全站均值', px+3, chart.chartArea.top+10);
+      ctx.restore();
+    }
+  }]
+});
+
+const scatCats = [
+  {label:'Jeans', x:1.65, y:0.2055, r:16, q:'B'},
+  {label:'Denim Shorts', x:1.08, y:0.2029, r:11, q:'B'},
+  {label:'Pants', x:0.85, y:0.4880, r:11, q:'C'},
+  {label:'Shorts', x:1.03, y:0.5358, r:7, q:'A'},
+  {label:'T-shirts', x:0.60, y:0.1581, r:10, q:'D'},
+  {label:'Tops', x:0.59, y:0.1581, r:8, q:'D'},
+  {label:'Shirts', x:0.55, y:0.0866, r:6, q:'D'},
+  {label:'Dresses', x:0.28, y:0.0569, r:7, q:'D'},
+  {label:'Two Piece Sets', x:0.21, y:0.0117, r:7, q:'D'},
+  {label:'Active Shorts', x:0.07, y:0.3450, r:4, q:'C'},
+  {label:'Lingeries', x:0.04, y:0.2922, r:3, q:'C'},
+  {label:'Bracelets', x:0.21, y:0.2214, r:3, q:'D'},
+  {label:'Sports', x:0.31, y:0.0411, r:4, q:'D'},
+];
+
+const grouped = {A:[],B:[],C:[],D:[]};
+scatCats.forEach(d => grouped[d.q].push({x:d.x,y:d.y,r:d.r,label:d.label}));
+
+new Chart(document.getElementById('scatter2'), {
+  type: 'bubble',
+  data: {
+    datasets: Object.entries(grouped).map(([q,pts]) => ({
+      label: q, data: pts,
+      backgroundColor: qc[q]+'bb', borderColor: qc[q], borderWidth:1.5
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display:false },
+      tooltip: { callbacks: { label: ctx => `${ctx.raw.label}: 超配比${ctx.raw.x.toFixed(2)}×, GMV/曝光$${ctx.raw.y.toFixed(3)}` } }
+    },
+    scales: {
+      x: { min:0, max:2.0, ticks:{color:tc,font:{size:9},callback:v=>v.toFixed(1)+'×'}, grid:{color:gc},
+           title:{display:true,text:'曝光超配比',color:tc,font:{size:10}} },
+      y: { min:0, max:0.65, ticks:{color:tc,font:{size:9},callback:v=>'$'+v.toFixed(2)}, grid:{color:gc},
+           title:{display:true,text:'GMV/曝光',color:tc,font:{size:10}} }
+    }
+  },
+  plugins: [{
+    id:'rl',
+    afterDraw(chart) {
+      const {ctx,scales:{x,y}} = chart;
+      ctx.save(); ctx.strokeStyle=rc; ctx.lineWidth=1; ctx.setLineDash([5,4]);
+      const x1=x.getPixelForValue(1.0);
+      ctx.beginPath(); ctx.moveTo(x1,chart.chartArea.top); ctx.lineTo(x1,chart.chartArea.bottom); ctx.stroke();
+      const y1=y.getPixelForValue(siteAvg);
+      ctx.beginPath(); ctx.moveTo(chart.chartArea.left,y1); ctx.lineTo(chart.chartArea.right,y1); ctx.stroke();
+      ctx.fillStyle=tc; ctx.font='9px sans-serif';
+      ctx.fillText('公平份额基准',x1+3,chart.chartArea.top+10);
+      ctx.fillText('全站均值',chart.chartArea.left+4,y1-4);
+      ctx.setLineDash([]);
+      [{label:'Jeans',x:1.65,y:0.2055,r:16},{label:'Pants',x:0.85,y:0.4880,r:11},{label:'Shorts',x:1.03,y:0.5358,r:7}].forEach(d=>{
+        ctx.fillStyle=isDark?'#e0ddd6':'#2c2c2a'; ctx.font='500 9px sans-serif';
+        ctx.fillText(d.label, x.getPixelForValue(d.x)+d.r+3, y.getPixelForValue(d.y)+3);
+      });
+      ctx.restore();
+    }
+  }]
+});
+</script>

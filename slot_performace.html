@@ -1,0 +1,276 @@
+
+<style>
+.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem}
+.mc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.875rem 1rem}
+.ml{font-size:12px;color:var(--color-text-secondary);margin:0 0 4px}
+.mv{font-size:20px;font-weight:500;color:var(--color-text-primary);margin:0}
+.ms{font-size:11px;color:var(--color-text-tertiary);margin:2px 0 0}
+.st{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin:0 0 10px;letter-spacing:.04em;text-transform:uppercase}
+.cb{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:1rem}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem}
+.note{font-size:11px;color:var(--color-text-tertiary);margin:6px 0 0}
+.lg{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;font-size:11px;color:var(--color-text-secondary)}
+.lg span{display:flex;align-items:center;gap:4px}
+.ld{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.tbl{width:100%;border-collapse:collapse;font-size:11px}
+.tbl th{background:var(--color-background-secondary);color:var(--color-text-secondary);padding:6px 8px;text-align:right;font-weight:500;border-bottom:.5px solid var(--color-border-tertiary);white-space:nowrap}
+.tbl th:first-child{text-align:left}
+.tbl td{padding:5px 8px;border-bottom:.5px solid var(--color-border-tertiary);color:var(--color-text-primary);text-align:right;white-space:nowrap}
+.tbl td:first-child{text-align:left;font-weight:500}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--color-background-secondary)}
+.tag{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:500}
+.tag-r{background:rgba(216,90,48,0.12);color:#d85a30}
+.tag-g{background:rgba(29,158,117,0.12);color:#1d9e75}
+.tag-y{background:rgba(234,179,8,0.12);color:#b45309}
+.tag-b{background:rgba(50,102,173,0.12);color:#3266ad}
+.tag-gray{background:var(--color-background-secondary);color:var(--color-text-tertiary)}
+.ins{border-left:3px solid;padding:.6rem .875rem;border-radius:0 var(--border-radius-sm) var(--border-radius-sm) 0;margin-bottom:8px;font-size:12px}
+.ins-r{border-color:#d85a30;background:rgba(216,90,48,0.05)}
+.ins-g{border-color:#1d9e75;background:rgba(29,158,117,0.05)}
+.ins-y{border-color:#b45309;background:rgba(234,179,8,0.05)}
+.bar-bg{background:var(--color-background-secondary);border-radius:2px;height:6px;width:100%;min-width:60px}
+.bar-fill{height:6px;border-radius:2px}
+</style>
+
+<div style="padding:.5rem 0 0">
+
+<!-- 总览数据表 -->
+<div class="cb">
+  <p class="st">各坑位总览数据（2026-05-18）</p>
+  <table class="tbl">
+    <tr>
+      <th style="text-align:left">坑位</th>
+      <th>总曝光量</th>
+      <th>曝光占比</th>
+      <th>覆盖率</th>
+      <th>人均深度</th>
+      <th>总点击</th>
+      <th>卡片CTR</th>
+      <th>版块触达率</th>
+      <th>人均点击</th>
+    </tr>
+    <tr>
+      <td>product_feed</td>
+      <td>1,660,331</td>
+      <td><div class="bar-bg"><div class="bar-fill" style="width:72.2%;background:#3266ad"></div></div><span style="font-size:10px;color:var(--color-text-secondary)">72.2%</span></td>
+      <td>55.04%</td><td>27.18</td>
+      <td>54,485</td>
+      <td><span class="tag tag-g">3.28%</span></td>
+      <td><span class="tag tag-g">47.91%</span></td>
+      <td>0.89</td>
+    </tr>
+    <tr>
+      <td>Product:YouMayAlsoLike</td>
+      <td>527,350</td>
+      <td><div class="bar-bg"><div class="bar-fill" style="width:22.9%;background:#5b8dd9"></div></div><span style="font-size:10px;color:var(--color-text-secondary)">22.9%</span></td>
+      <td>16.15%</td><td>29.41</td>
+      <td>11,681</td>
+      <td><span class="tag tag-y">2.22%</span></td>
+      <td><span class="tag tag-y">33.98%</span></td>
+      <td>0.65</td>
+    </tr>
+    <tr>
+      <td>Product:OftenBoughtWith</td>
+      <td>24,091</td>
+      <td><div class="bar-bg"><div class="bar-fill" style="width:1.0%;background:#888780"></div></div><span style="font-size:10px;color:var(--color-text-secondary)">1.0%</span></td>
+      <td>1.94%</td><td>11.21</td>
+      <td>317</td>
+      <td><span class="tag tag-y">1.32%</span></td>
+      <td><span class="tag tag-y">12.14%</span></td>
+      <td>0.15</td>
+    </tr>
+    <tr>
+      <td>OrderDetail:YouMayAlsoLike</td>
+      <td>21,125</td>
+      <td><div class="bar-bg"><div class="bar-fill" style="width:0.9%;background:#888780"></div></div><span style="font-size:10px;color:var(--color-text-secondary)">0.9%</span></td>
+      <td>1.92%</td><td>9.90</td>
+      <td>319</td>
+      <td><span class="tag tag-y">1.51%</span></td>
+      <td><span class="tag tag-y">12.09%</span></td>
+      <td>0.15</td>
+    </tr>
+    <tr>
+      <td>search_result</td>
+      <td>21,018</td>
+      <td><div class="bar-bg"><div class="bar-fill" style="width:0.9%;background:#888780"></div></div><span style="font-size:10px;color:var(--color-text-secondary)">0.9%</span></td>
+      <td>0.33%</td><td style="color:#d85a30;font-weight:500">56.96</td>
+      <td>—</td>
+      <td><span class="tag tag-gray">无埋点</span></td>
+      <td><span class="tag tag-gray">无埋点</span></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Product:TopPicksForYou</td>
+      <td>19,752</td>
+      <td><div class="bar-bg"><div class="bar-fill" style="width:0.9%;background:#888780"></div></div><span style="font-size:10px;color:var(--color-text-secondary)">0.9%</span></td>
+      <td>1.98%</td><td>8.97</td>
+      <td>218</td>
+      <td><span class="tag tag-r">1.10%</span></td>
+      <td><span class="tag tag-r">8.31%</span></td>
+      <td>0.10</td>
+    </tr>
+    <tr>
+      <td>PaymentSuccess $0-$10</td>
+      <td>16,432</td>
+      <td><div class="bar-bg"><div class="bar-fill" style="width:0.7%;background:#888780"></div></div><span style="font-size:10px;color:var(--color-text-secondary)">0.7%</span></td>
+      <td>1.48%</td><td>10.02</td>
+      <td>127</td>
+      <td><span class="tag tag-r">0.77%</span></td>
+      <td><span class="tag tag-r">7.07%</span></td>
+      <td>0.08</td>
+    </tr>
+    <tr>
+      <td>cart_ymal</td>
+      <td>8,659</td>
+      <td><div class="bar-bg"><div class="bar-fill" style="width:0.4%;background:#888780"></div></div><span style="font-size:10px;color:var(--color-text-secondary)">0.4%</span></td>
+      <td>6.02%</td><td style="color:#d85a30;font-weight:500">1.30</td>
+      <td>—</td>
+      <td><span class="tag tag-gray">无埋点</span></td>
+      <td><span class="tag tag-gray">无埋点</span></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>PaymentSuccess $10-$30</td>
+      <td>789</td>
+      <td><div class="bar-bg"><div class="bar-fill" style="width:0.03%;background:#888780"></div></div><span style="font-size:10px;color:var(--color-text-secondary)">0.03%</span></td>
+      <td>0.03%</td><td>28.18</td>
+      <td>8</td>
+      <td><span class="tag tag-y">1.01%</span></td>
+      <td><span class="tag tag-g">25.00%</span></td>
+      <td>0.29</td>
+    </tr>
+    <tr>
+      <td>PaymentSuccess $30-$50</td>
+      <td>624</td>
+      <td><div class="bar-bg"><div class="bar-fill" style="width:0.01%;background:#888780"></div></div><span style="font-size:10px;color:var(--color-text-secondary)">0.01%</span></td>
+      <td>0.01%</td><td>41.60</td>
+      <td>9</td>
+      <td><span class="tag tag-y">1.44%</span></td>
+      <td><span class="tag tag-g">53.33%</span></td>
+      <td>0.60</td>
+    </tr>
+  </table>
+  <p class="note">卡片CTR = 总点击 / 总曝光 ｜ 版块触达率 = 点击UV / 曝光UV ｜ 颜色：<span class="tag tag-g" style="margin:0 3px">绿=优</span><span class="tag tag-y" style="margin:0 3px">黄=中</span><span class="tag tag-r" style="margin:0 3px">红=弱</span></p>
+</div>
+
+<div class="row2">
+  <div class="cb">
+    <p class="st">覆盖率 vs 浏览深度（气泡=曝光量）</p>
+    <div style="position:relative;width:100%;height:280px">
+      <canvas id="scatter"></canvas>
+    </div>
+    <p class="note">X轴：版块覆盖率 ｜ Y轴：人均浏览商品数</p>
+  </div>
+  <div class="cb">
+    <p class="st">版块触达率 vs 人均点击数（有点击埋点坑位）</p>
+    <div style="position:relative;width:100%;height:280px">
+      <canvas id="ctrBar"></canvas>
+    </div>
+    <p class="note">触达率=有点击行为的UV/版块UV ｜ 折线=人均点击数</p>
+  </div>
+</div>
+
+<div class="cb">
+  <p class="st">曝光资源分布</p>
+  <div style="position:relative;width:100%;height:52px;margin-bottom:12px">
+    <canvas id="concentrationBar"></canvas>
+  </div>
+  <p class="note" style="margin-bottom:12px">product_feed(72.2%) + YouMayAlsoLike(22.9%) = 95.1%，其余8个坑位共享4.9%</p>
+  <div class="ins ins-r">
+    <strong>cart_ymal严重浪费</strong>：6,682个高意图用户到达购物车，但人均只看了1.3个商品，坑位深度几乎等于没有。深度提升到10，潜在增量曝光约57,937次。
+  </div>
+  <div class="ins ins-y">
+    <strong>search_result双重盲区</strong>：369个用户平均浏览57个商品（全站最深），但覆盖率仅0.33%，且无任何点击埋点。搜索入口不足 + 数据缺失，是最需要优先补齐的坑位。
+  </div>
+  <div class="ins ins-g">
+    <strong>PaymentSuccess高价段潜力</strong>：$30-50段触达率53%、$10-30段25%，远高于$0-10段的7%。高客单价用户付款后接受度极高，但覆盖用户极少（合计43人），扩大这个坑位的覆盖是低成本高回报的方向。
+  </div>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const isDark=matchMedia('(prefers-color-scheme: dark)').matches;
+const gc=isDark?'rgba(255,255,255,0.07)':'rgba(0,0,0,0.06)';
+const tc=isDark?'#a8a7a3':'#73726c';
+
+const scatData=[
+  {x:55.04,y:27.18,r:20,label:'product_feed',c:'#3266ad'},
+  {x:16.15,y:29.41,r:13,label:'YouMayAlsoLike',c:'#3266ad'},
+  {x:1.94,y:11.21,r:5,label:'OftenBoughtWith',c:'#1d9e75'},
+  {x:1.92,y:9.90,r:5,label:'OrderDetail:YMAL',c:'#1d9e75'},
+  {x:0.33,y:56.96,r:5,label:'search_result',c:'#d85a30'},
+  {x:1.98,y:8.97,r:5,label:'TopPicksForYou',c:'#888780'},
+  {x:1.48,y:10.02,r:4,label:'PS $0-10',c:'#888780'},
+  {x:6.02,y:1.30,r:4,label:'cart_ymal',c:'#d85a30'},
+  {x:0.03,y:28.18,r:3,label:'PS $10-30',c:'#1d9e75'},
+  {x:0.01,y:41.60,r:3,label:'PS $30-50',c:'#1d9e75'},
+];
+
+new Chart(document.getElementById('scatter'),{
+  type:'bubble',
+  data:{datasets:[{
+    data:scatData.map(d=>({x:d.x,y:d.y,r:d.r,label:d.label})),
+    backgroundColor:scatData.map(d=>d.c+'bb'),
+    borderColor:scatData.map(d=>d.c),
+    borderWidth:1
+  }]},
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.raw.label}: 覆盖率${ctx.raw.x}%, 深度${ctx.raw.y}`}}},
+    scales:{
+      x:{ticks:{color:tc,font:{size:9},callback:v=>v+'%'},grid:{color:gc},title:{display:true,text:'版块覆盖率(%)',color:tc,font:{size:10}}},
+      y:{ticks:{color:tc,font:{size:9}},grid:{color:gc},title:{display:true,text:'人均浏览商品数',color:tc,font:{size:10}}}
+    }
+  },
+  plugins:[{id:'lbl',afterDraw(chart){
+    const {ctx,scales:{x,y}}=chart;
+    scatData.forEach(d=>{
+      if(!['product_feed','YouMayAlsoLike','search_result','cart_ymal'].includes(d.label)) return;
+      ctx.save();ctx.fillStyle=isDark?'#e0ddd6':'#2c2c2a';ctx.font='9px sans-serif';
+      ctx.fillText(d.label,x.getPixelForValue(d.x)+d.r+3,y.getPixelForValue(d.y)+3);
+      ctx.restore();
+    });
+  }}]
+});
+
+const ctrSlots=['product_feed','YouMayAlsoLike','OftenBoughtWith','OrderDetail:YMAL','TopPicksForYou','PS $0-$10','PS $10-$30','PS $30-$50'];
+const engRate=[47.91,33.98,12.14,12.09,8.31,7.07,25.00,53.33];
+const cpuv=[0.89,0.65,0.15,0.15,0.10,0.08,0.29,0.60];
+
+new Chart(document.getElementById('ctrBar'),{
+  type:'bar',
+  data:{labels:ctrSlots,datasets:[
+    {label:'触达率(%)',data:engRate,backgroundColor:'#3266adcc',yAxisID:'y1'},
+    {label:'人均点击',data:cpuv,type:'line',backgroundColor:'#1d9e75',borderColor:'#1d9e75',yAxisID:'y2',pointRadius:3,tension:0.3,fill:false},
+  ]},
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{ticks:{color:tc,font:{size:8}},grid:{display:false}},
+      y1:{type:'linear',position:'left',ticks:{color:tc,font:{size:9},callback:v=>v+'%'},grid:{color:gc}},
+      y2:{type:'linear',position:'right',ticks:{color:tc,font:{size:9}},grid:{display:false}}
+    }
+  }
+});
+
+new Chart(document.getElementById('concentrationBar'),{
+  type:'bar',
+  data:{labels:['曝光分布'],datasets:[
+    {label:'product_feed 72.2%',data:[72.2],backgroundColor:'#3266adcc'},
+    {label:'YouMayAlsoLike 22.9%',data:[22.9],backgroundColor:'#5b8dd9cc'},
+    {label:'其余8个坑位 4.9%',data:[4.9],backgroundColor:'#c8c7c2cc'},
+  ]},
+  options:{
+    indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:true,position:'right',labels:{font:{size:10},color:tc,boxWidth:10}}},
+    scales:{
+      x:{stacked:true,min:0,max:100,ticks:{color:tc,font:{size:9},callback:v=>v+'%'},grid:{color:gc}},
+      y:{stacked:true,display:false}
+    }
+  }
+});
+</script>

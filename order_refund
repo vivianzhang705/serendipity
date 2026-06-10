@@ -1,0 +1,1100 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.shell{padding:16px;font-family:var(--font-sans);font-size:13px;max-width:900px;margin:0 auto}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:12px;overflow:hidden}
+.card-head{padding:11px 16px;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.oid{font-weight:500;font-size:14px;color:var(--color-text-primary)}
+.meta{font-size:12px;color:var(--color-text-secondary)}
+.badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:500;white-space:nowrap}
+.b-ship{background:#E1F5EE;color:#085041}
+.b-done{background:#FCEBEB;color:#791F1F}
+.b-amber{background:#FAEEDA;color:#633806}
+.b-gray{background:#F1EFE8;color:#444441}
+.b-blue{background:#E6F1FB;color:#0C447C}
+.b-green{background:#EAF3DE;color:#27500A}
+.b-yellow{background:#FEF9C3;color:#713F12}
+.b-red{background:#FCEBEB;color:#791F1F}
+.mode-tabs{display:flex;border-bottom:0.5px solid var(--color-border-tertiary)}
+.order-summary{padding:9px 16px;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);display:flex;flex-direction:column;gap:5px}
+.sum-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--color-text-secondary)}
+.sum-tag{display:inline-flex;align-items:center;padding:1px 7px;border-radius:4px;font-size:10px;font-weight:500;background:#E6F1FB;color:#0C447C}
+.sum-tag.tax{background:#F1EFE8;color:#444441}
+.sum-cell{color:var(--color-text-secondary)}
+.sum-cell strong{margin-left:4px;color:var(--color-text-primary);font-weight:600}
+.sum-sep{color:var(--color-border-secondary)}
+.sum-note{font-size:11px;color:var(--color-text-tertiary);margin-left:2px}
+.mtab{flex:1;padding:9px 0;text-align:center;font-size:13px;color:var(--color-text-secondary);cursor:pointer;border-bottom:2px solid transparent}
+.mtab.on{color:#185FA5;border-bottom:2px solid #185FA5;font-weight:500}
+.mtab:hover:not(.on){background:var(--color-background-secondary)}
+.sec-lbl{font-size:11px;color:var(--color-text-secondary);padding:6px 16px;background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+.tbl{width:100%;border-collapse:collapse;table-layout:fixed;border:1px solid #d0d0d0}
+.tbl th{font-size:11px;font-weight:400;color:var(--color-text-secondary);padding:6px 10px;border:1px solid #d0d0d0;text-align:left;background:var(--color-background-secondary)}
+.tbl td{font-size:13px;padding:8px 10px;border:1px solid #d0d0d0;color:var(--color-text-primary);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:1px solid #d0d0d0}
+.tbl tr.sel td{background:#EFF6FF}
+.tbl tr.exhausted td{opacity:.4}
+.r{text-align:right}
+.c0{width:34px}.c1{width:auto}.c2{width:90px}.c3{width:74px}.c4{width:58px}.c5{width:58px}.c6{width:82px}.c7{width:78px}.c8{width:72px}.c9{width:74px}.c10{width:92px}
+.colcb{display:flex;align-items:center;gap:5px}
+.sku-img{width:32px;height:32px;border-radius:4px;object-fit:cover;border:0.5px solid var(--color-border-tertiary);flex-shrink:0;background:var(--color-background-secondary)}
+.qty-ctrl{display:inline-flex;align-items:center;gap:3px}
+.qbtn{width:20px;height:20px;border:0.5px solid var(--color-border-secondary);border-radius:4px;background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center}
+.qbtn:disabled{opacity:.3;cursor:not-allowed}
+.qnum{min-width:18px;text-align:center;font-size:13px}
+.amt-inp{width:74px;height:26px;font-size:13px;text-align:right;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:0 6px;background:var(--color-background-primary);color:var(--color-text-primary)}
+.amt-inp:disabled{background:var(--color-background-secondary);color:var(--color-text-tertiary);border-color:var(--color-border-tertiary)}
+.amt-inp.err{border-color:#E24B4A}
+.freight-row{padding:9px 16px;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.fr-info{font-size:12px;color:var(--color-text-secondary);white-space:nowrap}
+.diff-pane{padding:16px}
+.footer{padding:12px 16px;border-top:0.5px solid var(--color-border-tertiary);display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.rw{flex:1;min-width:160px}
+.rw label{font-size:13px;color:var(--color-text-secondary);display:block;margin-bottom:4px}
+.rw select,.rw textarea{width:100%;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary)}
+.rw select{height:30px;padding:0 7px}
+.rw textarea{margin-top:5px;height:48px;padding:5px 7px;resize:none}
+.sumblock{min-width:190px}
+.srow{display:flex;justify-content:space-between;gap:16px;font-size:13px;padding:2px 0;color:var(--color-text-secondary)}
+.srow.tot{font-weight:500;font-size:14px;color:var(--color-text-primary);border-top:0.5px solid var(--color-border-tertiary);padding-top:5px;margin-top:5px}
+.shint{font-size:11px;color:var(--color-text-tertiary);text-align:right;margin-top:3px}
+.actions{display:flex;align-items:center;gap:8px;padding:12px 16px;border-top:0.5px solid var(--color-border-tertiary)}
+.whole-chk{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--color-text-primary);white-space:nowrap}
+.btn-r{height:30px;padding:0 14px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-secondary);cursor:pointer}
+.btn-s{height:30px;padding:0 16px;font-size:13px;border:none;border-radius:var(--border-radius-md);background:#185FA5;color:#E6F1FB;cursor:pointer;font-weight:500}
+.btn-s:disabled{background:var(--color-background-secondary);color:var(--color-text-tertiary);cursor:not-allowed}
+.btn-retry{height:24px;padding:0 10px;font-size:12px;border:0.5px solid #E24B4A;border-radius:var(--border-radius-md);background:transparent;color:#E24B4A;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.btn-retry:hover{background:#FCEBEB}
+.wrap{overflow-x:auto}
+.mtbl{width:100%;border-collapse:collapse;table-layout:fixed;border:1px solid #d0d0d0}
+.mtbl th{font-size:11px;font-weight:400;color:var(--color-text-secondary);padding:6px 10px;border:1px solid #d0d0d0;text-align:left;background:var(--color-background-secondary);white-space:nowrap}
+.mtbl th.r,.mtbl td.r{text-align:right}
+.main-row{cursor:pointer}
+.main-row td{font-size:13px;padding:9px 10px;color:var(--color-text-primary);vertical-align:middle;border:1px solid #d0d0d0}
+.main-row:hover td{background:var(--color-background-secondary)}
+.main-row.open td{background:var(--color-background-secondary)}
+.main-row.open .chevron{transform:rotate(90deg)}
+.chevron{display:inline-block;transition:transform .18s ease;color:var(--color-text-tertiary);font-size:14px;vertical-align:-1px}
+.detail-row td{padding:0}
+.detail-inner{overflow:hidden;transition:max-height .22s ease}
+.detail-inner.closed{max-height:0}
+.detail-inner.open{max-height:600px}
+.detail-body{background:var(--color-background-secondary);padding:10px 16px 12px 36px}
+.dtbl{width:100%;border-collapse:collapse;background:var(--color-background-primary);border:1px solid #d0d0d0;border-radius:var(--border-radius-md);overflow:hidden}
+.dtbl th{font-size:11px;font-weight:400;color:var(--color-text-tertiary);padding:6px 12px;border-bottom:1px solid #d0d0d0;text-align:left;background:var(--color-background-secondary)}
+.dtbl th.r,.dtbl td.r{text-align:right}
+.dtbl td{font-size:12px;padding:8px 12px;border-bottom:1px solid #ededed;color:var(--color-text-secondary);vertical-align:middle}
+.dtbl tr:last-child td{border-bottom:none}
+.dc0{width:auto}.dc1{width:80px}.dc2{width:100px}.dc3{width:100px}
+.detail-fees{max-width:320px;margin-left:auto;margin-top:10px;display:flex;flex-direction:column;gap:3px}
+.fee-row{display:flex;justify-content:space-between;gap:24px;font-size:12px;color:var(--color-text-secondary);padding:2px 2px}
+.fee-row span:last-child{color:var(--color-text-primary)}
+.fee-row.total{border-top:1px solid #d0d0d0;margin-top:4px;padding-top:6px;font-weight:600;font-size:13px;color:var(--color-text-primary)}
+.pending-bar{background:#FEF9C3;border-left:3px solid #CA8A04;padding:7px 12px;font-size:12px;color:#713F12;display:flex;align-items:center;gap:8px}
+.failed-bar{background:#FCEBEB;border-left:3px solid #E24B4A;padding:7px 12px;font-size:12px;color:#791F1F;display:flex;align-items:center;gap:8px}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid #CA8A04;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.dimg{width:28px;height:28px;border-radius:3px;object-fit:cover;border:0.5px solid var(--color-border-tertiary);flex-shrink:0;background:var(--color-background-primary)}
+.dc0{width:auto}.dc1{width:52px}.dc2{width:80px}.dc3{width:80px}.dc4{width:80px}.dc5{width:80px}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#185FA5;color:#E6F1FB;padding:8px 18px;border-radius:var(--border-radius-md);font-size:13px;font-weight:500;opacity:0;transition:opacity .25s;pointer-events:none;z-index:999}
+.toast.show{opacity:1}
+input[type=checkbox]{width:14px;height:14px;accent-color:#185FA5;cursor:pointer}
+
+/* ===== 订单详情页 ===== */
+body{margin:0;background:#fff;font-family:var(--font-sans),-apple-system,sans-serif;color:#1a1a1a}
+.crumb{display:flex;align-items:center;gap:8px;padding:10px 24px;background:#f7f7f7;border-bottom:1px solid #eee;font-size:13px;color:#888}
+.crumb b{color:#555;font-weight:400}
+.od-wrap{padding:0 24px 80px}
+.od-head{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 0 14px;border-bottom:1px solid #eee}
+.od-title{font-size:22px;font-weight:700;color:#1a1a1a}
+.od-status{font-size:15px;color:#9aa0a6;font-weight:400;margin-left:8px}
+.od-date{font-size:12px;color:#9aa0a6;margin-top:4px}
+.od-actions{position:relative}
+.od-op-btn{color:#185FA5;font-size:14px;cursor:pointer;font-weight:500;background:none;border:none;padding:4px 6px}
+.od-op-menu{position:absolute;right:0;top:30px;background:#fff;border:1px solid #e3e3e3;border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.12);min-width:150px;padding:4px;display:none;z-index:30}
+.od-op-menu.show{display:block}
+.od-op-item{padding:9px 12px;font-size:13px;color:#333;border-radius:6px;cursor:pointer;white-space:nowrap}
+.od-op-item:hover{background:#f2f6fc;color:#185FA5}
+.od-section-title{text-align:center;font-size:20px;color:#444;font-weight:600;margin:34px 0 18px}
+.od-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.od-tbl th{text-align:left;font-size:12px;font-weight:400;color:#9aa0a6;padding:8px 10px;border-bottom:1px solid #eee}
+.od-tbl td{padding:14px 10px;border-bottom:1px solid #f0f0f0;color:#222;font-weight:600;vertical-align:middle}
+.od-tbl .od-foot td{background:#f7f7f7;font-weight:600;color:#333}
+.od-prod-img{width:56px;height:72px;object-fit:cover;border-radius:4px;background:#eee}
+.od-variant-name{font-weight:700;color:#1a1a1a;line-height:1.35}
+.od-variant-spec{font-weight:600;color:#1a1a1a;margin-top:4px}
+.od-paid-cell{color:#185FA5}
+.od-orig-strike{font-size:11px;color:#b0b0b0;text-decoration:line-through;font-weight:400}
+.od-fab{position:fixed;right:28px;bottom:28px;width:52px;height:52px;border-radius:50%;background:#f0463c;color:#fff;border:none;font-size:26px;cursor:pointer;box-shadow:0 6px 20px rgba(240,70,60,.4);display:flex;align-items:center;justify-content:center;z-index:25}
+.od-fab:hover{background:#d83a30}
+.od-refund-head{display:flex;align-items:center;justify-content:space-between;margin:34px 0 14px}
+.od-refund-btn{background:#185FA5;color:#fff;border:none;border-radius:7px;padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer}
+.od-refund-btn:hover{background:#134d87}
+.od-hist-card{border:1px solid #eee;border-radius:8px;overflow:hidden}
+.od-hist-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f0f0f0;background:#fafafa}
+.od-summary-box{margin-top:0;padding:4px 2px}
+.od-detail-cols{display:flex;gap:28px;align-items:flex-start}
+.od-detail-left{flex:1;min-width:0}
+.od-detail-right{width:340px;flex-shrink:0;background:#fff;border:1px solid #eee;border-radius:8px;padding:14px 18px}
+@media(max-width:760px){.od-detail-cols{flex-direction:column}.od-detail-right{width:100%}}
+.od-sum-row{display:flex;align-items:baseline;justify-content:space-between;padding:9px 0;font-size:14px;color:#333;border-bottom:1px solid #f2f2f2}
+.od-sum-row .od-sum-label{color:#444}
+.od-sum-row .od-sum-label small{color:#9aa0a6;font-weight:400}
+.od-sum-row.discount .od-sum-label,.od-sum-row.discount .od-sum-val{color:#e3342f}
+.od-sum-row .od-sum-val{font-variant-numeric:tabular-nums}
+.od-sum-row:has(+ .total){border-bottom:none}
+.od-sum-subtotal{margin-top:6px;border-top:1px solid #e0e0e0}
+.od-sum-row.total{border-bottom:none;padding-top:14px;margin-top:4px;border-top:2px solid #1a1a1a}
+.od-sum-row.total .od-sum-label{font-size:20px;font-weight:700;color:#1a1a1a}
+.od-sum-row.total .od-sum-val{font-size:20px;font-weight:700;color:#1a1a1a}
+.od-sum-note{font-size:11px;color:#9aa0a6;text-align:right;margin-top:6px}
+
+/* ===== 退款弹层 ===== */
+.rf-overlay{position:fixed;inset:0;background:rgba(20,22,28,.5);display:none;align-items:flex-start;justify-content:center;z-index:50;overflow-y:auto;padding:28px 16px}
+.rf-overlay.show{display:flex}
+.rf-dialog{background:var(--color-background-primary,#fff);width:100%;max-width:920px;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden;animation:rfin .18s ease}
+@keyframes rfin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.rf-dialog-head{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #ececec}
+.rf-dialog-title{font-size:16px;font-weight:600;color:#1a1a1a}
+.rf-dialog-sub{font-size:12px;color:#9aa0a6;margin-left:10px;font-weight:400}
+.rf-close{background:none;border:none;font-size:22px;color:#9aa0a6;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px}
+.rf-close:hover{background:#f2f2f2;color:#555}
+.rf-dialog .shell{padding:0;max-width:none}
+.rf-dialog .card{border:none;margin:0;border-radius:0}
+.rf-avail-bar{padding:10px 16px;background:#F0F6FF;border-bottom:1px solid #ececec;font-size:13px;color:#333}
+.rf-avail-bar strong{font-weight:600}
+</style>
+
+<div class="crumb"><span>🏠</span><span>›</span><span>订单中心</span><span>›</span><b>订单详情</b></div>
+<div class="od-wrap">
+  <div class="od-head">
+    <div>
+      <div><span class="od-title">#2026060926280857</span><span class="od-status">进行中</span></div>
+      <div class="od-date">2026-06-09 08:37:24</div>
+    </div>
+    <div class="od-actions">
+      <button class="od-op-btn" onclick="toggleOpMenu(event)">操作 ▾</button>
+      <div class="od-op-menu" id="op-menu">
+        <div class="od-op-item" id="op-refund-item" onclick="openRefund()">发起退款</div>
+        <div class="od-op-item" onclick="alert('（示意）打印订单')">打印订单</div>
+        <div class="od-op-item" onclick="alert('（示意）添加备注')">添加备注</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="od-section-title">支付信息</div>
+  <table class="od-tbl">
+    <thead><tr>
+      <th>优惠合计</th><th>优惠券折扣</th><th>金币抵扣</th><th>商品小计</th>
+      <th>税费</th><th>实付总额</th><th>优惠券码</th><th>支付方式</th><th>支付流水号</th>
+    </tr></thead>
+    <tbody><tr>
+      <td>15.00</td><td>15.00</td><td>0.00</td><td>115.98</td>
+      <td>10.00</td><td>110.98</td><td>WEB_ATC_7D_15D_100D</td><td>Braintree</td><td>6q5zyrj8</td>
+    </tr></tbody>
+  </table>
+
+  <div class="od-section-title">客户信息</div>
+  <table class="od-tbl">
+    <thead><tr>
+      <th>用户名</th><th>邮箱</th><th>收件人</th><th>国家</th><th>地址</th><th>邮编</th><th>电话</th>
+    </tr></thead>
+    <tbody><tr>
+      <td>-</td><td>angelalivingston71@icloud.com</td><td>Angela Livingston</td><td>US</td>
+      <td>3904 County Road 175 Piedmont (AL)</td><td>36272</td><td>-</td>
+    </tr></tbody>
+  </table>
+
+  <div class="od-section-title">商品明细</div>
+  <div class="od-detail-cols">
+    <div class="od-detail-left">
+      <table class="od-tbl">
+        <thead><tr>
+          <th style="width:78px">图片</th><th>商品 / 规格</th><th style="width:150px">SKU</th>
+          <th style="width:60px">数量</th><th style="width:96px;text-align:right">单价</th>
+          <th style="width:100px;text-align:right">小计</th>
+        </tr></thead>
+        <tbody id="od-prod-body"></tbody>
+      </table>
+    </div>
+    <div class="od-detail-right">
+      <div class="od-summary-box" id="od-order-summary"></div>
+    </div>
+  </div>
+
+  <div class="od-refund-head">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="od-section-title" style="margin:0">退款记录</div>
+      <span id="order-badges"></span>
+    </div>
+    <button class="od-refund-btn" id="od-refund-btn" onclick="openRefund()">发起退款</button>
+  </div>
+  <div class="order-summary" id="order-summary" style="border:1px solid #eee;border-radius:8px;margin-bottom:14px"></div>
+  <span id="head-paid" style="display:none"></span>
+  <div class="od-hist-card">
+    <div class="od-hist-head"><span style="font-size:13px;font-weight:600;color:#333">历史明细</span><span class="meta" id="hist-count"></span></div>
+    <div class="wrap">
+      <table class="mtbl">
+        <thead><tr>
+          <th class="mc1">时间</th>
+          <th class="mc2">单号</th>
+          <th class="mc3">退款类型 / 原因</th>
+          <th class="mc4 r">件数</th>
+          <th class="mc5 r">商品退款</th>
+          <th class="mc6 r">运费退款</th>
+          <th class="mc7 r">退税</th>
+          <th class="mc8 r">合计</th>
+          <th class="mc9">操作人</th>
+        </tr></thead>
+        <tbody id="hist-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<button class="od-fab" id="od-fab" onclick="openRefund()" title="发起退款">+</button>
+
+<!-- ===== 退款弹层 ===== -->
+<div class="rf-overlay" id="rf-overlay">
+  <div class="rf-dialog" role="dialog" aria-modal="true">
+    <div class="rf-dialog-head">
+      <div><span class="rf-dialog-title">发起退款</span><span class="rf-dialog-sub" id="rf-order-ref"></span></div>
+      <button class="rf-close" onclick="closeRefund()" aria-label="关闭">✕</button>
+    </div>
+<div class="shell">
+<div class="card" id="main-card">
+  <div class="rf-avail-bar" id="rf-avail-bar"></div>
+  <div class="mode-tabs">
+    <div class="mtab on" id="tab-ret" onclick="switchTab('ret')">退货退款</div>
+    <div class="mtab" id="tab-dif" onclick="switchTab('dif')">补差额</div>
+  </div>
+  <div id="pane-ret">
+    <div class="sec-lbl">勾选商品 · 调整数量 · 修改退款金额（税由 Avalara 提交后计算）</div>
+    <table class="tbl">
+      <thead><tr>
+        <th class="c0"><input type="checkbox" id="cb-all" onchange="toggleAll()" title="全选"></th>
+        <th class="c1">商品 / 规格</th>
+        <th class="c2">SKU</th>
+        <th class="c4 r">购买数量</th>
+        <th class="c5 r">退货数量</th>
+        <th class="c6 r">实付总价</th>
+        <th class="c7 r">实付单价</th>
+        <th class="c8 r">已退金额</th>
+        <th class="c9 r">本次数量</th>
+        <th class="c10 r">本次退款</th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="freight-row">
+      <input type="checkbox" id="cb-fr" onchange="onFreightChk()">
+      <label for="cb-fr" style="cursor:pointer;white-space:nowrap">运费</label>
+      <span class="fr-info" id="fr-meta"></span>
+      <input class="amt-inp" id="amt-fr" type="number" min="0.01" step="0.01" disabled oninput="sync()" style="text-align:left">
+    </div>
+  </div>
+  <div id="pane-dif" style="display:none">
+    <div class="sec-lbl">适用：优惠券漏用、协商补偿等，无需退回商品 · 输入退款金额，系统将自动计算并退还对应税费</div>
+    <div class="diff-pane">
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:5px">退款金额</div>
+      <input type="number" id="dif-amt" min="0.01" step="0.01" placeholder="0.00"
+        style="height:34px;width:130px;font-size:14px;text-align:right;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:0 10px;background:var(--color-background-primary);color:var(--color-text-primary)"
+        oninput="sync()">
+      <div id="dif-hint" style="font-size:12px;color:var(--color-text-secondary);margin-top:8px;line-height:1.6"></div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="rw">
+      <label for="rs">退款原因 <span style="color:#E24B4A">*</span></label>
+      <select id="rs" onchange="onReason()">
+        <option value="">— 请选择 —</option>
+        <optgroup label="缺货">
+          <option>缺货--测试商品</option>
+          <option>缺货--线上采购</option>
+          <option>缺货--做货</option>
+          <option>缺货--做货未追单</option>
+          <option>缺货--合作卖家</option>
+        </optgroup>
+        <optgroup label="退货">
+          <option>退货-尺寸不符(太短)</option>
+          <option>退货-尺寸不符(太大)</option>
+          <option>退货-尺寸不符(太长)</option>
+          <option>退货-尺寸不符(太小)</option>
+          <option>退货-尺寸不符(无具体)</option>
+          <option>退货-顾客认为货不对板(色差等)</option>
+          <option>退货-顾客认为质量问题(材质等)</option>
+          <option>退货-无理由退货</option>
+        </optgroup>
+        <optgroup label="物流">
+          <option>物流-物流损坏</option>
+          <option>物流-物流丢件</option>
+          <option>物流-物流退回</option>
+          <option>物流-物流久不更新</option>
+          <option>物流-妥投但顾客没收到</option>
+          <option>物流-偏远地区</option>
+          <option>物流-其他</option>
+        </optgroup>
+        <optgroup label="未发货">
+          <option>未发货--顾客无理由要取消</option>
+          <option>未发货--缺货顾客不愿等</option>
+        </optgroup>
+        <optgroup label="仓库">
+          <option>仓库-少发漏发</option>
+          <option>仓库-套装部分缺失</option>
+          <option>仓库-顾客收到错误包裹</option>
+          <option>仓库-发错款式</option>
+          <option>仓库-发错码数</option>
+          <option>仓库-发错颜色</option>
+        </optgroup>
+        <optgroup label="质量问题">
+          <option>质量问题-脏污</option>
+          <option>质量问题-衣服有损坏</option>
+          <option>质量问题-衣服有开线</option>
+          <option>质量问题-拉链坏了</option>
+          <option>质量问题-纽扣问题</option>
+          <option>质量问题-装饰品掉落</option>
+          <option>质量问题-衣服味道很大</option>
+          <option>质量问题-车线问题</option>
+          <option>质量问题-材质问题(太薄)</option>
+          <option>质量问题-洗水工艺问题</option>
+          <option>质量问题-松紧带扭曲</option>
+        </optgroup>
+        <optgroup label="货不对板">
+          <option>货不对板-色差</option>
+          <option>货不对板-logo或衣服图案质量问题</option>
+          <option>货不对板-同款有差异</option>
+          <option>货不对板-版型有差异</option>
+        </optgroup>
+        <optgroup label="其他">
+          <option>免退货退款-其他</option>
+          <option>其他-黑名单</option>
+          <option>其他-风控订单</option>
+          <option>退折扣</option>
+          <option>其他-技术测试</option>
+          <option>其他-特殊</option>
+          <option value="oth">其他（自填备注）</option>
+        </optgroup>
+      </select>
+      <textarea id="rn" placeholder="请填写退款原因备注" style="display:none" oninput="sync()"></textarea>
+    </div>
+    <div class="sumblock">
+      <div class="srow" id="sr-goods"><span>商品退款</span><span id="sv-goods">$0.00</span></div>
+      <div class="srow" id="sr-fr"><span>运费退款</span><span id="sv-fr">$0.00</span></div>
+      <div class="srow" id="sr-dif" style="display:none"><span>补差额</span><span id="sv-dif">$0.00</span></div>
+      <div class="srow tot"><span>本次退款合计</span><span id="sv-tot">$0.00</span></div>
+    </div>
+  </div>
+  <div id="err-bar" style="display:none;padding:6px 16px;font-size:12px;border-top:0.5px solid var(--color-border-tertiary);background:#FCEBEB;color:#791F1F"></div>
+  <div class="actions">
+    <label class="whole-chk" for="cb-whole" id="whole-row">
+      <input type="checkbox" id="cb-whole" onchange="onWhole()">
+      <span>整单退款</span>
+    </label>
+    <div style="flex:1"></div>
+    <button class="btn-r" onclick="resetAll()">重置</button>
+    <button class="btn-s" id="btn-sub" disabled onclick="doSubmit()">确认退款</button>
+  </div>
+
+</div>
+</div><!-- .shell -->
+  </div><!-- .rf-dialog -->
+</div><!-- .rf-overlay -->
+<div class="toast" id="toast"></div>
+
+<script>
+// 订单基础数据（金额均为不含税口径，税单独由 Avalara 计算/回写）
+// 数据源：订单详情页 #2026060926280857
+const ORDER_NO='2026060926280857';
+const TOTAL_ORIG=115.98;         // Subtotal：各 SKU 原价合计（58.99 + 56.99）
+const PAY_DISCOUNT=15.00;        // Discount = Coupon + Coins（Payment 里的合计折扣）
+const PAY_COUPON=15.00;          // 其中 Coupon Discount
+const PAY_COINS=0.00;            // 其中 Coin Discount
+const COUPON_CODE='WEB_ATC_7D_15D_100D';
+const PAY_SHIPPING=0.00;         // 运费
+const TOTAL_PAY=+(TOTAL_ORIG-PAY_DISCOUNT+PAY_SHIPPING).toFixed(2); // 税前实付 = 100.98（退款天花板）
+const MOCK_TAX=10.00;            // mock 税额（实际由 Avalara 计算）
+const TOTAL_PAID_GROSS=+(TOTAL_PAY+MOCK_TAX).toFixed(2);            // 含税实付 = 110.98（用户实际付款）
+const FREIGHT_PAID=PAY_SHIPPING; // 退款用：运费实付
+const RATIO=TOTAL_PAY/TOTAL_ORIG;// 实付/原价 ≈ 0.87067
+const TAX_RATE=0.0915;           // 退款时税估算（实际以 Avalara 回写为准）
+
+const IMGS={
+  '5000-271950-002':'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=64&q=60',
+  '5000-272008-002':'https://images.unsplash.com/photo-1582418702059-97ebafb35d09?w=64&q=60',
+};
+const OPS=['客服 Lisa','客服 Wang','客服 Chen'];
+
+const state={
+  lines:[
+    {id:'L1',name:'Wash American Flag Pattern Ripped Raw Hem Mid Rise Capri Skinny Jeans', variant:'Mid Blue / M (Regular)', sku:'5000-271950-002',qty:1,unitOrig:58.99,refQty:0, refAmt:0},
+    {id:'L2',name:'Stripe & Star Embroidery Raw Hem Mid Waist Skinny Capri Jeans',          variant:'Navy Blue / M (Regular)', sku:'5000-272008-002',qty:1,unitOrig:56.99,refQty:0, refAmt:0},
+  ],
+  freight:{refunded:0},
+  history:[],
+  nextIdx:1,
+  selQty:{L1:1,L2:1},
+  wholeMode:false,
+};
+
+const opened=new Set();
+
+const f2=n=>Number(n).toFixed(2);
+const fm=n=>n>0?'$'+f2(n):'—';
+
+// 各 SKU 满额实付：按原价比例分摊 TOTAL_PAY，整数分(分)+末项兜底，保证 Σ = TOTAL_PAY
+let _paidAllocCache=null;
+function paidAllocMap(){
+  if(_paidAllocCache) return _paidAllocCache;
+  const tpC=Math.round(TOTAL_PAY*100), origC=Math.round(TOTAL_ORIG*100);
+  let assigned=0; const map={};
+  state.lines.forEach((l,i)=>{
+    const lc=Math.round(l.unitOrig*l.qty*100);
+    const p=Math.floor(tpC*lc/origC); map[l.id]=p; assigned+=p;
+  });
+  const lastId=state.lines[state.lines.length-1].id;
+  map[lastId]+=(tpC-assigned); // 末项兜底
+  _paidAllocCache=map; return map;
+}
+// 行满额实付（qty=该行全部数量时返回分摊值；部分数量按比例折算）
+function paidSubtotal(line,qty){
+  const full=(paidAllocMap()[line.id]||0)/100;
+  if(qty>=line.qty) return +full.toFixed(2);
+  return +((full/line.qty)*qty).toFixed(2);
+}
+function linePaidUnit(line){ return +(((paidAllocMap()[line.id]||0)/100)/line.qty).toFixed(2); }
+// 订单实付（不含税）= 各行满额实付之和 + 运费 = TOTAL_PAY
+function orderPaid(){
+  const goods=state.lines.reduce((s,l)=>s+paidSubtotal(l,l.qty),0);
+  return +(goods+FREIGHT_PAID).toFixed(2);
+}
+function orderTax(){ return MOCK_TAX; } // 订单实付税金（mock，与 Order Summary 的 Tax 一致）
+// 行级原始可退 = 行实付 − 行级已退（不含补差额均摊）
+function lineRaw(line){
+  const fullPaid=paidSubtotal(line,line.qty);
+  return Math.max(0,+(fullPaid-line.refAmt).toFixed(2));
+}
+function freightRaw(){ return Math.max(0,+(FREIGHT_PAID-state.freight.refunded).toFixed(2)); }
+// 补差额已退总额（无主退款，按比例只摊到商品行，压低各商品的可退上限；不摊运费）
+function diffRefunded(){
+  return +state.history.filter(h=>h.status==='success')
+    .reduce((s,h)=>s+h.items.filter(i=>!i.sku||i.sku==='—').reduce((a,i)=>a+i.amt,0),0).toFixed(2);
+}
+// 均摊：把补差额按「行级原始可退」比例分摊到各商品行（不含运费），返回 {L1:扣减分, ...}（单位：分）
+function allocDiff(){
+  const buckets=state.lines.map(l=>({key:l.id,raw:lineRaw(l)}));
+  const totalRaw=buckets.reduce((s,b)=>s+b.raw,0);
+  const diffC=Math.round(diffRefunded()*100);
+  const alloc={};
+  buckets.forEach(b=>alloc[b.key]=0);
+  if(diffC<=0||totalRaw<=0) return alloc;
+  const totalRawC=Math.round(totalRaw*100);
+  let assigned=0;
+  // 先按比例 floor 分摊
+  buckets.forEach(b=>{
+    const share=Math.floor(diffC*Math.round(b.raw*100)/totalRawC);
+    alloc[b.key]=share; assigned+=share;
+  });
+  // 尾差兜底：剩余的分，依次补给「原始可退最大且未摊满」的桶
+  let remainder=diffC-assigned;
+  const order=[...buckets].sort((a,b)=>b.raw-a.raw);
+  let i=0;
+  while(remainder>0&&order.length){
+    const b=order[i%order.length];
+    const cap=Math.round(b.raw*100);
+    if(alloc[b.key]<cap){ alloc[b.key]++; remainder--; }
+    i++;
+    if(i>order.length*1000) break; // 安全阀
+  }
+  return alloc; // 单位：分
+}
+// 行级实际可退上限 = 行原始可退 − 该行分摊到的补差额
+function lineAvail(line){
+  const a=allocDiff()[line.id]||0;
+  return Math.max(0,+((Math.round(lineRaw(line)*100)-a)/100).toFixed(2));
+}
+// 运费可退不受补差额影响（补差额只摊商品）
+function freightAvail(){ return freightRaw(); }
+// 只看可退金额>0
+function canRefund(line){ return lineAvail(line)>0; }
+// 可退余额 = 各行可退 + 运费可退（已扣除均摊后的补差额，与全选默认金额加总完全一致）
+function orderAvail(){
+  const lines=state.lines.reduce((s,l)=>s+lineAvail(l),0);
+  return Math.max(0,+(lines+freightAvail()).toFixed(2));
+}
+// 商品可退之和（补差额只摊商品，故补差额上限 = 此值，不含运费）
+function goodsAvail(){
+  return Math.max(0,+state.lines.reduce((s,l)=>s+lineAvail(l),0).toFixed(2));
+}
+function estTax(a){ return +(a*TAX_RATE).toFixed(2); }
+// 已退税金 = 成功退款记录里 Avalara 回写的 tax 之和
+function totalTaxRefunded(){
+  return +state.history.filter(h=>h.status==='success')
+    .reduce((s,h)=>s+(h.tax||0),0).toFixed(2);
+}
+
+function renderBadges(){
+  const paid=orderPaid(),av=orderAvail();
+  const tot=+(paid-av).toFixed(2); // 已退 = 实付 − 可退，保证三者自洽
+  const taxRef=totalTaxRefunded();
+  // 退款状态徽章（去掉发货状态，未退款时不显示）
+  let b='';
+  if(av<=0) b=`<span class="badge b-done">已全额退款</span>`;
+  else if(state.history.some(h=>h.status==='success')) b=`<span class="badge b-amber">部分已退款</span>`;
+  document.getElementById('order-badges').innerHTML=b;
+  const avColor=av>0?'#085041':'#A32D2D';
+  document.getElementById('order-summary').innerHTML=`
+    <div class="sum-line">
+      <span class="sum-cell">实付（不含税）<strong>$${f2(paid)}</strong></span>
+      <span class="sum-sep">·</span>
+      <span class="sum-cell">已退<strong style="color:#A32D2D">$${f2(tot)}</strong></span>
+      <span class="sum-sep">·</span>
+      <span class="sum-cell">可退余额<strong style="color:${avColor}">$${f2(av)}</strong></span>
+    </div>
+    <div class="sum-line">
+      <span class="sum-cell">实付税金<strong>$${f2(orderTax())}</strong></span>
+      <span class="sum-sep">·</span>
+      <span class="sum-cell">已退税金<strong style="color:#A32D2D">$${f2(taxRef)}</strong></span>
+      <span class="sum-note">退款税金由 Avalara 实时计算/回写，不参与上方余额</span>
+    </div>`;
+  // 顶部：实付总金额（含税，用户实际付款）
+  const grossPaid=+(paid+orderTax()).toFixed(2);
+  document.getElementById('head-paid').innerHTML=`· 实付总额 <strong style="color:var(--color-text-primary)">$${f2(grossPaid)}</strong> <span style="color:var(--color-text-tertiary)">(含税)</span>`;
+  // 弹窗内轻量余额提示（防超退）
+  const ab=document.getElementById('rf-avail-bar');
+  if(ab) ab.innerHTML=`可退余额 <strong style="color:${avColor}">$${f2(av)}</strong> <span style="color:#9aa0a6">（不含税，已退 $${f2(tot)}）</span>`;
+}
+
+function renderLines(){
+  document.getElementById('tbody').innerHTML=state.lines.map(line=>{
+    const av=lineAvail(line);
+    const ex=!canRefund(line);
+    // 可退数量：剩余未退件数，至少显示1（用于部分金额退款场景）
+    const remQty=Math.max(1,line.qty-line.refQty);
+    const rq=Math.min(state.selQty[line.id]||remQty, remQty);
+    state.selQty[line.id]=rq;
+    const maxQ=remQty;
+    const defAmt=Math.min(paidSubtotal(line,rq),av);
+    const img=IMGS[line.sku]||'';
+    const paidTotal=paidSubtotal(line,line.qty);  // 行满额实付（与外面分摊一致）
+    const paidUnit=linePaidUnit(line);            // 实付单价
+    const diffAlloc=+((allocDiff()[line.id]||0)/100).toFixed(2); // 本行分摊到的补差额
+    const refTotal=+(line.refAmt+diffAlloc).toFixed(2);          // 本行实际已退合计
+    const hasRef=refTotal>0;
+    const statusTag=ex?'<span class="badge b-done" style="margin-top:3px">已退完</span>'
+      :hasRef?'<span class="badge b-amber" style="margin-top:3px">部分已退</span>'
+      :'';
+    return `<tr id="tr-${line.id}" class="${ex?'exhausted':''}">
+      <td class="c0"><input type="checkbox" id="cb-${line.id}" ${ex?'disabled':''} onchange="onChk('${line.id}')"></td>
+      <td class="c1">
+        <div style="display:flex;align-items:center;gap:8px">
+          <img class="sku-img" src="${img}" alt="${line.name}" loading="lazy">
+          <div>
+            <div>${line.name}</div>
+            <div style="font-size:11px;color:var(--color-text-secondary)">${line.variant||''}</div>
+            ${statusTag}
+          </div>
+        </div>
+      </td>
+      <td class="c2" style="color:var(--color-text-secondary);font-size:12px">${line.sku}</td>
+      <td class="c4 r">${line.qty}×</td>
+      <td class="c5 r" style="color:var(--color-text-secondary)">${line.refQty>0?line.refQty:'0'}</td>
+      <td class="c6 r" style="color:var(--color-text-primary)">$${f2(paidTotal)}</td>
+      <td class="c7 r" style="color:var(--color-text-secondary)">$${f2(paidUnit)}</td>
+      <td class="c8 r">${hasRef
+        ?`<span style="color:#A32D2D">$${f2(refTotal)}</span>${diffAlloc>0?`<div style="font-size:10px;color:var(--color-text-tertiary)" title="其中含补差额均摊 $${f2(diffAlloc)}">含补差 $${f2(diffAlloc)}</div>`:''}`
+        :'<span style="color:var(--color-text-tertiary)">0</span>'}</td>
+      <td class="c9 r">${ex?'<span style="color:var(--color-text-tertiary)">—</span>':`
+        <div class="qty-ctrl" id="qc-${line.id}" style="opacity:.4;pointer-events:none">
+          <button class="qbtn" id="qm-${line.id}" onclick="adjQ('${line.id}',-1)">−</button>
+          <span class="qnum" id="qn-${line.id}">${rq}</span>
+          <button class="qbtn" id="qp-${line.id}" onclick="adjQ('${line.id}',1)" ${rq>=maxQ?'disabled':''}>+</button>
+        </div>`}
+      </td>
+      <td class="c10 r">${ex?'<span style="color:var(--color-text-tertiary)">—</span>':`
+        <input class="amt-inp" id="amt-${line.id}" type="number" min="0.01"
+          max="${f2(av)}" step="0.01" value="${f2(defAmt)}" disabled
+          oninput="chkAmt('${line.id}');sync()">`}
+      </td>
+    </tr>`;
+  }).join('');
+
+  // 运费行
+  const fav=freightAvail();
+  const cbf=document.getElementById('cb-fr'),amtf=document.getElementById('amt-fr');
+  cbf.disabled=fav<=0;
+  amtf.max=f2(fav); amtf.value=f2(fav);
+  document.getElementById('fr-meta').textContent=`实付 $${f2(FREIGHT_PAID)} · 已退 $${f2(state.freight.refunded)} · 可退 $${f2(fav)}`;
+  if(fav<=0){cbf.checked=false;amtf.disabled=true;}
+  syncSelectAll();
+}
+
+function statusBadge(s){
+  if(s==='success') return `<span class="badge b-green">退款成功</span>`;
+  if(s==='pending') return `<span class="badge b-yellow" style="gap:4px"><span class="spin"></span>处理中</span>`;
+  if(s==='failed')  return `<span class="badge b-red">退款失败</span>`;
+  return '';
+}
+
+function renderHistory(){
+  const tb=document.getElementById('hist-tbody');
+  document.getElementById('hist-count').textContent=state.history.length?`共 ${state.history.length} 条`:'';
+  if(!state.history.length){
+    tb.innerHTML=`<tr><td colspan="9" style="text-align:center;padding:14px;color:var(--color-text-secondary)">暂无退款记录</td></tr>`;
+    return;
+  }
+  tb.innerHTML='';
+  [...state.history].reverse().forEach(r=>{
+    const goods=+r.items.reduce((s,i)=>s+i.amt,0).toFixed(2);
+    const cnt=r.items.reduce((s,i)=>s+(i.qty||0),0);
+    const tot=r.status==='success'?+(goods+r.fr+r.tax).toFixed(2):null;
+    const isOpen=opened.has(r.id);
+    const ok=r.status==='success';
+
+    const mainTr=document.createElement('tr');
+    mainTr.className='main-row'+(isOpen?' open':'');
+    mainTr.setAttribute('data-id',r.id);
+    mainTr.innerHTML=`
+      <td class="mc1" style="color:var(--color-text-secondary);font-size:12px"><i class="ti ti-chevron-right chevron" aria-hidden="true" style="margin-right:5px"></i>${r.time}</td>
+      <td class="mc2">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <span class="badge b-blue">${r.id}</span>
+          ${statusBadge(r.status)}
+        </div>
+      </td>
+      <td class="mc3">
+        <span class="badge b-gray" style="margin-right:6px">${r.typeLbl}</span>
+        <span style="color:var(--color-text-secondary);font-size:12px">${r.reason}</span>
+      </td>
+      <td class="mc4 r" style="color:var(--color-text-secondary)">${cnt>0?cnt+'件':'—'}</td>
+      <td class="mc5 r">${ok?'$'+f2(goods):'<span style="color:var(--color-text-tertiary)">—</span>'}</td>
+      <td class="mc6 r" style="color:${r.fr>0&&ok?'var(--color-text-primary)':'var(--color-text-tertiary)'}">${ok?fm(r.fr):'—'}</td>
+      <td class="mc7 r" style="color:var(--color-text-secondary)">${ok?'$'+f2(r.tax):'<span style="color:var(--color-text-tertiary)">—</span>'}</td>
+      <td class="mc8 r" style="font-weight:500">${tot?'$'+f2(tot):'<span style="color:var(--color-text-tertiary)">—</span>'}</td>
+      <td class="mc9" style="white-space:nowrap"><span class="badge b-gray">${r.op}</span></td>`;
+    mainTr.addEventListener('click',(e)=>{if(e.target.classList.contains('btn-retry'))return;toggle(r.id);});
+
+    const detailTr=document.createElement('tr');
+    detailTr.setAttribute('data-detail',r.id);
+
+    let statusBar='';
+    if(r.status==='pending')
+      statusBar=`<div class="pending-bar"><span class="spin"></span><span>退款处理中，等待支付平台确认...</span></div>`;
+    else if(r.status==='failed')
+      statusBar=`<div class="failed-bar"><span>退款失败：支付平台返回异常，请重试或联系技术</span><button class="btn-retry" onclick="retryRefund('${r.id}',event)">重试</button></div>`;
+
+    // 整笔退税按各商品退款金额比例摊到行（仅含商品项；运费税并入末项兜底），单位分
+    const goodsC=Math.round(goods*100), taxC=Math.round(r.tax*100);
+    let taxAssigned=0;
+    const itemTax=r.items.map((it,idx)=>{
+      if(!ok||goodsC<=0) return 0;
+      const tc=Math.round(it.amt*100);
+      let t=Math.floor(taxC*tc/goodsC);
+      taxAssigned+=t;
+      return t;
+    });
+    // 末项兜底吸收尾差
+    if(ok&&itemTax.length){ itemTax[itemTax.length-1]+=(taxC-taxAssigned); }
+
+    const itemRows=r.items.map((it,idx)=>{
+      const img=IMGS[it.sku]||'';
+      const noSku=!it.sku||it.sku==='—';
+      const tline=+(itemTax[idx]/100).toFixed(2);
+      return `<tr>
+        <td class="dc0">
+          <div style="display:flex;align-items:center;gap:8px">
+            ${img?`<img class="dimg" src="${img}" alt="${it.name}" loading="lazy">`:''}
+            <div>
+              <div style="color:var(--color-text-primary)">${it.name}${it.variant?` <span style="color:var(--color-text-secondary);font-weight:400">${it.variant}</span>`:''}${noSku?' <span class="badge b-gray" style="margin-left:4px">未挂商品</span>':''}</div>
+              ${noSku?'':`<div style="font-size:11px;color:var(--color-text-tertiary)">${it.sku}</div>`}
+            </div>
+          </div>
+        </td>
+        <td class="dc1 r" style="color:var(--color-text-secondary)">${it.qty!=null?'× '+it.qty:'—'}</td>
+        <td class="dc2 r" style="color:var(--color-text-primary);font-weight:500">${ok?'$'+f2(it.amt):'—'}</td>
+        <td class="dc3 r" style="color:var(--color-text-secondary)">${ok?'$'+f2(tline):'—'}</td>
+      </tr>`;}).join('');
+
+    // 费用汇总块（运费/合计属于整笔退款）
+    const feeBlock=ok?`
+      <div class="detail-fees">
+        <div class="fee-row"><span>商品退款${cnt>0?'（'+cnt+'件）':''}</span><span>$${f2(goods)}</span></div>
+        <div class="fee-row"><span>运费退款</span><span>${r.fr>0?'$'+f2(r.fr):'—'}</span></div>
+        <div class="fee-row"><span>退税 <span style="font-size:10px;color:var(--color-text-tertiary)">Avalara 回写</span></span><span>$${f2(r.tax)}</span></div>
+        <div class="fee-row total"><span>本笔合计（含税）</span><span>$${f2(goods+r.fr+r.tax)}</span></div>
+      </div>`:'';
+
+    detailTr.innerHTML=`<td colspan="9"><div class="detail-inner ${isOpen?'open':'closed'}">
+      ${statusBar}
+      <div class="detail-body">
+        <table class="dtbl">
+          <thead><tr>
+            <th class="dc0">退款商品</th><th class="dc1 r">退款数量</th><th class="dc2 r">退款金额</th><th class="dc3 r">退款税金</th>
+          </tr></thead>
+          <tbody>${itemRows}</tbody>
+        </table>
+        ${feeBlock}
+      </div>
+    </div></td>`;
+    tb.appendChild(mainTr);
+    tb.appendChild(detailTr);
+  });
+}
+
+function toggle(id){
+  opened.has(id)?opened.delete(id):opened.add(id);
+  renderHistory();
+}
+
+function retryRefund(id,e){
+  e.stopPropagation();
+  const r=state.history.find(h=>h.id===id);
+  if(!r) return;
+  r.status='pending'; renderHistory(); showToast(`重试中 · ${id}`);
+  setTimeout(()=>{r.status='success'; renderAll(); showToast(`退款成功 · ${id}`);},2000);
+}
+
+function renderAll(){
+  renderBadges(); renderLines(); renderHistory();
+  const cbw=document.getElementById('cb-whole');
+  if(cbw) cbw.disabled=orderAvail()<=0;
+  // 已全额退款：隐藏所有发起退款入口
+  const noAvail=orderAvail()<=0;
+  ['od-refund-btn','od-fab','op-refund-item'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.style.display=noAvail?'none':'';
+  });
+  if(noAvail){
+    document.getElementById('pane-ret').style.pointerEvents='none';
+    document.getElementById('pane-ret').style.opacity='0.5';
+    document.getElementById('pane-dif').style.pointerEvents='none';
+    document.getElementById('pane-dif').style.opacity='0.5';
+    document.querySelector('.mode-tabs').style.pointerEvents='none';
+    const eb=document.getElementById('err-bar');
+    eb.style.display='block'; eb.textContent='该订单已全额退款，无可退余额';
+  }
+  sync();
+}
+
+function applyChk(id){
+  const cb=document.getElementById('cb-'+id);
+  const tr=document.getElementById('tr-'+id);
+  const qc=document.getElementById('qc-'+id);
+  const amt=document.getElementById('amt-'+id);
+  if(!cb) return;
+  if(cb.checked){tr.classList.add('sel');if(qc){qc.style.opacity='1';qc.style.pointerEvents='auto';}if(amt)amt.disabled=false;}
+  else{tr.classList.remove('sel');if(qc){qc.style.opacity='.4';qc.style.pointerEvents='none';}if(amt)amt.disabled=true;}
+}
+
+function onChk(id){
+  applyChk(id);
+  syncSelectAll();
+  sync();
+}
+
+function toggleAll(){
+  const all=document.getElementById('cb-all');
+  const target=all.checked;
+  state.lines.forEach(line=>{
+    if(!canRefund(line)) return;
+    const cb=document.getElementById('cb-'+line.id);
+    if(!cb) return;
+    cb.checked=target;
+    applyChk(line.id);
+  });
+  syncSelectAll();
+  sync();
+}
+
+function onFreightChk(){
+  const cb=document.getElementById('cb-fr'),amt=document.getElementById('amt-fr');
+  if(cb&&amt) amt.disabled=!cb.checked;
+  sync();
+}
+
+function onWhole(){
+  const cb=document.getElementById('cb-whole');
+  state.wholeMode=cb.checked;
+  const tbl=document.querySelector('#pane-ret .tbl');
+  const frRow=document.querySelector('#pane-ret .freight-row');
+  [tbl,frRow].forEach(el=>{
+    if(!el) return;
+    el.style.opacity=state.wholeMode?'0.45':'1';
+    el.style.pointerEvents=state.wholeMode?'none':'auto';
+  });
+  sync();
+}
+
+function syncSelectAll(){
+  const all=document.getElementById('cb-all');
+  if(!all) return;
+  const sel=state.lines.filter(l=>canRefund(l));
+  if(!sel.length){all.checked=false;all.indeterminate=false;all.disabled=true;return;}
+  all.disabled=false;
+  const checked=sel.filter(l=>{const c=document.getElementById('cb-'+l.id);return c&&c.checked;}).length;
+  all.checked=checked===sel.length;
+  all.indeterminate=checked>0&&checked<sel.length;
+}
+
+function adjQ(id,d){
+  const line=state.lines.find(l=>l.id===id);
+  const maxQ=Math.max(1,line.qty-line.refQty);
+  let q=Math.max(1,Math.min(maxQ,(state.selQty[id]||1)+d));
+  state.selQty[id]=q;
+  document.getElementById('qn-'+id).textContent=q;
+  document.getElementById('qm-'+id).disabled=q<=1;
+  document.getElementById('qp-'+id).disabled=q>=maxQ;
+  const av=lineAvail(line);
+  const inp=document.getElementById('amt-'+id);
+  inp.value=f2(Math.min(paidSubtotal(line,q),av));
+  inp.classList.remove('err');
+  sync();
+}
+
+function chkAmt(id){
+  const line=state.lines.find(l=>l.id===id);
+  const inp=document.getElementById('amt-'+id);
+  const v=parseFloat(inp.value)||0;
+  inp.classList.toggle('err',v>lineAvail(line)||v<=0);
+}
+
+function sync(){
+  const mode=document.getElementById('tab-ret').classList.contains('on')?'ret':'dif';
+  let goodsC=0,frC=0,difC=0,hasErr=false,hasInput=false;
+  const av=orderAvail();
+  const avC=Math.round(av*100);
+  const gAv=goodsAvail();
+  const gAvC=Math.round(gAv*100);
+  const C=v=>Math.round((parseFloat(v)||0)*100); // 转分
+  if(mode==='ret'){
+    if(state.wholeMode){
+      // 整单模式：接管表格，按全部可退商品 + 可退运费全额处理
+      state.lines.forEach(line=>{ goodsC+=Math.round(lineAvail(line)*100); });
+      frC=Math.round(freightAvail()*100);
+      hasInput=(goodsC+frC)>0;
+    } else {
+      state.lines.forEach(line=>{
+        const cb=document.getElementById('cb-'+line.id),inp=document.getElementById('amt-'+line.id);
+        if(cb&&cb.checked&&inp){
+          hasInput=true;
+          const vc=C(inp.value), limC=Math.round(lineAvail(line)*100);
+          if(vc>limC||vc<=0) hasErr=true; else goodsC+=vc;
+        }
+      });
+      const cbf=document.getElementById('cb-fr'),af=document.getElementById('amt-fr');
+      if(cbf&&cbf.checked&&af){
+        hasInput=true;
+        const fvc=C(af.value), limC=Math.round(freightAvail()*100);
+        if(fvc>limC||fvc<=0) hasErr=true; else frC=fvc;
+      }
+    }
+    document.getElementById('sr-goods').style.display='flex';
+    document.getElementById('sr-fr').style.display='flex';
+    document.getElementById('sr-dif').style.display='none';
+  } else {
+    const raw=document.getElementById('dif-amt').value;
+    const vc=C(raw);
+    if(raw!==''&&raw!=null){ hasInput=true; if(vc>gAvC||vc<=0) hasErr=true; else difC=vc; }
+    document.getElementById('sr-goods').style.display='none';
+    document.getElementById('sr-fr').style.display='none';
+    document.getElementById('sr-dif').style.display='flex';
+    document.getElementById('dif-hint').innerHTML=`商品可退余额 <strong style="color:#E24B4A">$${f2(gAv)}</strong> <span style="color:var(--color-text-tertiary)">（补差额仅摊商品，不含运费）</span>`;
+  }
+  const totC=goodsC+frC+difC;
+  document.getElementById('sv-goods').textContent='$'+f2(goodsC/100);
+  document.getElementById('sv-fr').textContent='$'+f2(frC/100);
+  document.getElementById('sv-dif').textContent='$'+f2(difC/100);
+  document.getElementById('sv-tot').textContent='$'+f2(totC/100);
+  const eb=document.getElementById('err-bar');
+  const limForMode = mode==='dif' ? gAvC : avC;
+  const overLimit=!hasErr&&totC>limForMode;
+  if(hasErr){eb.style.display='block';eb.textContent='退款金额超出可退上限或格式有误';}
+  else if(overLimit){eb.style.display='block';eb.textContent=`本次退款合计 $${f2(totC/100)} 超出可退余额 $${f2(mode==='dif'?gAv:av)}`;}
+  else{eb.style.display='none';}
+  document.getElementById('btn-sub').disabled=totC<=0||hasErr||overLimit||!hasInput;
+}
+
+function switchTab(t){
+  const isRet=t==='ret';
+  document.getElementById('tab-ret').classList.toggle('on',isRet);
+  document.getElementById('tab-dif').classList.toggle('on',!isRet);
+  document.getElementById('pane-ret').style.display=isRet?'block':'none';
+  document.getElementById('pane-dif').style.display=isRet?'none':'block';
+  document.getElementById('whole-row').style.display=isRet?'flex':'none';
+  if(!isRet){ // 切到补差额时退出整单模式
+    state.wholeMode=false;
+    const cbw=document.getElementById('cb-whole'); if(cbw) cbw.checked=false;
+    const tbl=document.querySelector('#pane-ret .tbl');
+    const frRow=document.querySelector('#pane-ret .freight-row');
+    [tbl,frRow].forEach(el=>{if(el){el.style.opacity='1';el.style.pointerEvents='auto';}});
+  }
+  sync();
+}
+
+function onReason(){
+  document.getElementById('rn').style.display=document.getElementById('rs').value==='oth'?'block':'none';
+}
+
+function now(){
+  const d=new Date();
+  return (d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0')+' '+
+    d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+}
+
+function doSubmit(){
+  const reason=document.getElementById('rs').value||'';
+  const note=(document.getElementById('rn').value||'').trim();
+  // 退款原因校验：点击确认后才校验
+  if(!reason || (reason==='oth' && !note)){
+    const eb=document.getElementById('err-bar');
+    eb.style.display='block';
+    eb.textContent=reason==='oth'?'请填写「其他」的退款原因备注':'请选择退款原因';
+    document.getElementById(reason==='oth'?'rn':'rs').focus();
+    return;
+  }
+  const btn=document.getElementById('btn-sub');
+  btn.disabled=true; btn.textContent='提交中...';
+  const mode=document.getElementById('tab-ret').classList.contains('on')?'ret':'dif';
+  const reasonText=[reason==='oth'?'其他':reason,note].filter(Boolean).join(' · ')||'—';
+  let goods=0,fr=0,items=[],typeLbl='';
+
+  if(mode==='ret'){
+    typeLbl=state.wholeMode?'整单退款':'退货退款';
+    if(state.wholeMode){
+      // 整单：所有可退商品退满 + 运费退满（忽略表格手动勾选）
+      state.lines.forEach(line=>{
+        const v=lineAvail(line); if(v<=0) return;
+        const q=Math.max(1,line.qty-line.refQty);
+        goods+=v; line.refQty+=q; line.refAmt=+(line.refAmt+v).toFixed(2);
+        items.push({name:line.name,variant:line.variant,sku:line.sku,qty:q,amt:v});
+        state.selQty[line.id]=Math.max(1,line.qty-line.refQty)||1;
+      });
+      const fav=freightAvail();
+      if(fav>0){fr=fav;state.freight.refunded=+(state.freight.refunded+fr).toFixed(2);}
+    } else {
+      state.lines.forEach(line=>{
+        const cb=document.getElementById('cb-'+line.id),inp=document.getElementById('amt-'+line.id);
+        if(cb&&cb.checked&&inp){
+          const v=parseFloat(inp.value)||0,q=state.selQty[line.id];
+          goods+=v; line.refQty+=q; line.refAmt=+(line.refAmt+v).toFixed(2);
+          items.push({name:line.name,variant:line.variant,sku:line.sku,qty:q,amt:v});
+          state.selQty[line.id]=Math.max(1,line.qty-line.refQty)||1;
+        }
+      });
+      const cbf=document.getElementById('cb-fr'),af=document.getElementById('amt-fr');
+      if(cbf&&cbf.checked&&af){fr=parseFloat(af.value)||0;state.freight.refunded=+(state.freight.refunded+fr).toFixed(2);}
+    }
+  } else {
+    typeLbl='补差额';
+    const v=parseFloat(document.getElementById('dif-amt').value)||0;
+    goods=v; items.push({name:'补差额',sku:'—',qty:null,amt:v});
+  }
+
+  const entry={id:`RTN-8872-${state.nextIdx++}`,time:now(),op:OPS[Math.floor(Math.random()*OPS.length)],
+    reason:reasonText,typeLbl,fr,tax:0,status:'pending',items};
+  state.history.push(entry);
+  opened.add(entry.id);
+  btn.textContent='确认退款';
+  resetAll(false); renderAll();
+  closeRefund(); // 提交后关闭弹窗，回到详情页查看退款记录
+  showToast(`已发起退款 · ${entry.id}`);
+
+  const willFail=Math.random()<0.3;
+  setTimeout(()=>{
+    if(willFail){entry.status='failed'; showToast(`退款失败 · ${entry.id}，可点击重试`);}
+    else{entry.status='success'; entry.tax=estTax(goods+fr); showToast(`退款成功 · ${entry.id}`);}
+    renderAll();
+  },2500);
+}
+
+function resetAll(rerender=true){
+  state.lines.forEach(l=>{
+    state.selQty[l.id]=Math.max(1,l.qty-l.refQty)||1;
+    const cb=document.getElementById('cb-'+l.id),tr=document.getElementById('tr-'+l.id);
+    const qc=document.getElementById('qc-'+l.id),amt=document.getElementById('amt-'+l.id);
+    if(cb) cb.checked=false;
+    if(tr) tr.classList.remove('sel');
+    if(qc){qc.style.opacity='.4';qc.style.pointerEvents='none';}
+    if(amt){amt.disabled=true;amt.classList.remove('err');}
+  });
+  const cbf=document.getElementById('cb-fr'),amtf=document.getElementById('amt-fr');
+  if(cbf) cbf.checked=false; if(amtf) amtf.disabled=true;
+  const cba=document.getElementById('cb-all'); if(cba){cba.checked=false;cba.indeterminate=false;}
+  const da=document.getElementById('dif-amt'); if(da) da.value='';
+  document.getElementById('rs').value='';
+  document.getElementById('rn').style.display='none';
+  document.getElementById('err-bar').style.display='none';
+  // 重置整单模式
+  state.wholeMode=false;
+  const cbw=document.getElementById('cb-whole'); if(cbw) cbw.checked=false;
+  const tbl=document.querySelector('#pane-ret .tbl');
+  const frRow=document.querySelector('#pane-ret .freight-row');
+  [tbl,frRow].forEach(el=>{if(el){el.style.opacity='1';el.style.pointerEvents='auto';}});
+  if(rerender) renderAll(); else sync();
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ===== 详情页商品表（原价口径）=====
+function renderProdTable(){
+  const rows=state.lines.map((l)=>{
+    const origTotal=+(l.unitOrig*l.qty).toFixed(2);
+    const img=IMGS[l.sku]||'';
+    return `<tr>
+      <td><img class="od-prod-img" src="${img}" alt="${l.name}" loading="lazy"></td>
+      <td><div class="od-variant-name">${l.name}</div><div class="od-variant-spec">${l.variant}</div></td>
+      <td>${l.sku}</td>
+      <td>${l.qty}x</td>
+      <td>$${f2(l.unitOrig)}</td>
+      <td>$${f2(origTotal)}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('od-prod-body').innerHTML=rows;
+  renderOrderSummary();
+}
+
+// ===== Order Summary：原价 → 折扣 → 运费 → 税前实付 → 税 → 含税实付 =====
+function renderOrderSummary(){
+  const rows=[];
+  rows.push(`<div class="od-sum-row"><span class="od-sum-label">商品小计 <small>(${state.lines.length}件)</small></span><span class="od-sum-val">$${f2(TOTAL_ORIG)}</span></div>`);
+  rows.push(`<div class="od-sum-row discount"><span class="od-sum-label">优惠券折扣${COUPON_CODE?` <small>(${COUPON_CODE})</small>`:''}</span><span class="od-sum-val">-$${f2(PAY_DISCOUNT)}</span></div>`);
+  rows.push(`<div class="od-sum-row discount"><span class="od-sum-label">金币抵扣</span><span class="od-sum-val">${PAY_COINS>0?'-$'+f2(PAY_COINS):'$0.00'}</span></div>`);
+  rows.push(`<div class="od-sum-row"><span class="od-sum-label">运费</span><span class="od-sum-val">${PAY_SHIPPING>0?'+$'+f2(PAY_SHIPPING):'$0.00'}</span></div>`);
+  rows.push(`<div class="od-sum-row"><span class="od-sum-label">实付 <small>(不含税)</small></span><span class="od-sum-val">$${f2(TOTAL_PAY)}</span></div>`);
+  rows.push(`<div class="od-sum-row"><span class="od-sum-label">税费</span><span class="od-sum-val">+$${f2(MOCK_TAX)}</span></div>`);
+  rows.push(`<div class="od-sum-row total"><span class="od-sum-label">实付总额</span><span class="od-sum-val">$${f2(TOTAL_PAID_GROSS)}</span></div>`);
+  document.getElementById('od-order-summary').innerHTML=rows.join('');
+}
+
+// ===== 操作菜单 =====
+function toggleOpMenu(e){
+  e.stopPropagation();
+  document.getElementById('op-menu').classList.toggle('show');
+}
+document.addEventListener('click',()=>document.getElementById('op-menu').classList.remove('show'));
+
+// ===== 退款弹层开关 =====
+function openRefund(){
+  document.getElementById('op-menu').classList.remove('show');
+  document.getElementById('rf-order-ref').textContent='#'+ORDER_NO+' · Angela Livingston';
+  document.getElementById('rf-overlay').classList.add('show');
+  document.body.style.overflow='hidden';
+  renderAll(); // 重新渲染退款界面，反映最新已退状态
+}
+function closeRefund(){
+  document.getElementById('rf-overlay').classList.remove('show');
+  document.body.style.overflow='';
+  renderProdTable(); // 退款可能改变了已退，详情页实付列保持原价/实付不变，无需变更，但刷新无害
+}
+document.getElementById('rf-overlay').addEventListener('click',e=>{
+  if(e.target.id==='rf-overlay') closeRefund();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&document.getElementById('rf-overlay').classList.contains('show')) closeRefund();
+});
+
+renderProdTable();
+renderAll();
+</script>

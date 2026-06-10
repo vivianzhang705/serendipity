@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refund Details</title>
+<style>
+:root{
+  --ink:#1a1a1a; --ink2:#6b6f76; --ink3:#9aa0a6;
+  --line:#ececec; --line2:#f3f3f3;
+  --bg:#f5f6f7; --card:#fff;
+  --green:#1a8a5a; --green-bg:#e9f6ef;
+  --refund:#c0392b;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#2b2d31;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--ink);
+  display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:24px 0}
+.phone{width:390px;background:var(--bg);min-height:760px;position:relative;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.4)}
+
+.statusbar{height:44px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:14px;font-weight:600}
+.statusbar .icons{display:flex;gap:6px;align-items:center;font-size:13px}
+
+.nav{height:50px;background:#fff;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:1px solid var(--line)}
+.nav .title{font-size:17px;font-weight:600;letter-spacing:.3px}
+.nav .back{position:absolute;left:16px;font-size:20px;color:#222;background:none;border:none;cursor:pointer;line-height:1}
+
+.scroll{padding:14px 14px 40px}
+
+/* Summary */
+.summary{background:var(--card);border-radius:var(--radius);padding:20px 18px 18px;margin-bottom:14px}
+.summary .lead{font-size:12px;color:var(--ink2);margin-bottom:8px}
+.summary .amount{font-size:34px;font-weight:700;letter-spacing:-.5px;line-height:1;margin-bottom:14px}
+.summary .meta{display:flex;flex-direction:column;gap:7px;border-top:1px solid var(--line2);padding-top:14px}
+.summary .mrow{display:flex;justify-content:space-between;font-size:13px}
+.summary .mrow .k{color:var(--ink2)}
+.summary .mrow .v{color:var(--ink);font-weight:500}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;background:var(--green-bg);color:var(--green)}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+/* Records */
+.sec-label{font-size:13px;color:var(--ink2);font-weight:600;margin:4px 4px 10px}
+.acc{background:var(--card);border-radius:var(--radius);overflow:hidden;margin-bottom:12px}
+.acc-head{display:flex;align-items:center;gap:10px;padding:15px 16px;cursor:pointer;user-select:none}
+.acc-head .no{font-size:13px;font-weight:700;color:var(--ink);background:#f0f1f2;border-radius:6px;padding:2px 8px;letter-spacing:.5px}
+.acc-head .spacer{flex:1}
+.acc-head .reflabel{font-size:14px;color:var(--ink2);font-weight:500}
+.acc-head .reflabel b{color:var(--refund);font-weight:700;font-size:15px}
+.acc-head .when{font-size:12px;color:var(--ink3)}
+.acc-head .chev{color:var(--ink3);font-size:13px;transition:transform .22s;margin-left:8px}
+.acc.open .acc-head .chev{transform:rotate(90deg)}
+.acc-headwrap{display:flex;flex-direction:column;gap:2px}
+.acc-headwrap .when{font-size:12px;color:var(--ink3)}
+.acc-headwrap .type{font-size:11px;color:var(--ink2)}
+
+.acc-body{max-height:0;overflow:hidden;transition:max-height .28s ease}
+.acc.open .acc-body{max-height:900px}
+.acc-inner{padding:0 16px 16px;border-top:1px solid var(--line2)}
+
+.item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line2)}
+.item img{width:56px;height:72px;object-fit:cover;border-radius:6px;background:#eee;flex-shrink:0}
+.item .info{flex:1;min-width:0}
+.item .name{font-size:13px;font-weight:600;line-height:1.4;color:var(--ink);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.item .spec{font-size:12px;color:var(--ink3);margin-top:3px}
+.item .right{text-align:right;flex-shrink:0}
+.item .price{font-size:14px;font-weight:600}
+.item .orig{font-size:12px;color:var(--ink3);text-decoration:line-through;margin-bottom:1px}
+.item .afterdc{font-size:10px;color:var(--ink3);margin-top:2px}
+.item .qty{font-size:12px;color:var(--ink3);margin-top:4px}
+
+.adjust{padding:14px 0;border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:10px}
+.adjust .ic{width:38px;height:38px;border-radius:9px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.adjust .t{font-size:13px;font-weight:600}
+.adjust .s{font-size:12px;color:var(--ink3);margin-top:2px}
+
+.breakdown{padding-top:14px}
+.brow{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;color:var(--ink2)}
+.brow .v{color:var(--ink);font-weight:500}
+.brow.total{border-top:1px solid var(--line);margin-top:6px;padding-top:11px;font-size:15px}
+.brow.total .k{font-weight:700;color:var(--ink)}
+.brow.total .v{font-weight:700;color:var(--ink)}
+.reason{margin-top:12px;background:#fafafa;border-radius:9px;padding:10px 12px}
+.reason .rl{font-size:11px;color:var(--ink3);margin-bottom:3px}
+.reason .rt{font-size:13px;color:var(--ink);line-height:1.45}
+.applied{font-size:11px;color:var(--ink3);margin-top:11px;text-align:right}
+
+.foot-note{font-size:11px;color:var(--ink3);text-align:center;margin-top:18px;line-height:1.6;padding:0 12px}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar">
+    <span>9:41</span>
+    <span class="icons">●●●● 🛜 🔋</span>
+  </div>
+  <div class="nav">
+    <button class="back">‹</button>
+    <span class="title">Refund Details</span>
+  </div>
+  <div class="scroll" id="scroll"></div>
+</div>
+
+<script>
+const ORDER_NO='77524587738258';
+const PAY_METHOD='Visa ****6411';
+
+// All refunds shown here are already completed (successful).
+const refunds=[
+  {
+    no:1, time:'Jun 01, 2026', type:'Return & Refund',
+    reason:'Return — wrong size (too large)',
+    items:[
+      {name:'Plaid Print Patch Pocket Button Up Plaid Print Patch Pocket Jacket', spec:'Black / B', qty:1, img:'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=120&q=60', orig:51.70, amt:43.20}
+    ],
+    itemsTotal:43.20, shipping:0, tax:1.06
+  },
+  {
+    no:2, time:'Jun 05, 2026', type:'Price Adjustment',
+    reason:'Price drop after purchase — difference refunded',
+    items:[], adjust:true, itemsTotal:0, shipping:0, tax:0, adjustAmt:5.00
+  },
+  {
+    no:3, time:'Jun 08, 2026', type:'Return & Refund',
+    reason:'Quality issue — loose stitching',
+    items:[
+      {name:'Ribbed Knit Cropped Tank Top', spec:'Sage / M', qty:1, img:'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=120&q=60', orig:10.99, amt:8.50}
+    ],
+    itemsTotal:8.50, shipping:0, tax:0.21
+  }
+];
+
+const f2=n=>'$'+Number(n).toFixed(2);
+function refundTotal(r){
+  const base=r.adjust ? (r.adjustAmt||0) : r.itemsTotal;
+  return +(base + (r.shipping||0) + (r.tax||0)).toFixed(2);
+}
+function totalRefunded(){ return +refunds.reduce((s,r)=>s+refundTotal(r),0).toFixed(2); }
+
+function render(){
+  const total=totalRefunded();
+
+  let html=`
+    <div class="summary">
+      <div class="lead">Total Refunded</div>
+      <div class="amount">${f2(total)}</div>
+      <div class="meta">
+        <div class="mrow"><span class="k">Status</span>
+          <span class="v"><span class="pill"><span class="dot"></span>Refund completed</span></span></div>
+        <div class="mrow"><span class="k">Refunded to</span><span class="v">${PAY_METHOD}</span></div>
+        <div class="mrow"><span class="k">Refunds issued</span><span class="v">${refunds.length}</span></div>
+      </div>
+    </div>
+    <div class="sec-label">Refund History</div>
+  `;
+
+  const ordered=[...refunds].sort((a,b)=>b.no-a.no);
+  ordered.forEach((r,idx)=>{
+    const tot=refundTotal(r);
+    const open = idx===0 ? 'open':'';
+    let body='', breakdown='';
+
+    if(r.adjust){
+      breakdown=`<div class="breakdown" style="padding-top:0">
+        <div class="brow total" style="border-top:none;margin-top:0;padding-top:14px"><span class="k">Refund Amount</span><span class="v">${f2(tot)}</span></div>
+      </div>`;
+    } else {
+      body=r.items.map(it=>`
+        <div class="item">
+          <img src="${it.img}" alt="">
+          <div class="info">
+            <div class="name">${it.name}</div>
+            <div class="spec">${it.spec}</div>
+          </div>
+          <div class="right">
+            ${it.orig&&it.orig>it.amt?`<div class="orig">${f2(it.orig)}</div>`:''}
+            <div class="price">${f2(it.amt)}</div>
+            ${it.orig&&it.orig>it.amt?`<div class="afterdc">(after discount)</div>`:''}
+            <div class="qty">×${it.qty}</div>
+          </div>
+        </div>`).join('');
+      breakdown=`<div class="breakdown">
+        <div class="brow"><span class="k">Items Total</span><span class="v">${f2(r.itemsTotal)}</span></div>
+        ${r.shipping>0?`<div class="brow"><span class="k">Shipping Refund</span><span class="v">${f2(r.shipping)}</span></div>`:''}
+        ${r.tax>0?`<div class="brow"><span class="k">Sales Tax</span><span class="v">${f2(r.tax)}</span></div>`:''}
+        <div class="brow total"><span class="k">Refund Amount</span><span class="v">${f2(tot)}</span></div>
+      </div>`;
+    }
+
+    const reason=`<div class="reason"><div class="rl">Reason</div><div class="rt">${r.reason}</div></div>`;
+
+    html+=`
+      <div class="acc ${open}" data-no="${r.no}">
+        <div class="acc-head" onclick="toggle(${r.no})">
+          <span class="no">#${r.no}</span>
+          <span class="reflabel">Refund Amount: <b>${f2(tot)}</b></span>
+          <span class="spacer"></span>
+          <span class="when">${r.time}</span>
+          <span class="chev">›</span>
+        </div>
+        <div class="acc-body">
+          <div class="acc-inner">
+            ${body}
+            ${breakdown}
+            ${reason}
+          </div>
+        </div>
+      </div>`;
+  });
+
+  html+=`<div class="foot-note">Refunds are returned to your original payment method. Posting time depends on your bank or card issuer.</div>`;
+
+  document.getElementById('scroll').innerHTML=html;
+}
+
+function toggle(no){
+  const el=document.querySelector('.acc[data-no="'+no+'"]');
+  if(el) el.classList.toggle('open');
+}
+
+render();
+</script>
+</body>
+</html>

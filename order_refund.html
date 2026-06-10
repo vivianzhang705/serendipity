@@ -755,6 +755,7 @@ function retryRefund(id,e){
 
 function renderAll(){
   renderBadges(); renderLines(); renderHistory();
+  if(typeof renderProdTable==='function') renderProdTable(); // 同步详情页商品状态标
   const cbw=document.getElementById('cb-whole');
   if(cbw) cbw.disabled=orderAvail()<=0;
   // 已全额退款：隐藏所有发起退款入口
@@ -1042,9 +1043,16 @@ function renderProdTable(){
   const rows=state.lines.map((l)=>{
     const origTotal=+(l.unitOrig*l.qty).toFixed(2);
     const img=IMGS[l.sku]||'';
+    // 退款状态（与弹窗一致）：含行级已退 + 补差额均摊
+    const diffAlloc=+((allocDiff()[l.id]||0)/100).toFixed(2);
+    const refTotal=+(l.refAmt+diffAlloc).toFixed(2);
+    const exhausted=lineAvail(l)<=0 && refTotal>0;
+    const statusTag=exhausted
+      ? '<span class="badge b-done" style="margin-top:4px">已退完</span>'
+      : refTotal>0 ? '<span class="badge b-amber" style="margin-top:4px">部分已退</span>' : '';
     return `<tr>
       <td><img class="od-prod-img" src="${img}" alt="${l.name}" loading="lazy"></td>
-      <td><div class="od-variant-name">${l.name}</div><div class="od-variant-spec">${l.variant}</div></td>
+      <td><div class="od-variant-name">${l.name}</div><div class="od-variant-spec">${l.variant}</div>${statusTag}</td>
       <td>${l.sku}</td>
       <td>${l.qty}x</td>
       <td>$${f2(l.unitOrig)}</td>

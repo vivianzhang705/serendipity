@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>退款记录</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;color:#1a1a1a;background:#f0f2f5;min-height:100vh}
+a{color:inherit;text-decoration:none}
+
+.page{max-width:1400px;margin:0 auto;padding:16px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.page-title{font-size:18px;font-weight:700;color:#111}
+.breadcrumb{font-size:12px;color:#888;margin-bottom:10px}
+.breadcrumb a{color:#185FA5}
+
+.card{background:#fff;border-radius:6px;border:1px solid #e5e7eb;margin-bottom:14px}
+
+/* Filter bar */
+.filter-bar{padding:14px 16px;display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap}
+.filter-group{display:flex;flex-direction:column;gap:4px}
+.filter-label{font-size:11px;color:#6b7280;font-weight:500}
+.filter-input{height:30px;border:0.5px solid #d1d5db;border-radius:5px;padding:0 8px;font-size:12px;background:#fff;color:#374151;outline:none}
+.filter-input:focus{border-color:#185FA5}
+.filter-btn{height:30px;padding:0 14px;border-radius:5px;font-size:12px;cursor:pointer;border:none;font-weight:500;align-self:flex-end}
+.btn-ghost{background:#fff;border:0.5px solid #d1d5db;color:#374151}.btn-ghost:hover{background:#f3f4f6}
+
+/* Bulk action bar */
+.bulk-bar{display:none;align-items:center;gap:10px;padding:8px 16px;background:#EFF6FF;border-bottom:1px solid #BFDBFE;flex-wrap:wrap}
+.bulk-bar.show{display:flex}
+.bulk-count{font-size:13px;font-weight:600;color:#1D4ED8}
+.bulk-label{font-size:12px;color:#1D4ED8;margin-right:4px}
+.bulk-btn{height:28px;padding:0 12px;border-radius:5px;font-size:12px;cursor:pointer;border:0.5px solid;font-weight:500}
+.bulk-pending{background:#EFF6FF;color:#1D4ED8;border-color:#93C5FD}.bulk-pending:hover{background:#DBEAFE}
+.bulk-success{background:#DCFCE7;color:#15803D;border-color:#86EFAC}.bulk-success:hover{background:#BBF7D0}
+.bulk-reject{background:#FEE2E2;color:#DC2626;border-color:#FCA5A5}.bulk-reject:hover{background:#FECACA}
+.bulk-cancel{background:#fff;color:#6B7280;border-color:#D1D5DB}.bulk-cancel:hover{background:#F3F4F6}
+
+/* Table */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th{background:#f8fafc;text-align:left;padding:8px 10px;font-size:11px;font-weight:600;color:#6b7280;border-bottom:1px solid #e5e7eb;white-space:nowrap}
+th.r,td.r{text-align:right}
+td{padding:9px 10px;font-size:12px;color:#374151;border-bottom:1px solid #f3f4f6;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr.main-row:hover td{background:#fafbff}
+.expand-row td{padding:0}
+.expand-inner{overflow:hidden;transition:max-height .2s ease}
+.expand-inner.open{max-height:400px}
+.expand-inner.closed{max-height:0}
+.expand-body{padding:10px 16px 12px 40px;background:#f8fafc;border-top:1px solid #f0f0f0}
+.chevron{display:inline-block;transition:transform .18s;color:#9ca3af;font-size:13px;margin-right:2px}
+.main-row.open .chevron{transform:rotate(90deg)}
+.main-row{cursor:pointer}
+/* selected row tint */
+.main-row.sel td{background:#F0F7FF}
+.main-row.sel:hover td{background:#E0EFFF}
+
+/* checkbox col */
+td.cb-td,th.cb-th{width:36px;padding:0 0 0 12px}
+input[type=checkbox]{width:14px;height:14px;cursor:pointer;accent-color:#185FA5}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:500;white-space:nowrap}
+.b-blue{background:#dbeafe;color:#1d4ed8}
+.b-green{background:#dcfce7;color:#15803d}
+.b-gray{background:#f3f4f6;color:#6b7280}
+
+/* Status badge button */
+.rs-btn{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:500;cursor:pointer;border:none;white-space:nowrap}
+.rs-pending{background:#eff6ff;color:#1d4ed8}
+.rs-success{background:#dcfce7;color:#15803d}
+.rs-reject{background:#fee2e2;color:#dc2626}
+.rs-wrap{position:relative;display:inline-block}
+.rs-menu{position:absolute;background:#fff;border:1px solid #e5e7eb;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.12);z-index:300;min-width:120px;padding:4px 0;top:100%;left:0;margin-top:2px}
+.rs-menu-item{padding:7px 14px;font-size:12px;cursor:pointer;color:#374151}
+.rs-menu-item:hover{background:#f3f4f6}
+
+/* sub detail */
+.sub-tbl{width:100%;border-collapse:collapse;font-size:12px;max-width:600px}
+.sub-tbl th{font-weight:600;color:#9ca3af;padding:4px 8px;text-align:left;border-bottom:1px solid #e5e7eb;background:transparent}
+.sub-tbl td{padding:5px 8px;color:#374151;border-bottom:1px solid #f0f0f0}
+.sub-tbl tr:last-child td{border-bottom:none}
+
+/* Pagination */
+.pagination{display:flex;align-items:center;justify-content:flex-end;gap:6px;padding:12px 16px;border-top:1px solid #f0f0f0}
+.page-btn{height:28px;min-width:28px;padding:0 8px;border:0.5px solid #d1d5db;border-radius:4px;background:#fff;font-size:12px;cursor:pointer;color:#374151}
+.page-btn:hover:not(:disabled){background:#f3f4f6}
+.page-btn.active{background:#185FA5;color:#fff;border-color:#185FA5}
+.page-btn:disabled{opacity:.4;cursor:default}
+.page-info{font-size:12px;color:#9ca3af;margin-right:4px}
+
+.empty{text-align:center;padding:48px 16px;color:#9ca3af;font-size:13px}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="breadcrumb"><a href="#">首页</a> › <a href="#">订单中心</a> › <span>退款记录</span></div>
+  <div class="topbar"><span class="page-title">退款记录</span></div>
+
+  <!-- Filter card -->
+  <div class="card">
+    <div class="filter-bar">
+      <div class="filter-group">
+        <span class="filter-label">订单号</span>
+        <input type="text" id="f-order" class="filter-input" placeholder="输入订单号" style="width:170px" oninput="applyFilter()">
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">开始日期</span>
+        <input type="date" id="f-date-start" class="filter-input" style="width:136px" onchange="applyFilter()">
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">结束日期</span>
+        <input type="date" id="f-date-end" class="filter-input" style="width:136px" onchange="applyFilter()">
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">退款类型</span>
+        <select id="f-type" class="filter-input" style="width:120px" onchange="applyFilter()">
+          <option value="">全部</option>
+          <option value="未发货退款">未发货退款</option>
+          <option value="退货退款">退货退款</option>
+          <option value="补差额">补差额</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">状态</span>
+        <select id="f-rs" class="filter-input" style="width:110px" onchange="applyFilter()">
+          <option value="">全部</option>
+          <option value="pending_refund">待退款</option>
+          <option value="refund_success">退款成功</option>
+          <option value="refund_rejected">拒绝退款</option>
+        </select>
+      </div>
+      <button class="filter-btn btn-ghost" onclick="resetFilter()">重置</button>
+    </div>
+  </div>
+
+  <!-- Table card -->
+  <div class="card">
+    <!-- Bulk action bar (shows when rows checked) -->
+    <div class="bulk-bar" id="bulk-bar">
+      <span class="bulk-count" id="bulk-count">0 条已选</span>
+      <span class="bulk-label">批量修改状态：</span>
+      <button class="bulk-btn bulk-pending" onclick="bulkSetStatus('pending_refund')">待退款</button>
+      <button class="bulk-btn bulk-success" onclick="bulkSetStatus('refund_success')">退款成功</button>
+      <button class="bulk-btn bulk-reject" onclick="bulkSetStatus('refund_rejected')">拒绝退款</button>
+      <button class="bulk-btn bulk-cancel" onclick="clearSelection()" style="margin-left:4px">取消选择</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th class="cb-th"><input type="checkbox" id="cb-all" onclick="toggleAll(this)"></th>
+          <th style="width:32px"></th>
+          <th style="width:140px">时间</th>
+          <th style="width:155px">订单号</th>
+          <th style="width:110px">退款类型</th>
+          <th style="width:190px">退款原因</th>
+          <th class="r" style="width:60px">件数</th>
+          <th class="r" style="width:88px">商品退款</th>
+          <th class="r" style="width:72px">运费</th>
+          <th class="r" style="width:72px">退税</th>
+          <th class="r" style="width:88px">合计</th>
+          <th style="width:116px">售后工单</th>
+          <th style="width:104px">状态</th>
+          <th style="width:88px">操作人</th>
+        </tr></thead>
+        <tbody id="list-tbody"></tbody>
+      </table>
+    </div>
+    <div id="empty-tip" class="empty" style="display:none">暂无退款记录</div>
+    <div class="pagination" id="pager"></div>
+  </div>
+</div>
+
+<script>
+const f2=n=>Number(n).toFixed(2);
+const fm=n=>n>0?'$'+f2(n):'—';
+
+// ── Mock 数据 ─────────────────────────────────────────────
+const MOCK_DATA=(()=>{
+  const orders=[
+    {orderNo:'2026060926280857',customer:'Angela Livingston'},
+    {orderNo:'2026060812345678',customer:'John Smith'},
+    {orderNo:'2026052798765432',customer:'Maria Garcia'},
+    {orderNo:'2026051612233445',customer:'David Lee'},
+    {orderNo:'2026050399887766',customer:'Sara Johnson'},
+  ];
+  const types=['未发货退款','退货退款','退货退款','未发货退款','退货退款'];
+  const reasons=['未发货--顾客无理由要取消','退货-尺寸不符(太大)','退货-无理由退货','缺货--线上采购','物流-物流损坏','退货-顾客认为质量问题(材质等)','物流-物流丢件','退货-尺寸不符(太小)'];
+  const ops=['客服 Lisa','客服 Wang','客服 Chen'];
+  const rsVals=['pending_refund','refund_success','refund_success','pending_refund','refund_rejected','refund_success','pending_refund','refund_success'];
+  const asNos=['AS-20260610-001','','AS-20260527-003','','AS-20260516-005','AS-20260503-006','','AS-20260601-007'];
+  const rows=[];
+  let idx=1;
+  for(let o=0;o<orders.length;o++){
+    const cnt=Math.floor(Math.random()*3)+1;
+    for(let i=0;i<cnt;i++){
+      const goods=+(Math.random()*80+10).toFixed(2);
+      const fr=Math.random()>0.7?+(Math.random()*10).toFixed(2):0;
+      const tax=+(goods*0.09).toFixed(2);
+      const daysAgo=Math.floor(Math.random()*90);
+      const d=new Date(2026,5,12);
+      d.setDate(d.getDate()-daysAgo);
+      const pad=n=>n.toString().padStart(2,'0');
+      const time=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(Math.floor(Math.random()*12)+8)}:${pad(Math.floor(Math.random()*59))}`;
+      const ri=(idx-1)%rsVals.length;
+      rows.push({
+        id:`RTN-${orders[o].orderNo.slice(-4)}-${idx}`,
+        orderNo:orders[o].orderNo,customer:orders[o].customer,time,
+        typeLbl:types[o%types.length],reason:reasons[idx%reasons.length],
+        goods,fr,tax,tot:+(goods+fr+tax).toFixed(2),
+        qty:Math.floor(Math.random()*3)+1,
+        op:ops[idx%ops.length],
+        refStatus:rsVals[ri],aftersaleNo:asNos[ri],status:'success',
+      });
+      idx++;
+    }
+  }
+  rows.unshift({
+    id:'RTN-8872-1',orderNo:'2026060926280857',customer:'Angela Livingston',
+    time:'2026-06-09 14:22',typeLbl:'退货退款',reason:'退货-尺寸不符(太大)',
+    goods:57.99,fr:0,tax:5.30,tot:63.29,qty:1,op:'客服 Lisa',
+    refStatus:'pending_refund',aftersaleNo:'AS-20260610-001',status:'success',
+  });
+  return rows.sort((a,b)=>b.time.localeCompare(a.time));
+})();
+
+let filtered=[];
+let _rsOpenId=null;
+const PAGE_SIZE=15;
+let curPage=1;
+const openRows=new Set();
+const selected=new Set(); // selected row ids
+
+const RS_MAP={
+  pending_refund:{cls:'rs-pending',label:'待退款'},
+  refund_success:{cls:'rs-success',label:'退款成功'},
+  refund_rejected:{cls:'rs-reject',label:'拒绝退款'},
+};
+
+// ── Bulk selection ─────────────────────────────────────────
+function toggleAll(el){
+  const page=getPage();
+  page.forEach(r=>el.checked?selected.add(r.id):selected.delete(r.id));
+  renderTable();
+  syncBulkBar();
+}
+
+function toggleRow(id,e){
+  e.stopPropagation();
+  selected.has(id)?selected.delete(id):selected.add(id);
+  syncBulkBar();
+  syncSelectAll();
+  // re-render just the row's selected style
+  const tr=document.querySelector(`tr[data-id="${id}"]`);
+  if(tr) tr.classList.toggle('sel',selected.has(id));
+}
+
+function clearSelection(){
+  selected.clear();
+  renderTable();
+  syncBulkBar();
+}
+
+function syncBulkBar(){
+  const bar=document.getElementById('bulk-bar');
+  const cnt=document.getElementById('bulk-count');
+  if(selected.size>0){bar.classList.add('show');cnt.textContent=selected.size+' 条已选';}
+  else{bar.classList.remove('show');}
+}
+
+function syncSelectAll(){
+  const all=document.getElementById('cb-all');
+  const page=getPage();
+  if(!page.length){all.checked=false;all.indeterminate=false;return;}
+  const selInPage=page.filter(r=>selected.has(r.id)).length;
+  all.checked=selInPage===page.length;
+  all.indeterminate=selInPage>0&&selInPage<page.length;
+}
+
+function bulkSetStatus(val){
+  selected.forEach(id=>{
+    const row=MOCK_DATA.find(r=>r.id===id);
+    if(row) row.refStatus=val;
+  });
+  selected.clear();
+  applyFilter();
+  syncBulkBar();
+}
+
+function getPage(){
+  const start=(curPage-1)*PAGE_SIZE;
+  return filtered.slice(start,start+PAGE_SIZE);
+}
+
+// ── Status button ──────────────────────────────────────────
+function refStatusBtn(row){
+  const s=RS_MAP[row.refStatus]||RS_MAP.pending_refund;
+  return `<div class="rs-wrap"><button class="rs-btn ${s.cls}" onclick="toggleRsMenu('${row.id}',event)">${s.label} ▾</button></div>`;
+}
+
+function toggleRsMenu(id,e){
+  e.stopPropagation();
+  document.querySelectorAll('.rs-menu').forEach(m=>m.remove());
+  if(_rsOpenId===id){_rsOpenId=null;return;}
+  _rsOpenId=id;
+  const btn=e.currentTarget;
+  const menu=document.createElement('div');
+  menu.className='rs-menu';
+  [['pending_refund','待退款'],['refund_success','退款成功'],['refund_rejected','拒绝退款']].forEach(([val,label])=>{
+    const it=document.createElement('div');
+    it.className='rs-menu-item';
+    it.textContent=label;
+    it.onclick=ev=>{ev.stopPropagation();setRS(id,val);};
+    menu.appendChild(it);
+  });
+  btn.parentElement.appendChild(menu);
+}
+function setRS(id,val){
+  document.querySelectorAll('.rs-menu').forEach(m=>m.remove());
+  _rsOpenId=null;
+  const row=MOCK_DATA.find(r=>r.id===id);
+  if(row) row.refStatus=val;
+  applyFilter();
+}
+document.addEventListener('click',()=>{
+  document.querySelectorAll('.rs-menu').forEach(m=>m.remove());
+  _rsOpenId=null;
+});
+
+// ── Filter & render ────────────────────────────────────────
+function applyFilter(){
+  const order=(document.getElementById('f-order').value||'').trim().toLowerCase();
+  const ds=document.getElementById('f-date-start').value;
+  const de=document.getElementById('f-date-end').value;
+  const type=document.getElementById('f-type').value;
+  const rs=document.getElementById('f-rs').value;
+
+  filtered=MOCK_DATA.filter(r=>{
+    if(order&&!r.orderNo.toLowerCase().includes(order)) return false;
+    if(ds&&r.time.slice(0,10)<ds) return false;
+    if(de&&r.time.slice(0,10)>de) return false;
+    if(type&&r.typeLbl!==type) return false;
+    if(rs&&r.refStatus!==rs) return false;
+    return true;
+  });
+  curPage=1;
+  renderTable();
+  renderPager();
+}
+
+function renderTable(){
+  const tb=document.getElementById('list-tbody');
+  const empty=document.getElementById('empty-tip');
+  const page=getPage();
+  if(!filtered.length){tb.innerHTML='';empty.style.display='block';syncSelectAll();return;}
+  empty.style.display='none';
+  tb.innerHTML='';
+  page.forEach(r=>{
+    const isOpen=openRows.has(r.id);
+    const isSel=selected.has(r.id);
+    const mainTr=document.createElement('tr');
+    mainTr.className='main-row'+(isOpen?' open':'')+(isSel?' sel':'');
+    mainTr.setAttribute('data-id',r.id);
+    mainTr.innerHTML=`
+      <td class="cb-td" onclick="event.stopPropagation()">
+        <input type="checkbox" ${isSel?'checked':''} onclick="toggleRow('${r.id}',event)">
+      </td>
+      <td style="padding-left:4px"><span class="chevron">›</span></td>
+      <td style="color:#6b7280;font-size:12px">${r.time}</td>
+      <td>
+        <div style="font-size:12px;font-weight:500;color:#185FA5">#${r.orderNo}</div>
+        <div style="font-size:11px;color:#9ca3af;margin-top:1px">${r.customer}</div>
+      </td>
+      <td><span class="badge b-gray">${r.typeLbl}</span></td>
+      <td style="color:#6b7280;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r.reason}">${r.reason}</td>
+      <td class="r" style="color:#6b7280">${r.qty}件</td>
+      <td class="r">$${f2(r.goods)}</td>
+      <td class="r" style="color:#6b7280">${fm(r.fr)}</td>
+      <td class="r" style="color:#6b7280">${r.tax>0?'$'+f2(r.tax):'—'}</td>
+      <td class="r" style="font-weight:600">$${f2(r.tot)}</td>
+      <td>${r.aftersaleNo?`<span class="badge b-blue" style="font-size:11px">${r.aftersaleNo}</span>`:'<span style="color:#d1d5db">—</span>'}</td>
+      <td>${refStatusBtn(r)}</td>
+      <td><span class="badge b-gray" style="font-size:11px">${r.op}</span></td>
+    `;
+    mainTr.addEventListener('click',e=>{
+      if(e.target.type==='checkbox'||e.target.closest('.rs-wrap')) return;
+      openRows.has(r.id)?openRows.delete(r.id):openRows.add(r.id);
+      renderTable();
+    });
+
+    const detailTr=document.createElement('tr');
+    detailTr.className='expand-row';
+    detailTr.innerHTML=`<td colspan="14">
+      <div class="expand-inner ${isOpen?'open':'closed'}">
+        <div class="expand-body">
+          <table class="sub-tbl">
+            <thead><tr><th>商品 / SKU</th><th class="r">数量</th><th class="r">退款金额</th><th class="r">退税</th></tr></thead>
+            <tbody>
+              <tr>
+                <td style="color:#6b7280">商品明细 · 订单 #${r.orderNo}</td>
+                <td class="r">${r.qty}</td>
+                <td class="r">$${f2(r.goods)}</td>
+                <td class="r">${r.tax>0?'$'+f2(r.tax):'—'}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="display:flex;gap:16px;margin-top:8px;font-size:12px;color:#6b7280;flex-wrap:wrap">
+            ${r.aftersaleNo?`<span>售后工单：<strong>${r.aftersaleNo}</strong></span>`:''}
+            <span>操作人：<strong>${r.op}</strong></span>
+            <span>时间：<strong>${r.time}</strong></span>
+          </div>
+        </div>
+      </div>
+    </td>`;
+
+    tb.appendChild(mainTr);
+    tb.appendChild(detailTr);
+  });
+  syncSelectAll();
+}
+
+function renderPager(){
+  const total=filtered.length;
+  const pages=Math.ceil(total/PAGE_SIZE)||1;
+  const pg=document.getElementById('pager');
+  if(pages<=1){pg.innerHTML='';return;}
+  let html=`<span class="page-info">共 ${total} 条 / ${pages} 页</span>`;
+  html+=`<button class="page-btn" onclick="goPage(${curPage-1})" ${curPage<=1?'disabled':''}>‹</button>`;
+  const range=[];
+  for(let i=1;i<=pages;i++){
+    if(i===1||i===pages||Math.abs(i-curPage)<=2) range.push(i);
+    else if(range[range.length-1]!=='…') range.push('…');
+  }
+  range.forEach(p=>{
+    if(p==='…') html+=`<span style="padding:0 4px;color:#9ca3af">…</span>`;
+    else html+=`<button class="page-btn ${p===curPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
+  });
+  html+=`<button class="page-btn" onclick="goPage(${curPage+1})" ${curPage>=pages?'disabled':''}>›</button>`;
+  pg.innerHTML=html;
+}
+
+function goPage(p){
+  const pages=Math.ceil(filtered.length/PAGE_SIZE)||1;
+  curPage=Math.max(1,Math.min(pages,p));
+  renderTable();
+  renderPager();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function resetFilter(){
+  ['f-order','f-date-start','f-date-end'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-type').value='';
+  document.getElementById('f-rs').value='';
+  applyFilter();
+}
+
+applyFilter();
+</script>
+</body>
+</html>
